@@ -3,11 +3,15 @@
 #include <set>
 #include <string>
  
+class B;
+class D;
 struct Point
 {
     int x;
     int y;
     auto operator<=>(const Point&) const = default;
+    
+    void printPoint(B obj);
     /* non-comparison functions */
 };
 
@@ -29,6 +33,12 @@ public:
     B(): b(0){
         std::cout << "Конструктор B()" << std::endl;
     }
+    B(const B &other){
+        if(this == &other)
+            return;
+        this->b = other.b;
+        std::cout << "Вызывался конструктор копирования B(B &other)" << std::endl;
+    }
     B(int b): b(b){
         std::cout << "Конструктор B()" << std::endl;
     }
@@ -43,6 +53,10 @@ public:
     virtual void show(){
         std::cout << "B : " << get_b() << std::endl;
     }
+
+    friend bool isEven(B obj);
+    friend int comp(B obj, D obj_d);
+    friend void Point::printPoint(B obj);
 };
 
 class D: public B{
@@ -67,6 +81,8 @@ public:
     int mul() const {
         return d * get_b();
     };
+
+    friend int comp(B obj, D obj_d);
 };
 
 template<typename T>
@@ -84,16 +100,25 @@ B inputB(){
     return B(1);
 }
 
+bool isEven(B obj){
+    return !obj.b % 2;
+}
+
+int comp(B obj, D obj_d){
+    return obj_d.d - obj.b;
+}
+
+void Point::printPoint(B obj){
+    std:: cout << "Point : " << x << "\t" << y * obj.b << std::endl;
+}
+
 int main(int argc, char* argv[])
 {
     std::cout << argv[0] << std::endl;
 
-    // D x = input();
-    // x.show();
-
-    B y;
-    y = inputB();
-    y.show();
+    std::cout << std::boolalpha <<  isEven(B(5)) << std::endl;
+    std::cout << comp(B(67), D(34, 99)) << std::endl;
+    Point(2,2).printPoint(B(2));
 
     return 0;
 }
