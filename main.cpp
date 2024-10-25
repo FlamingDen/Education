@@ -7,10 +7,18 @@ class B;
 class D;
 struct Point
 {
-    int x;
-    int y;
+    int x = 0;
+    int y = 0;
+
     auto operator<=>(const Point&) const = default;
     
+    Point(){}
+    Point(int x) : x(x){}
+    Point(int x, int y) : x(x), y(y){}
+
+    void show(){
+        std::cout << "Point : " << x <<" \t " << y << std::endl; 
+    };
     void printPoint(B obj);
     /* non-comparison functions */
 };
@@ -116,9 +124,13 @@ int main(int argc, char* argv[])
 {
     std::cout << argv[0] << std::endl;
 
-    std::cout << std::boolalpha <<  isEven(B(5)) << std::endl;
-    std::cout << comp(B(67), D(34, 99)) << std::endl;
-    Point(2,2).printPoint(B(2));
-
+    Point arr[3]{{1,1},{2,2},{3,3}};
+    Point *p = arr;
+    for(int i(0); i < 3; i++){
+        (p++)->show();
+    } 
+    for(int i(0); i < 3; i++){
+        (--p)->show();
+    } 
     return 0;
 }
