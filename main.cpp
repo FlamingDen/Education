@@ -12,14 +12,27 @@ struct Point
 
     auto operator<=>(const Point&) const = default;
     
-    Point(){}
-    Point(int x) : x(x){}
-    Point(int x, int y) : x(x), y(y){}
+    Point(){
+        std::cout << "Point() "  << std::endl;
+    }
+    Point(int x) : x(x){
+        std::cout << "Point() "  << std::endl;
+    }
+    Point(int x, int y) : x(x), y(y){
+        std::cout << "Point() "  << std::endl;
+    }
+    ~Point(){ 
+         std::cout << "~Point() "  << std::endl;
+    }
 
     void show(){
         std::cout << "Point : " << x <<" \t " << y << std::endl; 
     };
     void printPoint(B obj);
+    void increase(int &add){
+        x += add;
+        y += add;
+    }
     /* non-comparison functions */
 };
 
@@ -120,17 +133,45 @@ void Point::printPoint(B obj){
     std:: cout << "Point : " << x << "\t" << y * obj.b << std::endl;
 }
 
+void f(Point &p){
+    p.show();
+}
+
+int x_gl;
+int& foo(){
+    return x_gl;
+}
+
+
 int main(int argc, char* argv[])
 {
-    std::cout << argv[0] << std::endl;
+    // std::cout << argv[0] << std::endl;
+    // // 4.4 - 4.5
+    // Point *p = new Point [3];
+    // for(int i(0); i < 3; i++){
+    //     *(p+i) = {i+2,i+2};
+    // } 
+    // for(int i(0); i < 3; i++){
+    //     (p+i)->show();
+    // }
+    // delete[] p;
 
-    Point arr[3]{{1,1},{2,2},{3,3}};
-    Point *p = arr;
-    for(int i(0); i < 3; i++){
-        (p++)->show();
-    } 
-    for(int i(0); i < 3; i++){
-        (--p)->show();
-    } 
+    // // 4.6
+    // Point x(1,1);
+    // int add(44);
+    // x.increase(add);
+    // x.show();
+
+    // 4.7
+    Point y(7,7);
+    f(y);
+
+    // 4.8
+    foo() = 20;
+    std::cout << x_gl << std::endl;
+
+    
+
+
     return 0;
 }
