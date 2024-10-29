@@ -2,6 +2,8 @@
 #include <iostream>
 #include <set>
 #include <string>
+#include <vector>
+#include <algorithm>
  
 class B;
 class D;
@@ -10,7 +12,7 @@ struct Point
     int x = 0;
     int y = 0;
 
-    auto operator<=>(const Point&) const = default;
+    //auto operator<=>(const Point&) const = default;
     
     Point(){
         std::cout << "Point() "  << std::endl;
@@ -20,6 +22,13 @@ struct Point
     }
     Point(int x, int y) : x(x), y(y){
         std::cout << "Point() "  << std::endl;
+    }
+    Point(const Point &other){
+        if (this == &other)
+            return;
+        this->x = other.x;
+        this->y = other.y;
+        std::cout << "copy Point() "  << std::endl;
     }
     ~Point(){ 
          std::cout << "~Point() "  << std::endl;
@@ -33,7 +42,6 @@ struct Point
         x += add;
         y += add;
     }
-    /* non-comparison functions */
 };
 
 class MyClass{
@@ -133,8 +141,9 @@ void Point::printPoint(B obj){
     std:: cout << "Point : " << x << "\t" << y * obj.b << std::endl;
 }
 
-void f(Point &p){
-    p.show();
+void printP(Point p = {55,55}, bool show = 1){
+    if (show == true)
+        p.show();
 }
 
 int x_gl;
@@ -145,33 +154,29 @@ int& foo(){
 
 int main(int argc, char* argv[])
 {
-    // std::cout << argv[0] << std::endl;
-    // // 4.4 - 4.5
-    // Point *p = new Point [3];
-    // for(int i(0); i < 3; i++){
-    //     *(p+i) = {i+2,i+2};
-    // } 
-    // for(int i(0); i < 3; i++){
-    //     (p+i)->show();
-    // }
-    // delete[] p;
+    std::cout << argv[0] << std::endl;
+    // 5.1
+    // Point arr[2];
+    // for(int i(0); i < 2; i++)
+    //     printP(arr[i]);
 
-    // // 4.6
-    // Point x(1,1);
-    // int add(44);
-    // x.increase(add);
-    // x.show();
-
-    // 4.7
-    Point y(7,7);
-    f(y);
-
-    // 4.8
-    foo() = 20;
-    std::cout << x_gl << std::endl;
-
+    // // 5.2
+    Point x(1,1);
+    // Point y(2,2);
+    // x = y; // copy constructor не вызывется
     
+    // // 5.4
+    // printP();
 
 
+    // std::vector<int> data{5,4,1,5,1,545,23,643,2,4};
+    // std::sort(data.begin(), data.end());
+    // std::ranges::sort(data);
+
+    // 5.6 
+    void (*d) (Point, bool);
+    d = printP;
+    d(x, 1);
+    
     return 0;
 }
