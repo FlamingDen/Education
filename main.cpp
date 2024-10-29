@@ -155,28 +155,7 @@ int& foo(){
 int main(int argc, char* argv[])
 {
     std::cout << argv[0] << std::endl;
-    // 5.1
-    // Point arr[2];
-    // for(int i(0); i < 2; i++)
-    //     printP(arr[i]);
-
-    // // 5.2
-    Point x(1,1);
-    // Point y(2,2);
-    // x = y; // copy constructor не вызывется
-    
-    // // 5.4
-    // printP();
-
-
-    // std::vector<int> data{5,4,1,5,1,545,23,643,2,4};
-    // std::sort(data.begin(), data.end());
-    // std::ranges::sort(data);
-
-    // 5.6 
-    void (*d) (Point, bool);
-    d = printP;
-    d(x, 1);
+   
     
     return 0;
 }

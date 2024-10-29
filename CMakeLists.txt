@@ -3,8 +3,13 @@ project(Root
     LANGUAGES CXX
 )
 
+project(RootM 
+    LANGUAGES CXX
+)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 add_executable(Root main.cpp)
 
+add_executable(RootM m.cpp)
