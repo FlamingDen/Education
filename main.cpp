@@ -1,48 +1,13 @@
 #include <compare>
 #include <iostream>
-#include <set>
 #include <string>
 #include <vector>
 #include <algorithm>
- 
+
+#include "point.h"
+
 class B;
 class D;
-struct Point
-{
-    int x = 0;
-    int y = 0;
-
-    //auto operator<=>(const Point&) const = default;
-    
-    Point(){
-        std::cout << "Point() "  << std::endl;
-    }
-    Point(int x) : x(x){
-        std::cout << "Point() "  << std::endl;
-    }
-    Point(int x, int y) : x(x), y(y){
-        std::cout << "Point() "  << std::endl;
-    }
-    Point(const Point &other){
-        if (this == &other)
-            return;
-        this->x = other.x;
-        this->y = other.y;
-        std::cout << "copy Point() "  << std::endl;
-    }
-    ~Point(){ 
-         std::cout << "~Point() "  << std::endl;
-    }
-
-    void show(){
-        std::cout << "Point : " << x <<" \t " << y << std::endl; 
-    };
-    void printPoint(B obj);
-    void increase(int &add){
-        x += add;
-        y += add;
-    }
-};
 
 class MyClass{
 public:
@@ -54,7 +19,6 @@ public:
     int b;
 };
  
-
 
 class B{
     int b;
@@ -83,9 +47,7 @@ public:
         std::cout << "B : " << get_b() << std::endl;
     }
 
-    friend bool isEven(B obj);
     friend int comp(B obj, D obj_d);
-    friend void Point::printPoint(B obj);
 };
 
 class D: public B{
@@ -114,48 +76,33 @@ public:
     friend int comp(B obj, D obj_d);
 };
 
-template<typename T>
-void print(T curr){
-    std::cout << "print()" << std::endl;
-}
-
-D input(){
-    D temp(4,4);
-    return D(6,6);
-}
-
-B inputB(){
-    B temp(4);
-    return B(1);
-}
-
-bool isEven(B obj){
-    return !obj.b % 2;
-}
-
-int comp(B obj, D obj_d){
+int comp(B obj, D obj_d)
+{
     return obj_d.d - obj.b;
-}
-
-void Point::printPoint(B obj){
-    std:: cout << "Point : " << x << "\t" << y * obj.b << std::endl;
-}
-
-void printP(Point p = {55,55}, bool show = 1){
-    if (show == true)
-        p.show();
-}
-
-int x_gl;
-int& foo(){
-    return x_gl;
 }
 
 
 int main(int argc, char* argv[])
 {
     std::cout << argv[0] << std::endl;
-   
-    
+
+    // 6.1 - 6.5
+    Point a(1,1);
+    Point b = a++;
+    Point c(a + b);
+
+    std::cout << a[1] << ", " << a[2] << std::endl;
+    b.show();
+    c.show();
+
+    std::cout << "------------------------------------" << std::endl; 
+    a = c;
+    std::cout << "------------------------------------" << std::endl;
+
+    std::cout << "------------------------------------" << std::endl; 
+    c = (c - b);
+    std::cout << "------------------------------------" << std::endl;
+    c.show();
+
     return 0;
 }
