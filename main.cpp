@@ -11,12 +11,18 @@ class D;
 
 class MyClass{
 public:
-    MyClass(): a(0), b(0){};
-    MyClass(int a, int b) : a(a), b(b){};
-    ~MyClass(){}
+    MyClass(): a(0), c(0){
+        std::cout << "MyClass() "  << std::endl;
+    };
+    MyClass(int a, int c) : a(a), c(c){
+        std::cout << "MyClass() "  << std::endl;
+    };
+    ~MyClass(){
+        std::cout << "~MyClass() "  << std::endl;
+    }
     
     int a;
-    int b;
+    int c;
 };
  
 
@@ -50,10 +56,10 @@ public:
     friend int comp(B obj, D obj_d);
 };
 
-class D: public B{
+class D: public MyClass, public B{
     int d;
 public:
-    D(): d(0) {
+    D(): MyClass(),B(), d(0) {
         std::cout << "Конструктор D()" << std::endl;
     }
     D(int b, int d): B(b), d(d){
@@ -86,23 +92,7 @@ int main(int argc, char* argv[])
 {
     std::cout << argv[0] << std::endl;
 
-    // 6.1 - 6.5
-    Point a(1,1);
-    Point b = a++;
-    Point c(a + b);
-
-    std::cout << a[1] << ", " << a[2] << std::endl;
-    b.show();
-    c.show();
-
-    std::cout << "------------------------------------" << std::endl; 
-    a = c;
-    std::cout << "------------------------------------" << std::endl;
-
-    std::cout << "------------------------------------" << std::endl; 
-    c = (c - b);
-    std::cout << "------------------------------------" << std::endl;
-    c.show();
+    D d;
 
     return 0;
 }
