@@ -1,9 +1,9 @@
 #include <compare>
 #include <iostream>
 #include <string>
-#include <vector>
 #include <algorithm>
 #include <iomanip>
+#include <fstream>
 
 #include "point.h"
 
@@ -110,43 +110,47 @@ public:
 };
 
 
+std::ostream& manip(std::ostream &out){ 
+    out.width(20);
+    out.precision(5);
+    out.fill('-');
+    return out;
+}
 
 
 int main(int argc, char* argv[])
 {
     std::cout << argv[0] << std::endl;
 
-
-    // 8.3
-    std::cout.fill('&');
-    std::cout.width(13);
-    std::cout << "hi!" <<std::endl;
-
-    std::cout.fill('&');
-    std::cout.width(13);
-    std::cout.setf(std::iostream::left);
-    std::cout << "hi!" <<std::endl;
+    // // 9.1
+    // std::cout.fill('-');
+    // std::cout.width(13);
+    // std::cout.precision(10);
+    // std::cout << 123.123<<std::endl; // =
+    // std::cout << manip <<  123.123<<std::endl;
     
-    std::cout.fill('-');
-    std::cout.width(13);
-    std::cout.precision(10);
-    std::cout.setf(std::iostream::right);
-    std::cout << 123.123<<std::endl;
+    // 9.2
+    std::ofstream out;
+    std::ifstream in;
+
+    //out.open("file.txt");
+    //in.open("file.txt");
+    
+    std::cout << std::fstream::app << std::endl;    // добавление в конец и только
+    std::cout << std::fstream::ate << std::endl;    // сразу утсановлен курсон в конце, но можно писать в любом месте
+    std::cout << std::fstream::binary<< std::endl;  // открыват в довичном режиме
+    std::cout << std::fstream::in << std::endl;     // открыт для ввода
+    std::cout << std::fstream::out << std::endl;    // открыт для вывода
+    std::cout << std::fstream::trunc << std::endl;  // удаляет все что было
+
+    // 9.3
     
 
-    // 8.4
-    std::cout << std::setw(10) << std::setfill('@') << 100 <<std::endl;
+
     
 
-    // 8.5
-    Point p(11,22);
-    std::cout << p;
+    
 
-
-    // 8.6
-    Point point;
-    std::cin >> point;
-    std::cout << point;
 
 
     return 0;
