@@ -3,6 +3,7 @@
 #include <string>
 #include <vector>
 #include <algorithm>
+#include <iomanip>
 
 #include "point.h"
 
@@ -115,7 +116,38 @@ int main(int argc, char* argv[])
 {
     std::cout << argv[0] << std::endl;
 
-    D3 d3;
+
+    // 8.3
+    std::cout.fill('&');
+    std::cout.width(13);
+    std::cout << "hi!" <<std::endl;
+
+    std::cout.fill('&');
+    std::cout.width(13);
+    std::cout.setf(std::iostream::left);
+    std::cout << "hi!" <<std::endl;
+    
+    std::cout.fill('-');
+    std::cout.width(13);
+    std::cout.precision(10);
+    std::cout.setf(std::iostream::right);
+    std::cout << 123.123<<std::endl;
+    
+
+    // 8.4
+    std::cout << std::setw(10) << std::setfill('@') << 100 <<std::endl;
+    
+
+    // 8.5
+    Point p(11,22);
+    std::cout << p;
+
+
+    // 8.6
+    Point point;
+    std::cin >> point;
+    std::cout << point;
+
 
     return 0;
 }

@@ -68,3 +68,17 @@ Point operator<<(Point &ob, int a)
     ob.y = ob.y << a;
     return ob;
 }
+
+std::ostream& operator<<(std::ostream &stream, const Point &ob)
+{
+    stream << "Point : " << ob.x << " " << ob.y << std::endl;
+    return stream;
+}
+
+std::istream &operator>>(std::istream &stream, Point &ob)
+{
+    int x, y;
+    stream >> x >> y;
+    ob = {x, y};
+    return stream;
+}

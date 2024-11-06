@@ -42,6 +42,8 @@ struct Point
     friend Point operator--(Point &obj);
     friend Point operator--(Point &obj, int);
     friend Point operator>>(Point &ob, int a);
-    friend Point operator<<( Point &ob, int a);
+    friend Point operator<<(Point &ob, int a);
+    friend std::ostream& operator<<(std::ostream &stream, const Point &ob);
+    friend std::istream& operator>>(std::istream &stream, Point &ob);
 
 };
