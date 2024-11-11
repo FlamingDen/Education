@@ -110,13 +110,32 @@ public:
 };
 
 
-std::ostream& manip(std::ostream &out){ 
+std::istream& manip(std::istream &out){ 
     out.width(20);
     out.precision(5);
     out.fill('-');
     return out;
 }
 
+void check_status(std::ostream &in){
+    std::iostream::iostate i = in.rdstate();
+    bool a = i & std::_S_goodbit;
+    a = i & std::iostream::badbit;
+    a = i & std::iostream::failbit;
+    a = i & std::iostream::eofbit;
+    if(i == std::iostream::badbit){
+        std::cout << "Fatal!";
+    }
+    if(i == std::iostream::failbit){
+        std::cout << "No fatal!";
+    }
+    if(i == std::_S_goodbit){
+        std::cout << "Все хорошо!";
+    }
+    if(i == std::iostream::eofbit){
+        std::cout << "End!";
+    }
+}
 
 int main(int argc, char* argv[])
 {
@@ -138,20 +157,13 @@ int main(int argc, char* argv[])
     
     std::cout << std::fstream::app << std::endl;    // добавление в конец и только
     std::cout << std::fstream::ate << std::endl;    // сразу утсановлен курсон в конце, но можно писать в любом месте
-    std::cout << std::fstream::binary<< std::endl;  // открыват в довичном режиме
+    std::cout << std::fstream::binary << std::endl;  // открыват в довичном режиме
     std::cout << std::fstream::in << std::endl;     // открыт для ввода
     std::cout << std::fstream::out << std::endl;    // открыт для вывода
     std::cout << std::fstream::trunc << std::endl;  // удаляет все что было
 
     // 9.3
+    check_status(std::cout);
     
-
-
-    
-
-    
-
-
-
     return 0;
 }
