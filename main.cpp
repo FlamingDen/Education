@@ -5,6 +5,7 @@
 #include <iomanip>
 #include <fstream>
 
+
 #include "point.h"
 
 class B;
@@ -15,6 +16,8 @@ class D3;
  
 class B{
     int b;
+    
+
 public:
     B(): b(0){
         std::cout << "Конструктор B()" << std::endl;
@@ -31,11 +34,9 @@ public:
     ~B(){
         std::cout << "Деструктор ~B()" << std::endl;
     }
-
     int get_b() const{
         return b;
     };
-
     virtual void show(){
         std::cout << "B : " << get_b() << std::endl;
     }
@@ -59,7 +60,6 @@ public:
     void show() override {
         std:: cout << "D : " << this->get_b() << "\t" << d1 << std::endl;
     }
-
     int mul() const {
         return d1 * get_b();
     };
@@ -105,7 +105,7 @@ public:
         return this->d3;
     };
     void show() override {
-        std:: cout << "D3 : " << "\t" << this->get_d1()<< "\t" << this->get_d2() << "\t" << d3 << std::endl;
+        std:: cout << "D3 : " << "\t" << this->get_b() << "\t" << this->get_d1()<< "\t" << this->get_d2() << "\t" << d3 << std::endl;
     }
 };
 
@@ -139,31 +139,19 @@ void check_status(std::ostream &in){
 
 int main(int argc, char* argv[])
 {
-    std::cout << argv[0] << std::endl;
+    setlocale(LC_ALL,"ru");
+    B* b;
+    D1* d1;
 
-    // // 9.1
-    // std::cout.fill('-');
-    // std::cout.width(13);
-    // std::cout.precision(10);
-    // std::cout << 123.123<<std::endl; // =
-    // std::cout << manip <<  123.123<<std::endl;
-    
-    // 9.2
-    std::ofstream out;
-    std::ifstream in;
+    B base;
+    D1 d1_class;
 
-    //out.open("file.txt");
-    //in.open("file.txt");
+    b = &base;
+    b->show();
+    b = &d1_class;
+    b->show();
     
-    std::cout << std::fstream::app << std::endl;    // добавление в конец и только
-    std::cout << std::fstream::ate << std::endl;    // сразу утсановлен курсон в конце, но можно писать в любом месте
-    std::cout << std::fstream::binary << std::endl;  // открыват в довичном режиме
-    std::cout << std::fstream::in << std::endl;     // открыт для ввода
-    std::cout << std::fstream::out << std::endl;    // открыт для вывода
-    std::cout << std::fstream::trunc << std::endl;  // удаляет все что было
 
-    // 9.3
-    check_status(std::cout);
-    
+
     return 0;
 }
