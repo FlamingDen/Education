@@ -16,8 +16,6 @@ class D3;
  
 class B{
     int b;
-    
-
 public:
     B(): b(0){
         std::cout << "Конструктор B()" << std::endl;
@@ -31,7 +29,7 @@ public:
     B(int b): b(b){
         std::cout << "Конструктор B()" << std::endl;
     }
-    ~B(){
+    virtual ~B(){
         std::cout << "Деструктор ~B()" << std::endl;
     }
     int get_b() const{
@@ -109,6 +107,30 @@ public:
     }
 };
 
+class Base{
+    int a, b;
+public:
+    Base(): a(0), b(0) {}
+    Base(int a) : a(a), b(0){}
+    virtual ~Base(){}
+    int getA(){ return a; }
+    int getB(){ return b; }
+    virtual void show() = 0;
+};
+
+class Child final: public  Base 
+{
+public:
+    Child(){}
+    ~Child(){}
+    void show() override {
+        std::cout << getB() * getA()  << std::endl;
+    }
+};
+
+
+
+
 
 std::istream& manip(std::istream &out){ 
     out.width(20);
@@ -140,16 +162,10 @@ void check_status(std::ostream &in){
 int main(int argc, char* argv[])
 {
     setlocale(LC_ALL,"ru");
-    B* b;
-    D1* d1;
-
-    B base;
-    D1 d1_class;
-
-    b = &base;
+    
+    Base* b = new Child();
     b->show();
-    b = &d1_class;
-    b->show();
+    delete b;
     
 
 
