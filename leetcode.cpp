@@ -4,6 +4,7 @@
 #include <vector>
 #include <array>
 #include <algorithm>
+#include <regex>
 
 struct ListNode {
     int val;
@@ -179,6 +180,68 @@ public:
         }
         return ans;
     }
+
+    //--------------------------#9----------------------------------------------//
+    bool isPalindrome_9(int x) {
+        std::string str = std::to_string(x);
+        int l(0), r(str.size()-1);
+        while(l < r){
+            if(str[l] == str[r]){
+                l++;
+                r--;
+                continue;
+            }
+            return false;
+        }
+        return true; 
+    }
+
+    //--------------------------#11---------------------------------------------//
+    int maxArea_11(std::vector<int>& h) {
+        int l(0), r(h.size()-1), maxArea(0), curr_h;
+        while(l < r){
+            curr_h = std::min(h[l], h[r]);
+            maxArea = std::max(maxArea, curr_h * (r - l));
+            h[l] > h[r] ? r-- : h[l] < h[r] ? l++: r-- , l++;
+        }
+        return maxArea;
+    }
+
+    //--------------------------#8----------------------------------------------//
+    int myAtoi_8(std::string s) {
+        int ans(0);
+
+        std::string number;
+        std::smatch res;
+        const std::regex reg_valid(R"((^\s*)([-+]?[0-9]+))");
+
+        if(std::regex_search(s, res, reg_valid)){
+            number = res[2];
+            int start;
+            int sign;
+            if(number[0] == '-'){
+                sign = -1;
+                start = 1;
+            } else if (number[0] == '+') {
+                sign = 1;
+                start = 1;
+            } else {
+                sign = 1;
+                start = 0;
+            }
+            for (int i(start); i < number.size(); i++)
+            {
+                int pop = (number[i] - 48);
+                if((ans > INT_MAX / 10) or ((ans == INT_MAX / 10) and ((sign == 1 and pop > 7) or (sign == -1 and pop > 8)))){
+                    return sign == 1 ? INT_MAX : INT_MIN;
+                }
+                ans = ans * 10 + pop; 
+            }
+            ans *= sign;
+        }
+        return ans;
+    }
+
 private:
     bool isPalindrom_5(const std::string &str, int start, int end){
         int l = start, r = end;
@@ -208,29 +271,32 @@ private:
 
 int main(){
     Solution solution;
-
-    // // --1
+    /*
+    // // --2
     // ListNode l1(9, (new ListNode(9, (new ListNode(9,(new ListNode(9,(new ListNode(9,(new ListNode(9,(new ListNode(9,(new ListNode(9)))))))))))))));
     // ListNode l2(9, new ListNode(9, new ListNode(9,(new ListNode(9)))));
     // solution.showList_2(&l1);
     // solution.showList_2(&l2);
     // solution.addTwoNumbers_2(&l1, &l2);
 
-    // // --2
+    // // --3
     // std::cout << solution.lengthOfLongestSubstring_3("pwwkew") << std::endl;
     
     // // --5
     // std::string str = "gccghj";
     // std::cout << solution.longestPalindrome_5(str) << std::endl;
 
-    // // --4
+    // // --7
     // std::cout << solution.reverse_7(96463243) << std::endl;
     
-    int x = 567;
-    std::string str = std::to_string(x);
-    std::reverse(str.begin(), str.end());
-    std::cout << str << std::endl;
+    // // --9
+    // std::cout << std::boolalpha << solution.isPalindrome_9(12321) << std::endl;
 
+    // // --11
+    // std::vector<int> vec{1,1,1,1,8,1,1,1,1,1,1,1,1,1};
+    // std::cout << solution.maxArea_11(vec) << std::endl;
+    */
 
-
+    // --8
+    //std::cout << solution.myAtoi_8("1337c0d3") << std::endl;
 }
