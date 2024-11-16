@@ -242,6 +242,90 @@ public:
         return ans;
     }
 
+    //--------------------------#6----------------------------------------------//
+    std::string convert_6(std::string s, int numRows) {
+        std::string ans;
+        ans.reserve(s.size()-1);
+        if (numRows == 1)
+            return s;
+
+        int step(0);
+        bool rotation(true);
+        for(int i(0); i < numRows; i++){
+            for (int j(i); j < s.size();){
+                ans += (s[j]);
+                rotation = (rotation ? false : true);
+                step = (!rotation ? ((numRows - 1) - (i % (numRows - 1))) * 2 : ((numRows - 1) - ((numRows - i - 1) % (numRows - 1))) * 2);
+                j += step;
+            }
+            rotation = true;
+        }
+        return ans;
+    }
+
+    //--------------------------#15---------------------------------------------//
+    std::vector<std::vector<int>> threeSum(std::vector<int>& nums) {
+        std::vector<std::vector<int>> ans;
+        std::sort(nums.begin(), nums.end());
+
+        int l,r;
+        for(int i(0); i < nums.size() - 2; i++){
+            if (i > 0 && nums[i] == nums[i-1]) {
+                continue;
+            }
+            l = i + 1;
+            r = nums.size() - 1;
+            while(l < r){
+                int sum = nums[i] + nums[l] + nums[r];
+                if(sum == 0){
+                    ans.push_back({nums[i], nums[l], nums[r]});
+                    l++;
+                    r--;
+                    while (nums[l] == nums[l-1] && l < r) {
+                        l++;
+                    }
+                    continue;
+                }
+                if(sum > 0)
+                    r--;
+                if(sum < 0)
+                    l++; 
+            }
+        }
+        return ans;
+    }
+
+    double findMedianSortedArrays_4(std::vector<int>& nums1, std::vector<int>& nums2) {
+        int l(0) , r(0);
+        int curr = INT_MIN, prev;
+        int len = (nums1.size() + nums2.size()) / 2 + 1;
+        for(int i(0); i <  len; i++){
+            if (l < nums1.size() && r < nums2.size()){
+                if(nums1[l] > nums2[r]){
+                    prev = curr;
+                    curr = nums2[r];
+                    r++;
+                    continue;
+                }
+                if(nums1[l] <= nums2[r]){
+                    prev = curr;
+                    curr = nums1[l];
+                    l++;
+                } 
+            }else if(l < nums1.size()){
+                prev = curr;
+                curr = nums1[l];
+                l++;
+            }else if(r < nums2.size()){
+                prev = curr;
+                curr = nums2[r];
+                r++;
+            }
+        }
+        if((nums1.size() + nums2.size()) % 2 == 1 )
+            return curr;
+        return (curr + prev) / 2.;
+    }
 private:
     bool isPalindrom_5(const std::string &str, int start, int end){
         int l = start, r = end;
@@ -295,8 +379,15 @@ int main(){
     // // --11
     // std::vector<int> vec{1,1,1,1,8,1,1,1,1,1,1,1,1,1};
     // std::cout << solution.maxArea_11(vec) << std::endl;
+    
+    // // --8
+    // std::cout << solution.myAtoi_8("1337c0d3") << std::endl;
+    
+    // // --6
+    // std::cout << solution.convert_6("PAYPALISHIRING", 4) << std::endl;
     */
 
-    // --8
-    //std::cout << solution.myAtoi_8("1337c0d3") << std::endl;
+    std::vector<int> a{};
+    std::vector<int> b{1};
+    std::cout << solution.findMedianSortedArrays_4(a, b) << std::endl;
 }
