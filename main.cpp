@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <iomanip>
 #include <fstream>
+#include <vector>
 
 
 #include "point.h"
@@ -129,9 +130,6 @@ public:
 };
 
 
-
-
-
 std::istream& manip(std::istream &out){ 
     out.width(20);
     out.precision(5);
@@ -159,13 +157,21 @@ void check_status(std::ostream &in){
     }
 }
 
+template<typename T>
+T sum(T a, T b){
+    return a + b;
+}
+
+
 int main(int argc, char* argv[])
 {
     setlocale(LC_ALL,"ru");
     
-    Base* b = new Child();
-    b->show();
-    delete b;
+    // Base* b = new Child();
+    // b->show();
+    // delete b;
+
+    std::cout << sum(1.4,2.) << std::endl;
     
 
 

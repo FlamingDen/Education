@@ -6,6 +6,7 @@
 #include <algorithm>
 #include <regex>
 
+
 struct ListNode {
     int val;
     ListNode* next;
@@ -13,6 +14,13 @@ struct ListNode {
     ListNode(int x) : val(x), next(nullptr) {}
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
+
+enum A{
+    ABC = 2,
+    DEf = 3
+};
+
+
 class Solution {
 public:
     //--------------------------#2----------------------------------------------//
@@ -295,6 +303,7 @@ public:
         return ans;
     }
 
+    //--------------------------#4----------------------------------------------//
     double findMedianSortedArrays_4(std::vector<int>& nums1, std::vector<int>& nums2) {
         int l(0) , r(0);
         int curr = INT_MIN, prev;
@@ -326,6 +335,101 @@ public:
             return curr;
         return (curr + prev) / 2.;
     }
+
+    //--------------------------#17---------------------------------------------//
+    std::vector<std::string> letterCombinations_17(std::string digits) {
+        std::vector<std::string> ans;
+        std::vector<std::string> vec_str;
+        int start;
+        std::string temp("");
+        if(digits.size() == 0)
+            return {};
+
+        for(const auto &d: digits){
+            start = 'a' +  (d - '2') * 3;
+            if (d  == '8' || d == '9')
+                start++;
+            temp.push_back(start);
+            temp.push_back(start + 1);
+            temp.push_back(start + 2);    
+            if ((d == '7') || (d == '9'))
+                temp.push_back(start + 3);
+            
+            vec_str.push_back(temp);
+            temp.clear();
+        }
+        if(digits.size() == 1){
+            for(const auto &t: vec_str[0])
+                ans.push_back({t});
+            return ans;
+        }
+        
+        int j(0);
+        solve_17(ans, vec_str, temp, j);
+        return ans;
+    }
+
+    //--------------------------#19---------------------------------------------//
+    ListNode* removeNthFromEnd_19(ListNode* head, int n) {
+        ListNode* h = head;
+        ListNode* prev = h;
+        ListNode* next_node = h;
+        ListNode* to_del;
+
+        int i(0);
+        while (h != nullptr)
+        {
+            if(i <= n){
+                i++;
+                h = h->next;
+                continue;
+            }
+            prev = prev->next;
+            h = h->next;
+            i++;
+        }
+        if (i == n){
+            to_del = head;
+            head = head->next;
+            to_del->next = nullptr;
+            delete to_del;
+
+            return head; 
+        }
+
+        next_node = prev->next->next;
+        to_del = prev->next;
+        prev->next = next_node;
+        
+        to_del->next = nullptr;
+        delete to_del;
+        
+        return head;
+    }
+
+    //--------------------------#24---------------------------------------------//
+    ListNode* swapPairs_24(ListNode* head) {
+        if(head == nullptr || head->next == nullptr)
+            return head;
+
+        ListNode* next_pair;
+        ListNode* first = head;
+        ListNode* second = head->next;
+        head = second;
+
+        while (second != nullptr)
+        {
+            next_pair = second->next;
+
+            second->next = first;
+            first->next =  (next_pair == nullptr ? nullptr : next_pair->next == nullptr ? next_pair : next_pair->next);
+            
+            first = next_pair;
+            second = next_pair != nullptr ? next_pair->next: nullptr;
+        }
+        return head;
+    }
+
 private:
     bool isPalindrom_5(const std::string &str, int start, int end){
         int l = start, r = end;
@@ -347,6 +451,18 @@ private:
         }
 
         return s.substr(left + 1, right - left - 1);
+    }
+    void solve_17(std::vector<std::string> &ans,std::vector<std::string> &vec_str, std::string temp, int j){
+        if(j >= vec_str.size()){
+            ans.push_back(temp);
+            //j--;
+            return;
+        }
+        for(int i(0); i < vec_str[j].size(); i++){
+            temp.push_back(vec_str[j][i]);
+            solve_17(ans, vec_str, temp, j + 1);
+            temp.pop_back();
+        }
     }
 };
 
@@ -385,9 +501,34 @@ int main(){
     
     // // --6
     // std::cout << solution.convert_6("PAYPALISHIRING", 4) << std::endl;
+    
+    // // --4
+    // std::vector<int> a{};
+    // std::vector<int> b{1};
+    // std::cout << solution.findMedianSortedArrays_4(a, b) << std::endl;
+    
+    // // // --17
+    // std::vector<std::string> str = solution.letterCombinations_17("23");
+    // for (auto &i : str)
+    //     std::cout << i << ", ";
+    
+    // // --19
+    // ListNode* l1 = new ListNode(1, (new ListNode(2, (new ListNode(3,(new ListNode(4,(new ListNode(5,(new ListNode(6,(new ListNode(7,(new ListNode(8)))))))))))))));
+    // solution.showList_2(l1);
+    // l1 = solution.removeNthFromEnd_19(l1, 8);
+    // l1 = solution.removeNthFromEnd_19(l1, 6);
+    // solution.showList_2(l1);
+    
+    // // --24
+    // ListNode* l1 = new ListNode(1, (new ListNode(2, (new ListNode(3,(new ListNode(4,(new ListNode(5,(new ListNode(6,(new ListNode(7,(new ListNode(8)))))))))))))));
+    // ListNode* l2 = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4))));
+    // solution.showList_2(l2);
+    // l2 = solution.swapPairs_24(l2);
+    // solution.showList_2(l2);
+    // solution.showList_2(l1);
+    // l1 = solution.swapPairs_24(l1);
+    // solution.showList_2(l1);
     */
 
-    std::vector<int> a{};
-    std::vector<int> b{1};
-    std::cout << solution.findMedianSortedArrays_4(a, b) << std::endl;
+
 }
