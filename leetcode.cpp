@@ -5,6 +5,7 @@
 #include <array>
 #include <algorithm>
 #include <regex>
+#include <queue>
 
 
 struct ListNode {
@@ -15,15 +16,82 @@ struct ListNode {
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
+struct TreeNode{
+    int val;
+    TreeNode* left = nullptr;
+    TreeNode* rigth = nullptr;
+    TreeNode() : val(0){}
+    TreeNode(int v) : val(v){}
+    TreeNode(int v, TreeNode* l, TreeNode* r) :  val(v), left(l), rigth(r){}
+};
+
 enum A{
     ABC = 2,
     DEf = 3
 };
 
 
+class ShowSmt{
+public:
+    template<typename T>
+    void show_vec(std::vector<T> v){
+        for (int i = 0; i < v.size(); i++)
+        {
+            if(i == v.size() - 1){
+                std::cout << v[i] << std::endl;
+                break;
+            }
+            std::cout << v[i] << ", ";
+        }
+    }
+
+    void showList(ListNode* l){
+        while (l != nullptr){
+            std::cout << l->val << " -> ";
+            l = l->next; 
+        }
+        std::cout << "nullptr" <<  std::endl;
+    }
+
+    void showTree(TreeNode* root){
+        if(root == nullptr)
+            return;
+        showTree(root->left);
+        showTree(root->rigth);
+        std::cout << root->val << ", ";
+    }
+
+    void showTreeLevel(TreeNode* root){
+        if (root == nullptr)
+            return;
+
+        std::queue<TreeNode*> q;
+        q.push(root);
+
+        while (!q.empty())
+        {
+            TreeNode* temp = q.front();
+            q.pop();
+
+            std::cout << temp->val << ", ";
+            if(temp->left != nullptr);
+                q.push(temp->left);
+            if(temp->rigth != nullptr)
+                q.push(temp->rigth);
+        }
+        std::cout << std::endl;
+    }
+};
+
 class Solution {
 public:
     //--------------------------#2----------------------------------------------//
+    // // --2
+    // ListNode l1(9, (new ListNode(9, (new ListNode(9,(new ListNode(9,(new ListNode(9,(new ListNode(9,(new ListNode(9,(new ListNode(9)))))))))))))));
+    // ListNode l2(9, new ListNode(9, new ListNode(9,(new ListNode(9)))));
+    // sh.showList(&l1);
+    // sh.showList(&l2);
+    // solution.addTwoNumbers_2(&l1, &l2);
     ListNode* addTwoNumbers_2(ListNode* l1, ListNode* l2) {
         /*ListNode* ans = new ListNode();
         ListNode* head = ans;
@@ -80,15 +148,11 @@ public:
         }        
         return l3;
     }
-    void showList_2(ListNode* l){
-        while (l != nullptr){
-            std::cout << l->val << ",";
-            l = l->next; 
-        }
-        std::cout << std::endl;
-    }
+    
 
     //--------------------------#3----------------------------------------------//
+    // --3
+    // std::cout << solution.lengthOfLongestSubstring_3("pwwkew") << std::endl;
     int lengthOfLongestSubstring_3(std::string s) {
         // std::map<char, int> chars;
         // int len(0), i(0);
@@ -131,6 +195,9 @@ public:
     }
 
     //--------------------------#5----------------------------------------------//
+    // // --5
+    // std::string str = "gccghj";
+    // std::cout << solution.longestPalindrome_5(str) << std::endl;
     std::string longestPalindrome_5(std::string s) {
         /*int n = s.size();
         std::vector<std::vector<bool>> m(n,std::vector<bool>(n));
@@ -176,6 +243,8 @@ public:
     }
 
     //--------------------------#7----------------------------------------------//
+    // // --7
+    // std::cout << solution.reverse_7(96463243) << std::endl;
     int reverse_7(int x) {
         int ans(0), i(0);
         while(x != 0){
@@ -190,6 +259,8 @@ public:
     }
 
     //--------------------------#9----------------------------------------------//
+    // // --9
+    // std::cout << std::boolalpha << solution.isPalindrome_9(12321) << std::endl;
     bool isPalindrome_9(int x) {
         std::string str = std::to_string(x);
         int l(0), r(str.size()-1);
@@ -205,6 +276,9 @@ public:
     }
 
     //--------------------------#11---------------------------------------------//
+    // // --11
+    // std::vector<int> vec{1,1,1,1,8,1,1,1,1,1,1,1,1,1};
+    // std::cout << solution.maxArea_11(vec) << std::endl;
     int maxArea_11(std::vector<int>& h) {
         int l(0), r(h.size()-1), maxArea(0), curr_h;
         while(l < r){
@@ -216,6 +290,8 @@ public:
     }
 
     //--------------------------#8----------------------------------------------//
+    // // --8
+    // std::cout << solution.myAtoi_8("1337c0d3") << std::endl;
     int myAtoi_8(std::string s) {
         int ans(0);
 
@@ -251,6 +327,8 @@ public:
     }
 
     //--------------------------#6----------------------------------------------//
+    // // --6
+    // std::cout << solution.convert_6("PAYPALISHIRING", 4) << std::endl;
     std::string convert_6(std::string s, int numRows) {
         std::string ans;
         ans.reserve(s.size()-1);
@@ -272,6 +350,8 @@ public:
     }
 
     //--------------------------#15---------------------------------------------//
+    // std::vector<int> vec{-3,4,8,1,-4,7,5,3};
+    // solution.threeSum(vec);
     std::vector<std::vector<int>> threeSum(std::vector<int>& nums) {
         std::vector<std::vector<int>> ans;
         std::sort(nums.begin(), nums.end());
@@ -304,6 +384,10 @@ public:
     }
 
     //--------------------------#4----------------------------------------------//
+    // // --4
+    // std::vector<int> a{};
+    // std::vector<int> b{1};
+    // std::cout << solution.findMedianSortedArrays_4(a, b) << std::endl;
     double findMedianSortedArrays_4(std::vector<int>& nums1, std::vector<int>& nums2) {
         int l(0) , r(0);
         int curr = INT_MIN, prev;
@@ -337,6 +421,10 @@ public:
     }
 
     //--------------------------#17---------------------------------------------//
+    // // --17
+    // std::vector<std::string> str = solution.letterCombinations_17("23");
+    // for (auto &i : str)
+    //     std::cout << i << ", ";
     std::vector<std::string> letterCombinations_17(std::string digits) {
         std::vector<std::string> ans;
         std::vector<std::string> vec_str;
@@ -370,6 +458,12 @@ public:
     }
 
     //--------------------------#19---------------------------------------------//
+    // // --19
+    // ListNode* l1 = new ListNode(1, (new ListNode(2, (new ListNode(3,(new ListNode(4,(new ListNode(5,(new ListNode(6,(new ListNode(7,(new ListNode(8)))))))))))))));
+    // sh.showList(l1);
+    // l1 = solution.removeNthFromEnd_19(l1, 8);
+    // l1 = solution.removeNthFromEnd_19(l1, 6);
+    // sh.showList(l1);
     ListNode* removeNthFromEnd_19(ListNode* head, int n) {
         ListNode* h = head;
         ListNode* prev = h;
@@ -408,6 +502,15 @@ public:
     }
 
     //--------------------------#24---------------------------------------------//
+    // // --24
+    // ListNode* l1 = new ListNode(1, (new ListNode(2, (new ListNode(3,(new ListNode(4,(new ListNode(5,(new ListNode(6,(new ListNode(7,(new ListNode(8)))))))))))))));
+    // ListNode* l2 = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4))));
+    // sh.showList(l2);
+    // l2 = solution.swapPairs_24(l2);
+    // sh.showList(l2);
+    // sh.showList(l1);
+    // l1 = solution.swapPairs_24(l1);
+    // sh.showList(l1);
     ListNode* swapPairs_24(ListNode* head) {
         if(head == nullptr || head->next == nullptr)
             return head;
@@ -428,6 +531,101 @@ public:
             second = next_pair != nullptr ? next_pair->next: nullptr;
         }
         return head;
+    }
+
+    //--------------------------#23---------------------------------------------//
+    // // -- 23
+    // ListNode* l1 = new ListNode(1, new ListNode(4, new ListNode(5)));
+    // ListNode* l2 = new ListNode(1, new ListNode(3, new ListNode(4)));
+    // ListNode* l3 = new ListNode(2, new ListNode(6));
+    // sh.showList(l1);
+    // sh.showList(l2);
+    // sh.showList(l3);
+    // std::vector<ListNode*> list = {l1, l2, l3};
+    // ListNode* l4 = solution.mergeKLists_23(list);
+    // sh.showList(l4);
+    ListNode* mergeKLists_23(std::vector<ListNode*>& lists) {
+        if(lists.size() == 0)
+            return {};
+        if(lists.size() == 1)
+            return lists[0];
+
+        ListNode* ans =new ListNode(-999);
+        ListNode* curr_el = ans;
+        int j(0);
+
+        while(true){
+            ListNode* next_el = lists[0];
+            j = 0;
+            for(const auto &t: lists){
+                if(t != nullptr){
+                    next_el = t;
+                    break;
+                }
+                j++;
+            }
+            if(next_el == nullptr)
+                break;
+            
+            for(int i(1); i < lists.size(); i++){
+                if(lists[i] == nullptr)
+                    continue;
+                if(next_el->val > lists[i]->val){
+                    next_el = lists[i];
+                    j = i;
+                }
+            }
+            curr_el->next = next_el;
+            curr_el = curr_el->next;
+            lists[j] = lists[j]->next;
+
+        }
+        return ans->next;
+    }
+
+    //--------------------------#31---------------------------------------------//
+    // // --31
+    // std::vector<int> vec{2,3,1,3,3};
+    // sh.show_vec(vec);
+    // solution.nextPermutation_31(vec);
+    // sh.show_vec(vec);
+    void nextPermutation_31(std::vector<int>& nums) {
+        int l = nums.size() - 2, r = nums.size() - 1;
+        int i(0);
+        for(; i < nums.size() - 1; i++){
+            if(nums[r] > nums[l]){
+                if(i == 0){
+                    swap(nums, r, l);
+                    return;
+                } 
+                break;
+            }
+            if(nums[r] <= nums[l]){
+                l--;
+                r--; 
+            }
+        }
+        if(i == nums.size() - 1){
+            std::reverse(nums.begin(), nums.end());
+            return;
+        }
+
+        int to_swap = r; // min
+        for(int j(r); j < nums.size() ; j++){
+            if ((nums[j] <= nums[to_swap]) and nums[j] > nums[l])
+                to_swap = j;
+        }
+        swap(nums, l, to_swap);
+        l++;
+        std::reverse(nums.begin() + l, nums.end());
+    }
+
+    //--------------------------#34---------------------------------------------//
+    // std::vector<int> vec{1,2};
+    // sh.show_vec(vec);
+    // sh.show_vec(solution.searchRange(vec,2));
+    std::vector<int> searchRange(std::vector<int>& nums, int target) {
+        return {binarySearch_l(nums, target), binarySearch_r(nums, target)};
     }
 
 private:
@@ -464,6 +662,72 @@ private:
             temp.pop_back();
         }
     }
+    void swap(std::vector<int>& nums, int i, int j){
+        if(i == j)
+            return;
+        nums[i] += nums[j]; 
+        nums[j] = nums[i] - nums[j]; 
+        nums[i] -= nums[j];
+    }
+    
+    int binarySearch(std::vector<int> &nums, int target){
+        int l = 0, r = nums.size() - 1, mid;
+        while(l <= r){
+            mid = (r + l) / 2;
+            if(nums[mid] == target){
+                return mid;
+            }
+            if(nums[mid] > target){
+                r = mid - 1;
+            }
+            if(nums[mid] < target){
+                l = mid + 1;
+            }
+        }
+        return -1;
+    }
+    int binarySearch_r(std::vector<int> &nums, int target){
+        int l = 0, r = nums.size() - 1, mid, i = -1;
+        while(l <= r){
+            mid = (r + l) / 2;
+            if(nums[mid] == target){
+                if(nums[mid + 1] == target){
+                    l = mid + 1;
+                    i = mid;
+                    continue;
+                }
+                return mid;
+            }
+            if(nums[mid] > target){
+                r = mid - 1;
+            }
+            if(nums[mid] < target){
+                l = mid + 1;
+            }
+        }
+        return i;
+    }
+    int binarySearch_l(std::vector<int> &nums, int target){
+        int l = 0, r = nums.size() - 1, mid, i;
+        while(l <= r){
+            mid = (r + l) / 2;
+            if(nums[mid] == target){
+                if(nums[mid - 1] == target){
+                    r = mid - 1;
+                    i = mid;
+                    continue;
+                }
+                return mid;
+            }
+            if(nums[mid] > target){
+                r = mid - 1;
+            }
+            if(nums[mid] < target){
+                l = mid + 1;
+            }
+        }
+        return -1;
+    }
 };
 
 
@@ -471,64 +735,12 @@ private:
 
 int main(){
     Solution solution;
-    /*
-    // // --2
-    // ListNode l1(9, (new ListNode(9, (new ListNode(9,(new ListNode(9,(new ListNode(9,(new ListNode(9,(new ListNode(9,(new ListNode(9)))))))))))))));
-    // ListNode l2(9, new ListNode(9, new ListNode(9,(new ListNode(9)))));
-    // solution.showList_2(&l1);
-    // solution.showList_2(&l2);
-    // solution.addTwoNumbers_2(&l1, &l2);
+    ShowSmt sh;
 
-    // // --3
-    // std::cout << solution.lengthOfLongestSubstring_3("pwwkew") << std::endl;
-    
-    // // --5
-    // std::string str = "gccghj";
-    // std::cout << solution.longestPalindrome_5(str) << std::endl;
-
-    // // --7
-    // std::cout << solution.reverse_7(96463243) << std::endl;
-    
-    // // --9
-    // std::cout << std::boolalpha << solution.isPalindrome_9(12321) << std::endl;
-
-    // // --11
-    // std::vector<int> vec{1,1,1,1,8,1,1,1,1,1,1,1,1,1};
-    // std::cout << solution.maxArea_11(vec) << std::endl;
-    
-    // // --8
-    // std::cout << solution.myAtoi_8("1337c0d3") << std::endl;
-    
-    // // --6
-    // std::cout << solution.convert_6("PAYPALISHIRING", 4) << std::endl;
-    
-    // // --4
-    // std::vector<int> a{};
-    // std::vector<int> b{1};
-    // std::cout << solution.findMedianSortedArrays_4(a, b) << std::endl;
-    
-    // // // --17
-    // std::vector<std::string> str = solution.letterCombinations_17("23");
-    // for (auto &i : str)
-    //     std::cout << i << ", ";
-    
-    // // --19
-    // ListNode* l1 = new ListNode(1, (new ListNode(2, (new ListNode(3,(new ListNode(4,(new ListNode(5,(new ListNode(6,(new ListNode(7,(new ListNode(8)))))))))))))));
-    // solution.showList_2(l1);
-    // l1 = solution.removeNthFromEnd_19(l1, 8);
-    // l1 = solution.removeNthFromEnd_19(l1, 6);
-    // solution.showList_2(l1);
-    
-    // // --24
-    // ListNode* l1 = new ListNode(1, (new ListNode(2, (new ListNode(3,(new ListNode(4,(new ListNode(5,(new ListNode(6,(new ListNode(7,(new ListNode(8)))))))))))))));
-    // ListNode* l2 = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4))));
-    // solution.showList_2(l2);
-    // l2 = solution.swapPairs_24(l2);
-    // solution.showList_2(l2);
-    // solution.showList_2(l1);
-    // l1 = solution.swapPairs_24(l1);
-    // solution.showList_2(l1);
-    */
+    TreeNode* root = new TreeNode(4, new TreeNode(5, new TreeNode(12), new TreeNode(11)), new TreeNode(10, new TreeNode(22), new TreeNode(44)));
+    sh.showTree(root);
+    std::cout << std::endl;
+    sh.showTreeLevel(root);
 
 
 }
