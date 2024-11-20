@@ -6,6 +6,8 @@
 #include <algorithm>
 #include <regex>
 #include <queue>
+#include <math.h>
+
 
 
 struct ListNode {
@@ -24,12 +26,6 @@ struct TreeNode{
     TreeNode(int v) : val(v){}
     TreeNode(int v, TreeNode* l, TreeNode* r) :  val(v), left(l), rigth(r){}
 };
-
-enum A{
-    ABC = 2,
-    DEf = 3
-};
-
 
 class ShowSmt{
 public:
@@ -61,6 +57,11 @@ public:
         std::cout << root->val << ", ";
     }
 
+    // TreeNode
+    // TreeNode* root = new TreeNode(4, new TreeNode(5, new TreeNode(12), new TreeNode(11)), new TreeNode(10, new TreeNode(22), new TreeNode(44)));
+    // sh.showTree(root);
+    // std::cout << std::endl;
+    // sh.showTreeLevel(root);
     void showTreeLevel(TreeNode* root){
         if (root == nullptr)
             return;
@@ -148,7 +149,6 @@ public:
         }        
         return l3;
     }
-    
 
     //--------------------------#3----------------------------------------------//
     // --3
@@ -621,12 +621,29 @@ public:
     }
 
     //--------------------------#34---------------------------------------------//
+    // --34
     // std::vector<int> vec{1,2};
     // sh.show_vec(vec);
-    // sh.show_vec(solution.searchRange(vec,2));
-    std::vector<int> searchRange(std::vector<int>& nums, int target) {
+    // sh.show_vec(solution.searchRange_34(vec,2));
+    std::vector<int> searchRange_34(std::vector<int>& nums, int target) {
         return {binarySearch_l(nums, target), binarySearch_r(nums, target)};
     }
+
+    //--------------------------#34---------------------------------------------//
+    // --33
+    // std::vector<int> vec{4,5,6,7,0,1,2};
+    // sh.show_vec(vec);
+    // std::cout << solution.search_33(vec,0);
+    int search_33(std::vector<int>& nums, int target) {
+        int gap = binarySearchGap(nums);
+        if(gap == -1)
+            return binarySearch(nums, target);
+        
+        int v1 = binarySearchRange(nums, target, 0, gap - 1);
+        int v2 = binarySearchRange(nums, target, gap, nums.size() - 1);
+        return std::max(v1, v2);
+    }
+
 
 private:
     bool isPalindrom_5(const std::string &str, int start, int end){
@@ -670,6 +687,7 @@ private:
         nums[i] -= nums[j];
     }
     
+    // --34
     int binarySearch(std::vector<int> &nums, int target){
         int l = 0, r = nums.size() - 1, mid;
         while(l <= r){
@@ -728,6 +746,44 @@ private:
         }
         return -1;
     }
+
+    // --33
+    // return start index of second array
+    int binarySearchGap(std::vector<int> &nums){
+        if(nums.size() == (0 || 1))
+            return -1;
+
+        int l = 0, r = nums.size() - 1, mid;
+        while(l < r){
+            mid = std::ceil((r + l) / 2.);
+            if(nums[mid] < nums[mid-1]){
+                return mid;
+            }
+            if(nums[mid] > nums[l]){
+                l = mid;
+            }
+            if(nums[mid] < nums[r]){
+               r = mid;
+            }
+        }
+        return -1;
+    }
+    int binarySearchRange(std::vector<int> &nums, int target, int left, int rigth){
+        int l = left, r = rigth, mid;
+        while(l <= r){
+            mid = (r + l) / 2;
+            if(nums[mid] == target){
+                return mid;
+            }
+            if(nums[mid] > target){
+                r = mid - 1;
+            }
+            if(nums[mid] < target){
+                l = mid + 1;
+            }
+        }
+        return -1;
+    }
 };
 
 
@@ -737,10 +793,9 @@ int main(){
     Solution solution;
     ShowSmt sh;
 
-    TreeNode* root = new TreeNode(4, new TreeNode(5, new TreeNode(12), new TreeNode(11)), new TreeNode(10, new TreeNode(22), new TreeNode(44)));
-    sh.showTree(root);
-    std::cout << std::endl;
-    sh.showTreeLevel(root);
+    
+
+    
 
 
 }
