@@ -351,8 +351,8 @@ public:
 
     //--------------------------#15---------------------------------------------//
     // std::vector<int> vec{-3,4,8,1,-4,7,5,3};
-    // solution.threeSum(vec);
-    std::vector<std::vector<int>> threeSum(std::vector<int>& nums) {
+    // solution.threeSum_15(vec);
+    std::vector<std::vector<int>> threeSum_15(std::vector<int>& nums) {
         std::vector<std::vector<int>> ans;
         std::sort(nums.begin(), nums.end());
 
@@ -644,7 +644,120 @@ public:
         return std::max(v1, v2);
     }
 
+    //--------------------------#36---------------------------------------------//
+    // // --36
+    // std::vector<std::vector<char>> board =
+    // {{'.','.','4', '.','.','.', '6','3','.'},
+    // {'.','.','.', '.','.','.', '.','.','.'},
+    // {'5','.','.', '.','.','.', '.','9','.'},
+    // {'.','.','.', '5','6','.', '.','.','.'},
+    // {'4','.','3', '.','.','.', '.','.','1'},
+    // {'.','.','.', '7','.','.', '.','.','.'},
+    // {'.','.','.', '5','.','.', '.','.','.'},
+    // {'.','.','.', '.','.','.', '.','.','.'},
+    // {'.','.','.', '.','.','.', '.','.','.'}};
+    // std::cout <<  std::boolalpha << solution.isValidSudoku_36(board);
+    bool isValidSudoku_36(std::vector<std::vector<char>>& board) {
+        bool row = rowValid(board);
+        bool col = collValid(board);
+        bool sq = squareValid(board);
+        if(row && col && sq)
+            return true;
+        return false;    
+    }
 
+    //--------------------------#38---------------------------------------------//
+    // --38
+    // std::cout << solution.countAndSay_38(5) << std::endl;
+    std::string countAndSay_38(int n) {
+        return RLE(n);
+    }
+    std::string RLE(int n){
+        if(n == 1)
+            return "1";
+        if(n == 2)
+            return "11";
+
+        std::string curr = RLE(n-1);
+        std::string ans("");
+        ans.reserve(curr.size());
+        int count(1);
+        char h = curr[0]; 
+        for(int i(1); i < curr.size(); i++){
+            if(h != curr[i]){
+                ans += std::to_string(count) + h;
+                count = 1;
+                h = curr[i];
+            }else{
+                count++;
+            }
+                
+
+            if(i == curr.size() - 1){
+                ans += std::to_string(count) + h;
+            }
+        }
+        return ans;
+    }
+
+    //--------------------------#41---------------------------------------------//
+    // std::vector<int> vec{1,1};
+    // sh.show_vec(vec);
+    // std::cout << solution.firstMissingPositive_41(vec) << std::endl;
+    int firstMissingPositive_41(std::vector<int>& nums) {
+        int index;
+        for (int i(0); i < nums.size(); i++)
+        {
+            index = nums[i] - 1;
+            if(index >= 0 and index < nums.size() and index != i and nums[index] != nums[i]){
+                swap(nums,index, i);
+                i--;
+            }  
+        }
+        for (int i(0); i < nums.size(); i++)
+        {
+            if(nums[i] != i+1){
+                return i + 1;
+            }
+        }
+        return nums.size() + 1;
+        
+    }
+
+    //--------------------------#45---------------------------------------------//
+    // std::vector<int> nums{1,1,1,1};
+    // std::cout << solution.jump_45(nums) << std::endl;
+    int jump_45(std::vector<int>& nums) {
+        if(nums.size() == 1 )
+            return 0;
+
+        int steps(0);
+        int i(0);
+        
+        while (i != nums.size() - 1)
+        {
+            int curr_step(i+1); // index
+            int max(1+nums[i+1]);
+            int j(i+1);
+            for (; j < i + nums[i] + 1; j++)
+            {
+                if(j > (nums.size() - 1))
+                    break;
+
+                if(j == nums.size() - 1)
+                    return ++steps;
+
+                if(j - i + nums[j] > max){
+                    max = j - i + nums[j];
+                    curr_step = j;
+                }
+            }
+            steps++;
+            i = curr_step;
+        }
+        return steps;
+    }
+//================================================================================================================================================
 private:
     bool isPalindrom_5(const std::string &str, int start, int end){
         int l = start, r = end;
@@ -784,6 +897,67 @@ private:
         }
         return -1;
     }
+
+    // --36
+    bool rowValid(std::vector<std::vector<char>>& board){
+        std::unordered_set<char> check;
+        for(const auto &row: board){
+            for(const auto &t: row){
+                if(t == '.')
+                    continue;
+
+                if(check.contains(t))
+                    return false;
+
+                check.insert(t);
+            }
+            check.clear();
+        }
+        return true;
+    }
+    bool collValid(std::vector<std::vector<char>>& board){
+        std::unordered_set<char> check;
+        for (int i(0); i < board.size(); i++)
+        {
+            for (int j(0); j < board[i].size(); j++)
+            {   
+                if(board[j][i]   == '.')
+                    continue;
+
+                if(check.contains(board[j][i]))
+                    return false;
+
+                check.insert(board[j][i]);
+            }
+            check.clear();
+        }
+        return true;
+    }
+    bool squareValid(std::vector<std::vector<char>>& board){
+        std::unordered_set<char> check;
+        int size = 3;
+        for (int i_gl(0); i_gl < board.size() / size; i_gl ++)
+        {
+            for (int j_gl(0); j_gl < board.size() / size; j_gl++)
+            {  
+                for (int i(i_gl); i < size; i++)
+                {
+                    for (int j(j_gl); j < size; j++)
+                    {   
+                        if(board[i][j]   == '.')
+                            continue;
+
+                        if(check.contains(board[i][j]))
+                            return false;
+
+                        check.insert(board[i][j]);
+                    }
+                }
+                check.clear();
+            }    
+        }
+        return true;
+    }
 };
 
 
@@ -792,10 +966,8 @@ private:
 int main(){
     Solution solution;
     ShowSmt sh;
-
     
-
     
-
+    
 
 }
