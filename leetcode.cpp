@@ -8,8 +8,7 @@
 #include <queue>
 #include <math.h>
 
-
-
+ 
 struct ListNode {
     int val;
     ListNode* next;
@@ -18,8 +17,9 @@ struct ListNode {
     ListNode(int x, ListNode *next) : val(x), next(next) {}
 };
 
+template<typename T>
 struct TreeNode{
-    int val;
+    T val;
     TreeNode* left = nullptr;
     TreeNode* rigth = nullptr;
     TreeNode() : val(0){}
@@ -48,8 +48,9 @@ public:
         }
         std::cout << "nullptr" <<  std::endl;
     }
-
-    void showTree(TreeNode* root){
+    
+    template<typename T>
+    void showTree(TreeNode<T>* root){
         if(root == nullptr)
             return;
         showTree(root->left);
@@ -58,24 +59,25 @@ public:
     }
 
     // TreeNode
-    // TreeNode* root = new TreeNode(4, new TreeNode(5, new TreeNode(12), new TreeNode(11)), new TreeNode(10, new TreeNode(22), new TreeNode(44)));
+    // TreeNode<int>* root = new TreeNode<int>(4, new TreeNode<int>(5, new TreeNode<int>(12), new TreeNode<int>(11)), new TreeNode<int>(10, new TreeNode<int>(22), new TreeNode<int>(44)));
     // sh.showTree(root);
     // std::cout << std::endl;
     // sh.showTreeLevel(root);
-    void showTreeLevel(TreeNode* root){
+    template<typename T>
+    void showTreeLevel(TreeNode<T>* root){
         if (root == nullptr)
             return;
 
-        std::queue<TreeNode*> q;
+        std::queue<TreeNode<T>*> q;
         q.push(root);
 
         while (!q.empty())
         {
-            TreeNode* temp = q.front();
+            TreeNode<T>* temp = q.front();
             q.pop();
 
             std::cout << temp->val << ", ";
-            if(temp->left != nullptr);
+            if(temp->left != nullptr)
                 q.push(temp->left);
             if(temp->rigth != nullptr)
                 q.push(temp->rigth);
@@ -757,6 +759,180 @@ public:
         }
         return steps;
     }
+
+    //--------------------------#14---------------------------------------------//
+    // std::vector<std::string> vec{"abab","aba",""};
+    // std::cout << solution.longestCommonPrefix_14(vec) << std::endl;
+    std::string longestCommonPrefix_14(std::vector<std::string>& strs) {
+        if (strs.size() == 0)
+            return {};
+
+        std::string res(strs[0]);
+        for(int i(1); i < strs.size(); i++){
+            int size = (strs[0].size() < strs[i].size() ?  strs[0].size() : strs[i].size());
+            if(size == 0)
+                return {};
+            for (int j(0); j < size ; j++){
+                if(res[j] == strs[i][j]){
+                    if(j ==  size - 1 and res.size() > j){
+                        res.erase(res.begin() + j + 1, res.end());
+                    }
+                    continue;
+                }
+                res.erase(res.begin() + j, res.end());
+                break;
+            }            
+        }
+        return res;
+    }
+
+    //--------------------------#42---------------------------------------------//
+    // //[0,1,0,2,1,0,1,3,2,1,2,1]
+    // std::vector<int> vec{9,8,9,5,8,8,8,0,4};
+    // sh.show_vec(vec);
+    // std::cout << solution.trap_42(vec) << std::endl;
+    int trap_42(std::vector<int>& height) {
+        if(height.size() < 3)
+            return {};
+
+        std::vector<int> peaks;
+        int max(0);
+        for(int i(0); i < height.size(); i++){
+            // begin
+            if(i == 0){
+                if(height[i] > height[i + 1]){
+                    peaks.push_back(i);
+                    max = (height[max] >= height[i] ? max : i); 
+                    continue;
+                }
+                if(height[i] == height[i + 1]){
+                    int st(i);
+                    while (i != height.size() - 1 and height[i] == height[i+1]){
+                        i++;
+                    }
+                    if(i == height.size() - 1){
+                        return {};
+                    }
+                    if(height[i] > height[i+1]){
+                        peaks.push_back(i);
+                        max = (height[max] >= height[i] ? max : i);
+                        i++;
+                    }
+                    continue;
+                }
+                continue;
+            }
+            
+
+            // end
+            if(i == height.size() - 1 and height[i] > height[i - 1]){
+                peaks.push_back(i);
+                max = (height[max] >= height[i] ? max : i);
+                continue;
+            }
+
+            // middle
+            if (height[i] > height[i - 1] and height[i] > height[i+1]){
+                peaks.push_back(i);
+                max = (height[max] >= height[i] ? max : i);
+                continue;
+            }
+            if (height[i] > height[i - 1] and height[i] == height[i+1]){
+                int st(i);
+                while (i != height.size() - 1 and height[i] == height[i+1]){
+                    i++;
+                }
+                if(i == height.size() - 1){
+                    peaks.push_back(st);
+                    max = (height[max] >= height[i] ? max : i);
+                    continue;
+                }
+                if(height[i] > height[i+1]){
+                    peaks.push_back(st);
+                    peaks.push_back(i);
+                    max = (height[max] >= height[i] ? max : i);
+                    i++;
+                }
+            }
+        }
+        if(peaks.size() <= 1)
+            return {};
+        
+        // optimization
+        std::vector<int> opt_peaks;
+        opt_peaks.push_back(peaks[0]);
+        int sec_p(0);
+        for(int i(1); i < peaks.size(); i++){
+            if (peaks[i] > max)
+                break;
+            if(height[peaks[i]] < height[peaks[sec_p]] and height[peaks[i]] < height[max])
+                continue;
+            if(height[peaks[i]] >= height[peaks[sec_p]]){
+                opt_peaks.push_back(peaks[i]);
+                sec_p = i;
+            }
+        }
+        std::vector<int> temp;
+        sec_p = peaks.size() - 1;
+        if (peaks[sec_p] != max)
+            temp.push_back(peaks[sec_p]);
+        for(int i(peaks.size() - 2); i >= 0; i--){
+            if (peaks[i] <= max)
+                break;
+            if(height[peaks[i]] < height[peaks[sec_p]] and height[peaks[i]] < height[max])
+                continue;
+            if(height[peaks[i]] >= height[peaks[sec_p]]){
+                temp.push_back(peaks[i]);
+                sec_p = i;
+            }
+        }
+        std::reverse(temp.begin(), temp.end());
+        opt_peaks.insert(opt_peaks.end() ,temp.begin(), temp.end());
+
+        
+        // count water
+        int res{};
+        for(int i(0); i < opt_peaks.size() - 1; i++){
+            res += countWater_42(height, opt_peaks[i], opt_peaks[i + 1]); 
+        }
+        return res;
+    }
+
+    //--------------------------#21---------------------------------------------//
+    // ListNode* l1 = new ListNode(1, new ListNode(2, new ListNode(4)));
+    // sh.showList(l1);
+    // ListNode* l2 = new ListNode(1, new ListNode(3, new ListNode(4)));
+    // sh.showList(l2);
+    // solution.mergeTwoLists(l1, l2);
+    // sh.showList(l1);
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        ListNode* dummy = new ListNode();
+        ListNode* head = dummy;
+        while (list1 != nullptr or list2 != nullptr){
+            if(list1 == nullptr){
+                head->next = list2;
+                list2 = list2->next;
+                head = head->next;
+                continue;
+            }
+            if(list2 == nullptr){
+                head->next = list1;
+                list1 = list1->next;
+                head = head->next;
+                continue;
+            }
+            if(list1->val >= list2->val){
+                head->next = list2;
+                list2 = list2->next;
+                head = head->next;
+                continue;
+            }
+            head->next = list1;
+            list1 = list1->next;
+            head = head->next;
+        }
+        return dummy->next;
+    }
 //================================================================================================================================================
 private:
     bool isPalindrom_5(const std::string &str, int start, int end){
@@ -958,6 +1134,14 @@ private:
         }
         return true;
     }
+
+    int countWater_42(std::vector<int>& h, int l, int r){
+        int peak = std::min(h[l], h[r]);
+        int sum{};
+        for(int i(l+1) ; i < r; i++)
+            sum +=  (peak <= h[i] ? 0 : peak - h[i]);
+        return sum;
+    }
 };
 
 
@@ -967,7 +1151,19 @@ int main(){
     Solution solution;
     ShowSmt sh;
     
+
+    try{
+        std::cout << "In try block " << std::endl;
+        throw 505;
+    }catch(int i){
+        std::cout << "Exception int "<< i << std::endl;
+    }catch(float){
+        std::cout << "Exception float " << std::endl;
+    }
+    std::cout << "out try block " << std::endl;
+
     
-    
+
+
 
 }
