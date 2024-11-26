@@ -1,6 +1,7 @@
 #include <iostream>
 #include <map>
 #include <unordered_set>
+#include <unordered_map>
 #include <vector>
 #include <array>
 #include <algorithm>
@@ -31,15 +32,33 @@ class ShowSmt{
 public:
     template<typename T>
     void show_vec(std::vector<T> v){
+        std::cout <<'[';
         for (int i = 0; i < v.size(); i++)
         {
             if(i == v.size() - 1){
-                std::cout << v[i] << std::endl;
+                std::cout << v[i] <<']'<<  std::endl;
                 break;
             }
             std::cout << v[i] << ", ";
         }
     }
+
+    template<typename T>
+    void show_vec_vec(std::vector<std::vector<T>> v){
+        std::cout <<'[';
+        for (int i = 0; i < v.size(); i++)
+        {
+            if(i == v.size() - 1){
+                show_vec(v[i]);
+                std::cout << ']' << std::endl;
+                break;
+            }
+            show_vec(v[i]);
+            std::cout << ",";
+        }
+    }
+
+
 
     void showList(ListNode* l){
         while (l != nullptr){
@@ -933,8 +952,51 @@ public:
         }
         return dummy->next;
     }
+
+    //--------------------------#27---------------------------------------------//
+    // std::vector<int> vec{3,2,2,3};
+    // solution.removeElement(vec, 3);
+    int removeElement(std::vector<int>& nums, int val) {
+        int count(0);
+        for(int i(0); i < nums.size() - count; i++){
+            if(nums[i] == val){
+                count++;
+                std::swap(nums[i], nums[nums.size() - count]);
+                i--;
+            }
+        }
+        nums.erase(nums.end() - count, nums.end());
+        return nums.size();
+    }
+
+    //--------------------------#49---------------------------------------------//
+    // std::vector<std::string> strs{"eat","tea","tan","ate","nat","bat"};
+    // sh.show_vec(strs);
+    // sh.show_vec_vec(solution.groupAnagrams(strs));
+    std::vector<std::vector<std::string>> groupAnagrams(std::vector<std::string>& strs) {
+        if(strs.size() == 0)
+            return {};
+        if(strs.size() == 1)
+            return {{strs[0]}};
+
+        std::unordered_map<std::string, std::vector<std::string>> mp;
+        for(auto x: strs){
+            std::string word = x;
+            sort(word.begin(), word.end());
+            mp[word].push_back(x);
+        }
+        
+        std::vector<std::vector<std::string>> ans;
+        for(auto x: mp){
+            ans.push_back(x.second);
+        }
+        return ans;
+    }
+
+
+
 //================================================================================================================================================
-private:
+//private:
     bool isPalindrom_5(const std::string &str, int start, int end){
         int l = start, r = end;
         while(l <= r){
@@ -1142,6 +1204,60 @@ private:
             sum +=  (peak <= h[i] ? 0 : peak - h[i]);
         return sum;
     }
+
+    // --49
+    bool isAnagramm(std::string& root, std::string& word){
+        if(root.size() != word.size())
+            return false;
+
+        std::unordered_map<char, int> check;
+        for (int i = 0; i < root.size(); i++){
+            if(check.contains(root[i])){
+                check[root[i]]++;
+            }else{
+                check[root[i]] = 1;
+            }
+            
+            if(check.contains(word[i])){
+                check[word[i]]--;
+            }else{
+                check[word[i]] = -1;
+            }
+        }
+        for(const auto& t: check){
+            if(t.second != 0)
+                return false;
+        }
+        return true;
+    }
+    bool isAnagramm(std::unordered_map<char, int> check, std::string& word){
+        if(check.size() != word.size())
+            return false;
+
+        for (int i = 0; i < check.size(); i++){
+           if(check.contains(word[i])){
+                check[word[i]]--;
+            }else{
+                return false;
+            }
+        }
+        for(const auto& t: check){
+            if(t.second != 0)
+                return false;
+        }
+        return true;
+    }
+    void addInCheck(std::vector<std::unordered_map<char, int>>& check, std::string& root){
+        std::unordered_map<char, int> ch;
+        for (int i = 0; i < root.size(); i++){
+            if(ch.contains(root[i])){
+                ch[root[i]]++;
+            }else{
+                ch[root[i]] = 1;
+            }
+        }
+        check.push_back(ch);
+    }
 };
 
 
@@ -1151,19 +1267,18 @@ int main(){
     Solution solution;
     ShowSmt sh;
     
-
-    try{
-        std::cout << "In try block " << std::endl;
-        throw 505;
-    }catch(int i){
-        std::cout << "Exception int "<< i << std::endl;
-    }catch(float){
-        std::cout << "Exception float " << std::endl;
+    {
+        try{
+            std::cout << "In try block " << std::endl;
+            throw 505;
+        }catch(int i){
+            std::cout << "Exception int "<< i << std::endl;
+        }catch(float){
+            std::cout << "Exception float " << std::endl;
+        }
+        std::cout << "out try block " << std::endl;
     }
-    std::cout << "out try block " << std::endl;
-
     
-
 
 
 }
