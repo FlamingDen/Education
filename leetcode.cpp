@@ -64,7 +64,7 @@ public:
 
     void showList(ListNode* l){
         while (l != nullptr){
-            std::cout << l->val << " -> ";
+            std::cout << l-> val << " -> ";
             l = l->next; 
         }
         std::cout << "nullptr" <<  std::endl;
@@ -1128,7 +1128,93 @@ public:
         return  2 * (n - 1) + 2 * (m - 1) + getSpiralPlace(i - 1, j - 1, n - 2, m - 2);
     }
 
+    //--------------------------#54---------------------------------------------//
+    // std::vector<int> vec{3,2,1,0,4};
+    // std::cout<< std::boolalpha << solution.canJump(vec) << std::endl;
+    bool canJump(std::vector<int>& nums) {
+        // --1
+        int minjump(0);
+        for(int i(nums.size()-2); i >= 0; i--){
+            if(nums[i] >= ++minjump)
+			    minjump = 0;
+        }
+        return minjump == 0;
 
+        // // --2
+        // return checkJump(nums, 0);
+    }
+    bool checkJump(std::vector<int>& nums, int start){
+        if(start == nums.size() - 1)
+            return true;
+        
+        for (int i(start + 1); i <= start + nums[start]; i++){
+            if(checkJump(nums, i))
+                return true;
+        }
+        return false;
+    }
+    
+    //--------------------------#56---------------------------------------------//
+    // std::vector<std::vector<int>> matrix{{1,3},{2,6},{8,10}, {15,18}}; // {1,3},{2,6},{8,10}, {15,18} {4,5},{1,4},{0,1}
+    // sh.show_vec_vec(matrix);
+    // sh.show_vec_vec(solution.merge_56(matrix));
+    std::vector<std::vector<int>> merge_56(std::vector<std::vector<int>>& intervals) {
+        sort(intervals.begin(), intervals.end());
+
+        std::vector<std::vector<int>> merged;
+        for (auto interval : intervals) {
+            if (merged.empty() || merged.back()[1] < interval[0]) 
+                merged.push_back(interval);
+            else 
+                merged.back()[1] = std::max(merged.back()[1], interval[1]);
+        }
+        return merged;
+    }
+    bool isMerge(int l1, int r1, int l2, int r2){
+        if(l1 <= l2 and r1 >= r2 )
+            return true;
+        if(l2 <= l1 and r2 >= r1 )
+            return true;
+        if((l1 <= l2 and l2 <= r1) or (l1 <= r2 and r2 <= r1))
+            return true;
+        return false;
+    }
+
+    //--------------------------#57---------------------------------------------//
+    // std::vector<std::vector<int>> intervals{{1, 5}};
+    // std::vector<int> a{2,3};
+    // sh.show_vec_vec(solution.insert_57(intervals , a));
+    std::vector<std::vector<int>> insert_57(std::vector<std::vector<int>>& intervals, std::vector<int>& newInterval) {
+        std::vector<std::vector<int>> res;
+        if(intervals.size() == 0)
+            return {newInterval};
+        
+        
+        int l = newInterval[0], r = newInterval[1], f(1);
+        for (int i = 0; i < intervals.size(); i++)
+        {
+            if(intervals[i][1] < newInterval[0]){
+                res.push_back(intervals[i]);
+                continue;
+            }
+            if(intervals[i][0] > newInterval[1]){
+                if(f-- == 1)
+                    res.push_back({l,r});
+                res.push_back(intervals[i]);
+                continue;
+            }
+            l = std::min(l, intervals[i][0]);
+            r = std::max(r, intervals[i][1]);
+            if(i == intervals.size() - 1){
+                res.push_back({l,r});
+                f--;
+            }   
+            
+        }
+        if(f == 1)
+            res.push_back({l,r});
+        return res;
+    }
 //================================================================================================================================================
 private:
     bool isPalindrom_5(const std::string &str, int start, int end){
@@ -1392,6 +1478,7 @@ private:
         }
         check.push_back(ch);
     }
+    
 };
 
 
@@ -1400,7 +1487,7 @@ private:
 int main(){
     Solution solution;
     ShowSmt sh;
-    
-    
 
+
+    
 }
