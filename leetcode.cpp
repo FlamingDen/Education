@@ -8,6 +8,8 @@
 #include <regex>
 #include <queue>
 #include <math.h>
+//#include <functional>
+#include <numeric>
 
  
 struct ListNode {
@@ -993,10 +995,142 @@ public:
         return ans;
     }
 
+    //--------------------------#26---------------------------------------------//
+    // std::vector<int> vec{1};
+    // sh.show_vec(vec);
+    // std::cout << solution.removeDuplicates_26(vec) << std::endl;
+    // sh.show_vec(vec);
+    int removeDuplicates_26(std::vector<int>& nums) {
+        int prev(nums[0]);
+        auto end = std::remove_if(nums.begin() + 1, nums.end(), [&prev](int a){
+            if(a == prev)
+                return true;
+            prev = a;
+            return false;
+        });
+        nums.erase(end, nums.end());
+        return nums.size();
+    }
+
+    //--------------------------#28---------------------------------------------//
+    int strStr_28(std::string haystack, std::string needle) {
+        int i = haystack.find(needle);
+        return (i == std::string::npos ? -1 : i);
+    }
+
+    //--------------------------#35---------------------------------------------//
+    // std::vector<int> vec{1,3,4,5,6};
+    // sh.show_vec(vec);
+    // std::cout << solution.searchInsert_35(vec, -1);
+    int searchInsert_35(std::vector<int>& nums, int target) {
+        int l(0), r(nums.size() - 1), mid;
+        while(l <= r){
+            mid = (r + l) / 2;
+            if(nums[mid] == target)
+                return mid;
+            if(nums[mid] > target){
+                if(mid == 0 or nums[mid - 1] < target)
+                    return mid;
+                r = mid - 1;
+                continue;
+            }
+            if(nums[mid] < target){
+                if(mid == nums.size() - 1 or nums[mid + 1] > target )
+                    return mid + 1;
+                l = mid + 1;
+            }
+        }
+        return -1;
+    }
+
+    //--------------------------#48---------------------------------------------//
+    // std::vector<std::vector<int>> matrix = {{5,1,9,11},{2,4,8,10},{13,3,6,7},{15,14,12,16}};
+    // sh.show_vec_vec(matrix);
+    // solution.rotate_48(matrix);
+    // sh.show_vec_vec(matrix);
+    void rotate_48(std::vector<std::vector<int>>& matrix) {
+        if(matrix.size() == 1)
+            return;
+        
+        for (int i(0); i < matrix.size(); i++){
+            for (int j(i + 1); j < matrix.size(); j++){
+                std::swap(matrix[i][j], matrix[j][i]);
+            }
+            std::reverse(std::begin(matrix[i]), std::end(matrix[i]));
+        }
+    }
+
+    //--------------------------#46---------------------------------------------//
+    // std::vector<int> vec{1,2,3};
+    // sh.show_vec(vec);
+    // sh.show_vec_vec(solution.permute_46(vec));
+    std::vector<std::vector<int>> permute_46(std::vector<int>& nums) {
+        std::vector<std::vector<int>> res;
+        backtrack(nums, 0, res);
+        return res;
+    }
+    void backtrack(std::vector<int>& nums, int start, std::vector<std::vector<int>>& res) {
+        if (start == nums.size()) {
+            res.push_back(nums);
+            return;
+        }
+
+        for (int i = start; i < nums.size(); i++) {
+            swap(nums, start, i);
+            backtrack(nums, start + 1, res);
+            swap(nums, start, i);
+        }
+    }
+
+    //--------------------------#53---------------------------------------------//
+    // std::vector<int> vec{-2,1,-3,4,-1,2,1,-5,4}; //1-> 3->  
+    // std::cout << solution.maxSubArray(vec) << std::endl;
+    int maxSubArray(std::vector<int>& nums) {
+        int res = nums[0];
+        int total = 0;
+
+        for (int n : nums) {
+            if (total < 0) {
+                total = 0;
+            }
+
+            total += n;
+            res = std::max(res, total);
+        }
+
+        return res;
+    }
+
+    //--------------------------#54---------------------------------------------//
+    // std::vector<std::vector<int>> matrix{{1,2,3},{4,5,6},{7,8,9}};
+    // sh.show_vec(solution.spiralOrder(matrix));
+    std::vector<int> spiralOrder(std::vector<std::vector<int>>& matrix) {
+        std::vector<int> res;
+        res.resize(matrix.size() * matrix[0].size());
+        for (int i = 0; i < matrix.size(); i++)
+        {
+            for (int j = 0; j < matrix[i].size(); j++)
+            {
+                res[getSpiralPlace(i, j, matrix[i].size(), matrix.size())] = matrix[i][j];
+            }
+        }
+        return res;
+    }
+    int getSpiralPlace(const int& i,const int& j, int n , int m){
+        if(i == 0)
+            return j;
+        if(j == n - 1)
+            return j + i;
+        if(i == m - 1)
+            return i + 2 * (n - 1) - j;
+        if(j == 0)
+            return 2 * (n - 1) + 2 * (m - 1) - i; 
+        return  2 * (n - 1) + 2 * (m - 1) + getSpiralPlace(i - 1, j - 1, n - 2, m - 2);
+    }
 
 
 //================================================================================================================================================
-//private:
+private:
     bool isPalindrom_5(const std::string &str, int start, int end){
         int l = start, r = end;
         while(l <= r){
@@ -1267,18 +1401,6 @@ int main(){
     Solution solution;
     ShowSmt sh;
     
-    {
-        try{
-            std::cout << "In try block " << std::endl;
-            throw 505;
-        }catch(int i){
-            std::cout << "Exception int "<< i << std::endl;
-        }catch(float){
-            std::cout << "Exception float " << std::endl;
-        }
-        std::cout << "out try block " << std::endl;
-    }
     
-
 
 }
