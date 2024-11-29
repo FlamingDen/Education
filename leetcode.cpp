@@ -18,6 +18,16 @@ struct ListNode {
     ListNode() : val(0), next(nullptr) {}
     ListNode(int x) : val(x), next(nullptr) {}
     ListNode(int x, ListNode *next) : val(x), next(next) {}
+
+    static int getListLength(ListNode* head){
+        int i(0);
+        while (head != nullptr)
+        {
+            head = head->next;
+            i++;
+        }
+        return i;
+    }
 };
 
 template<typename T>
@@ -104,6 +114,11 @@ public:
                 q.push(temp->rigth);
         }
         std::cout << std::endl;
+    }
+
+    template<typename T>
+    void print(T smt){
+        std::cout << smt << std::endl;
     }
 };
 
@@ -1116,19 +1131,9 @@ public:
         }
         return res;
     }
-    int getSpiralPlace(const int& i,const int& j, int n , int m){
-        if(i == 0)
-            return j;
-        if(j == n - 1)
-            return j + i;
-        if(i == m - 1)
-            return i + 2 * (n - 1) - j;
-        if(j == 0)
-            return 2 * (n - 1) + 2 * (m - 1) - i; 
-        return  2 * (n - 1) + 2 * (m - 1) + getSpiralPlace(i - 1, j - 1, n - 2, m - 2);
-    }
+    
 
-    //--------------------------#54---------------------------------------------//
+    //--------------------------#55---------------------------------------------//
     // std::vector<int> vec{3,2,1,0,4};
     // std::cout<< std::boolalpha << solution.canJump(vec) << std::endl;
     bool canJump(std::vector<int>& nums) {
@@ -1215,6 +1220,214 @@ public:
             res.push_back({l,r});
         return res;
     }
+
+    //--------------------------#58---------------------------------------------//
+    // std::string s("   fly me   to   the moon  ");
+    // std::cout << solution.lengthOfLastWord_58(s);
+    int lengthOfLastWord_58(std::string s) {
+        std::smatch res;
+        std::regex_search(s, res, std::regex{R"((\w*)\s*$)"});
+        return res[1].length();
+    }
+
+    //--------------------------#59---------------------------------------------//
+    // sh.show_vec_vec(solution.generateMatrix_59(4));
+    std::vector<std::vector<int>> generateMatrix_59(int n) {
+        std::vector<std::vector<int>> res;
+        res.reserve(n);
+        for (int i(0); i < n; i++){
+            std::vector<int> tmp;
+            tmp.reserve(n);
+            for (int j(0); j < n; j++){
+                tmp.push_back(getSpiralPlace(i, j, n, n) + 1);
+            }
+            res.push_back(tmp);
+        }
+        return res;
+    }
+
+    //--------------------------#61---------------------------------------------//
+    // ListNode* l1 = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
+    // sh.showList(l1);
+    // l1 = solution.rotateRight_61(l1, 2);
+    // sh.showList(l1);
+    ListNode* rotateRight_61(ListNode* head, int k) {
+        if(head == nullptr)
+            return head;
+        
+        int n = getListLength(head);
+        k = k % n;
+        ListNode* h = head;
+        ListNode* new_end;
+        while (h->next != nullptr){
+            if(k == 0){
+                new_end = head;
+                k--;
+                continue;
+            }
+            if(k < 0){
+                h = h->next;
+                new_end = new_end->next;
+                continue;
+            }
+            h = h->next;
+            k--;
+        }
+        h->next = head;
+        head = new_end->next;
+        new_end->next = nullptr;
+        return head;
+    }
+    int getListLength(ListNode* head){
+        int i(0);
+        while (head != nullptr)
+        {
+            head = head->next;
+            i++;
+        }
+        return i;
+    }
+    
+    //--------------------------#66---------------------------------------------//
+    // std::vector<int> vec{4,3,2,1};
+    // sh.show_vec(vec);
+    // sh.show_vec(solution.plusOne(vec));
+    std::vector<int> plusOne(std::vector<int>& digits) {
+        std::vector<int> res;
+        res.reserve(digits.size());
+        int j = 1;
+        for(int i(digits.size() - 1); i >= 0; i--){
+            if(digits[i] + j == 10){
+                res.push_back(0);
+                if(i == 0)
+                    res.push_back(1);
+                continue;
+            }
+            res.push_back(digits[i] + j);
+            j = 0;
+        }
+        std::reverse(res.begin(), res.end());
+        return res;
+    }
+
+    //--------------------------#62---------------------------------------------//
+    // sh.print(solution.uniquePaths(3,7));
+    int uniquePaths(int m, int n) {
+        // --easy
+        std::vector<std::vector<int>> dp(m, std::vector<int>(n, 1));
+        for (int i = 1; i < m; i++) {
+            for (int j = 1; j < n; j++) {
+                dp[i][j] = dp[i - 1][j] + dp[i][j - 1];
+            }
+        }
+        return dp[m - 1][n - 1];
+
+        // --better
+        // vector<int> pre(n, 1), cur(n, 1);
+        // for (int i = 1; i < m; i++) {
+        //     for (int j = 1; j < n; j++) {
+        //         cur[j] = pre[j] + cur[j - 1];
+        //     }
+        //     swap(pre, cur);
+        // }
+        // return pre[n - 1];
+
+        // --The best
+        // std::vector<int> cur(n, 1);
+        // for (int i = 1; i < m; i++) {
+        //     for (int j = 1; j < n; j++) {
+        //         cur[j] += cur[j - 1];
+        //     }
+        // }
+        // return cur[n - 1];
+
+        
+    }
+
+    //--------------------------#10---------------------------------------------//
+    // std::cout << std::boolalpha << solution.isMatch("aaa","ab*a*c*a") << std::endl;
+    bool isMatch(std::string s, std::string p) {
+        char r_char(p[0]);
+        int count(0);
+        int i(0), j(0);
+        bool flag(false);
+        for (; i < p.size(); i++){
+            if(p[i] == r_char){
+                count++;
+                if(i == p.size() - 1 and isValid(s, j, r_char, count, flag)){
+                    i++;
+                    break;
+                }
+            }
+            if(p[i] != r_char){
+                if(!isValid(s, j, r_char, count, flag))
+                    return false;
+                r_char = p[i];
+                count = 1;
+                if(i == p.size() - 1 and !isValid(s, j, r_char, count, flag))
+                    return false;
+            }
+            if(p[i + 1] == '*'){
+                count = -1;
+                i++;
+                if (r_char == '.'){
+                    flag = true;
+                    r_char = p[i + 1];
+                    count = 0;
+                    if(i == p.size() - 1)
+                        return true;
+                    continue;
+                } 
+                if(!isValid(s, j, r_char, count, flag))
+                    return false;
+                if(i != p.size() - 1){
+                    r_char = p[i + 1];
+                    count = 0;
+                }
+                if(i == p.size() - 1){
+                    i++;
+                    break;
+                }
+            } 
+            
+        }
+        if(i == p.size() and j == s.size())
+            return true;
+        return false;
+    }
+    bool isValid(std::string& s, int& j, char r_char,  int count, bool flag){
+        int steps;
+        if(flag){
+            for(int i(s.size() - 1); i >=j; i--){
+                if(isValid(s, i, r_char, count, false)){
+                    j = i;
+                    return true;
+                }
+            }
+            return false;
+        }else{
+            int steps = (count == -1 ? s.size() : j + count);
+            if(j >= s.size() || steps > s.size()){
+                return false;
+            }
+            int i(j);
+            for (; i < steps; i++){  
+                if(r_char == '.')
+                    continue;
+                if(s[i] != r_char and count == -1){
+                    j = i;
+                    return true;
+                }
+                if(s[i] != r_char and count != -1){
+                    return false;
+                }
+                
+            }
+            j = i;
+        }
+        return true;
+    }
+
 //================================================================================================================================================
 private:
     bool isPalindrom_5(const std::string &str, int start, int end){
@@ -1479,6 +1692,18 @@ private:
         check.push_back(ch);
     }
     
+    // --54 --59 
+    int getSpiralPlace(const int& i,const int& j, int n , int m){
+        if(i == 0)
+            return j;
+        if(j == n - 1)
+            return j + i;
+        if(i == m - 1)
+            return i + 2 * (n - 1) - j;
+        if(j == 0)
+            return 2 * (n - 1) + 2 * (m - 1) - i; 
+        return  2 * (n - 1) + 2 * (m - 1) + getSpiralPlace(i - 1, j - 1, n - 2, m - 2);
+    }
 };
 
 
@@ -1488,6 +1713,9 @@ int main(){
     Solution solution;
     ShowSmt sh;
 
+    
+    
+    
 
     
 }
