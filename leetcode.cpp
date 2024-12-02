@@ -10,6 +10,7 @@
 #include <math.h>
 //#include <functional>
 #include <numeric>
+#include <cstring>
 
  
 struct ListNode {
@@ -1347,53 +1348,71 @@ public:
     //--------------------------#10---------------------------------------------//
     // std::cout << std::boolalpha << solution.isMatch("aaa","ab*a*c*a") << std::endl;
     bool isMatch(std::string s, std::string p) {
-        char r_char(p[0]);
-        int count(0);
-        int i(0), j(0);
-        bool flag(false);
-        for (; i < p.size(); i++){
-            if(p[i] == r_char){
-                count++;
-                if(i == p.size() - 1 and isValid(s, j, r_char, count, flag)){
-                    i++;
-                    break;
+        int n = s.length(), m = p.length();
+        bool dp[n+1][m+1];
+        memset(dp, false, sizeof(dp));
+        dp[0][0] = true;
+        
+        for(int i=0; i<=n; i++){
+            for(int j=1; j<=m; j++){
+                if(p[j-1] == '*'){
+                    dp[i][j] = dp[i][j-2] || (i > 0 && (s[i-1] == p[j-2] || p[j-2] == '.') && dp[i-1][j]);
+                }
+                else{
+                    dp[i][j] = i > 0 && dp[i-1][j-1] && (s[i-1] == p[j-1] || p[j-1] == '.');
                 }
             }
-            if(p[i] != r_char){
-                if(!isValid(s, j, r_char, count, flag))
-                    return false;
-                r_char = p[i];
-                count = 1;
-                if(i == p.size() - 1 and !isValid(s, j, r_char, count, flag))
-                    return false;
-            }
-            if(p[i + 1] == '*'){
-                count = -1;
-                i++;
-                if (r_char == '.'){
-                    flag = true;
-                    r_char = p[i + 1];
-                    count = 0;
-                    if(i == p.size() - 1)
-                        return true;
-                    continue;
-                } 
-                if(!isValid(s, j, r_char, count, flag))
-                    return false;
-                if(i != p.size() - 1){
-                    r_char = p[i + 1];
-                    count = 0;
-                }
-                if(i == p.size() - 1){
-                    i++;
-                    break;
-                }
-            } 
-            
         }
-        if(i == p.size() and j == s.size())
-            return true;
-        return false;
+        
+        return dp[n][m];
+    
+        // char r_char(p[0]);
+        // int count(0);
+        // int i(0), j(0);
+        // bool flag(false);
+        // for (; i < p.size(); i++){
+        //     if(p[i] == r_char){
+        //         count++;
+        //         if(i == p.size() - 1 and isValid(s, j, r_char, count, flag)){
+        //             i++;
+        //             break;
+        //         }
+        //     }
+        //     if(p[i] != r_char){
+        //         if(!isValid(s, j, r_char, count, flag))
+        //             return false;
+        //         r_char = p[i];
+        //         count = 1;
+        //         if(i == p.size() - 1 and !isValid(s, j, r_char, count, flag))
+        //             return false;
+        //     }
+        //     if(p[i + 1] == '*'){
+        //         count = -1;
+        //         i++;
+        //         if (r_char == '.'){
+        //             flag = true;
+        //             r_char = p[i + 1];
+        //             count = 0;
+        //             if(i == p.size() - 1)
+        //                 return true;
+        //             continue;
+        //         } 
+        //         if(!isValid(s, j, r_char, count, flag))
+        //             return false;
+        //         if(i != p.size() - 1){
+        //             r_char = p[i + 1];
+        //             count = 0;
+        //         }
+        //         if(i == p.size() - 1){
+        //             i++;
+        //             break;
+        //         }
+        //     } 
+            
+        // }
+        // if(i == p.size() and j == s.size())
+        //     return true;
+        // return false;
     }
     bool isValid(std::string& s, int& j, char r_char,  int count, bool flag){
         int steps;
@@ -1428,6 +1447,120 @@ public:
         return true;
     }
 
+    //--------------------------#67---------------------------------------------//
+    // sh.print(solution.addBinary_67("1010","1011"));
+    std::string addBinary_67(std::string a, std::string b) {
+        std::string res;
+        int size = std::max(a.size(), b.size());
+        res.reserve(size + 1);
+        char mark('0');
+        for (int i = 0; i < size; i++)     
+        {
+            if(i < a.size() and i < b.size()){
+                if(a[a.size() - 1 - i] == '0' and b[b.size() - 1 - i] == '0'){
+                    res += (mark == '1'? '1' : '0');
+                    mark = '0';
+                }else if(a[a.size() - 1 - i] == '1' and b[b.size() - 1 - i] == '1'){
+                    res += mark == '1'? '1' : '0';
+                    mark = '1';
+                }else if(mark == '1'){
+                    res += '0';
+                    mark = '1';
+                }else{
+                    res += '1';
+                }        
+            }else if(i >= a.size()){ 
+                if (b[b.size() - 1 - i] == '1'){
+                    res += mark == '1'? '0' : '1';
+                }
+                if (b[b.size() - 1 - i] == '0'){
+                    res += mark == '1'? '1' : '0';
+                    mark = '0';
+                }  
+            }else if (i >= b.size())
+            {
+                if (a[a.size() - 1 - i] == '1'){
+                    res += mark == '1'? '0' : '1';
+                }
+                if (a[a.size() - 1 - i] == '0'){
+                    res += mark == '1'? '1' : '0';
+                    mark = '0';
+                }  
+            }
+        }
+        if(mark != '0')
+            res += '1';
+        std::reverse(res.begin(), res.end());
+        return res;
+    }
+
+    //--------------------------#71---------------------------------------------//
+    std::string simplifyPath_71(std::string path) {
+        if(path.length() == 1)
+            return path;
+
+
+        std::string opt_path;
+        for (int i = 0; i < path.length(); i++){
+            if(i == path.length() - 1 and path[i] == '/')
+                continue;
+            
+            if(path[i] == '/'){
+                while (path[i + 1] == '/')
+                    i++;
+                if(opt_path.size() != 1)
+                    opt_path.push_back(path[i]);
+                continue;
+            }
+
+            if(path[i] == '.'){
+                int count(1);
+                std::string tmp(".");
+                while (path[i+1] == '.'){
+                    i++;
+                    count++;
+                    tmp.push_back(path[i]);
+                }
+                if(count >= 3){
+                    opt_path.append(tmp);
+                    continue;
+                }
+                if(i == path.size() - 1 or path[i+1] == '/'){
+                    if(count == 1){
+                        if(opt_path.length() > 1)
+                            opt_path.pop_back();
+                        continue;
+                    }
+                    if(count == 2){
+                        int to_del;
+                        int j(opt_path.size()-1);
+                        while (count != 0 and j > 0){
+                            if(opt_path[j--] == '/')
+                                count--;
+                        }
+                        opt_path.erase(opt_path.begin() + j + 1, opt_path.end());
+                    }
+                } else {
+                    i++;
+                    while(i != path.length() and path[i] != '/' )
+                        tmp.push_back(path[i++]);
+                    opt_path.append(tmp);
+                    i--;
+                }
+                continue;
+            }
+        
+            std::string tmp;
+            while(i != path.length() and path[i] != '/' ){
+                tmp.push_back(path[i++]);
+            }
+            opt_path.append(tmp);
+            i--;
+        }
+        if(opt_path[opt_path.length() - 1] == '/' )
+            opt_path.erase(opt_path.end()-1);
+        return opt_path;
+    }
 //================================================================================================================================================
 private:
     bool isPalindrom_5(const std::string &str, int start, int end){
@@ -1713,9 +1846,14 @@ int main(){
     Solution solution;
     ShowSmt sh;
 
-    
-    
-    
+    std::string str1 = "/.";
+    std::string str2 = "/..home";
+    std::string str3 = "/home/user/Documents/../Pictures";
+    std::string str4 = "/.../a/../b/c/../d/./";
 
     
+    //sh.print(solution.simplifyPath(str2));
+    sh.print(solution.simplifyPath_71(str1));
+
+
 }
