@@ -178,31 +178,7 @@ double divide(double a, double b){
 
 int main(int argc, char* argv[])
 {
-    setlocale(LC_ALL,"ru");
     
-    // 11.1
-    //std::cout << sum(1.4,2.) << std::endl;
     
-    // // 11.3
-    // try{
-    //     std::cout << "In try block 11.3" << std::endl;
-    //     throw 505;
-    // }catch(int i){
-    //     std::cout << "Exception int"<< i << std::endl;
-    // }catch(float){
-    //     std::cout << "Exception float " << std::endl;
-    // }
-    // std::cout << "out try block " << std::endl;
-    
-    // // 11.4
-    // try{
-    //     std::cout << "In try block 11.4" << std::endl;
-    //     throw 505;
-    // }catch(...){
-    //     // catch all types of exceptions
-    //     std::cout << "Exception all types" << std::endl;
-    // }
-    // std::cout << divide(34,0);
-    
-    return 0;
+
 }

@@ -7,12 +7,14 @@
 #include <algorithm>
 #include <regex>
 #include <queue>
-#include <math.h>
-//#include <functional>
+#include <cmath>
 #include <numeric>
 #include <cstring>
+#include <list>
 
- 
+#include "show.h"
+#include "timer.h"
+
 struct ListNode {
     int val;
     ListNode* next;
@@ -41,38 +43,7 @@ struct TreeNode{
     TreeNode(int v, TreeNode* l, TreeNode* r) :  val(v), left(l), rigth(r){}
 };
 
-class ShowSmt{
-public:
-    template<typename T>
-    void show_vec(std::vector<T> v){
-        std::cout <<'[';
-        for (int i = 0; i < v.size(); i++)
-        {
-            if(i == v.size() - 1){
-                std::cout << v[i] <<']'<<  std::endl;
-                break;
-            }
-            std::cout << v[i] << ", ";
-        }
-    }
-
-    template<typename T>
-    void show_vec_vec(std::vector<std::vector<T>> v){
-        std::cout <<'[';
-        for (int i = 0; i < v.size(); i++)
-        {
-            if(i == v.size() - 1){
-                show_vec(v[i]);
-                std::cout << ']' << std::endl;
-                break;
-            }
-            show_vec(v[i]);
-            std::cout << ",";
-        }
-    }
-
-
-
+namespace sh {
     void showList(ListNode* l){
         while (l != nullptr){
             std::cout << l-> val << " -> ";
@@ -92,9 +63,9 @@ public:
 
     // TreeNode
     // TreeNode<int>* root = new TreeNode<int>(4, new TreeNode<int>(5, new TreeNode<int>(12), new TreeNode<int>(11)), new TreeNode<int>(10, new TreeNode<int>(22), new TreeNode<int>(44)));
-    // sh.showTree(root);
+    // sh::showTree(root);
     // std::cout << std::endl;
-    // sh.showTreeLevel(root);
+    // sh::showTreeLevel(root);
     template<typename T>
     void showTreeLevel(TreeNode<T>* root){
         if (root == nullptr)
@@ -116,11 +87,6 @@ public:
         }
         std::cout << std::endl;
     }
-
-    template<typename T>
-    void print(T smt){
-        std::cout << smt << std::endl;
-    }
 };
 
 class Solution {
@@ -129,8 +95,8 @@ public:
     // // --2
     // ListNode l1(9, (new ListNode(9, (new ListNode(9,(new ListNode(9,(new ListNode(9,(new ListNode(9,(new ListNode(9,(new ListNode(9)))))))))))))));
     // ListNode l2(9, new ListNode(9, new ListNode(9,(new ListNode(9)))));
-    // sh.showList(&l1);
-    // sh.showList(&l2);
+    // sh::showList(&l1);
+    // sh::showList(&l2);
     // solution.addTwoNumbers_2(&l1, &l2);
     ListNode* addTwoNumbers_2(ListNode* l1, ListNode* l2) {
         /*ListNode* ans = new ListNode();
@@ -499,10 +465,10 @@ public:
     //--------------------------#19---------------------------------------------//
     // // --19
     // ListNode* l1 = new ListNode(1, (new ListNode(2, (new ListNode(3,(new ListNode(4,(new ListNode(5,(new ListNode(6,(new ListNode(7,(new ListNode(8)))))))))))))));
-    // sh.showList(l1);
+    // sh::showList(l1);
     // l1 = solution.removeNthFromEnd_19(l1, 8);
     // l1 = solution.removeNthFromEnd_19(l1, 6);
-    // sh.showList(l1);
+    // sh::showList(l1);
     ListNode* removeNthFromEnd_19(ListNode* head, int n) {
         ListNode* h = head;
         ListNode* prev = h;
@@ -544,12 +510,12 @@ public:
     // // --24
     // ListNode* l1 = new ListNode(1, (new ListNode(2, (new ListNode(3,(new ListNode(4,(new ListNode(5,(new ListNode(6,(new ListNode(7,(new ListNode(8)))))))))))))));
     // ListNode* l2 = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4))));
-    // sh.showList(l2);
+    // sh::showList(l2);
     // l2 = solution.swapPairs_24(l2);
-    // sh.showList(l2);
-    // sh.showList(l1);
+    // sh::showList(l2);
+    // sh::showList(l1);
     // l1 = solution.swapPairs_24(l1);
-    // sh.showList(l1);
+    // sh::showList(l1);
     ListNode* swapPairs_24(ListNode* head) {
         if(head == nullptr || head->next == nullptr)
             return head;
@@ -577,12 +543,12 @@ public:
     // ListNode* l1 = new ListNode(1, new ListNode(4, new ListNode(5)));
     // ListNode* l2 = new ListNode(1, new ListNode(3, new ListNode(4)));
     // ListNode* l3 = new ListNode(2, new ListNode(6));
-    // sh.showList(l1);
-    // sh.showList(l2);
-    // sh.showList(l3);
+    // sh::showList(l1);
+    // sh::showList(l2);
+    // sh::showList(l3);
     // std::vector<ListNode*> list = {l1, l2, l3};
     // ListNode* l4 = solution.mergeKLists_23(list);
-    // sh.showList(l4);
+    // sh::showList(l4);
     ListNode* mergeKLists_23(std::vector<ListNode*>& lists) {
         if(lists.size() == 0)
             return {};
@@ -625,9 +591,9 @@ public:
     //--------------------------#31---------------------------------------------//
     // // --31
     // std::vector<int> vec{2,3,1,3,3};
-    // sh.show_vec(vec);
+    // sh::showContainer(vec);
     // solution.nextPermutation_31(vec);
-    // sh.show_vec(vec);
+    // sh::showContainer(vec);
     void nextPermutation_31(std::vector<int>& nums) {
         int l = nums.size() - 2, r = nums.size() - 1;
         int i(0);
@@ -662,8 +628,8 @@ public:
     //--------------------------#34---------------------------------------------//
     // --34
     // std::vector<int> vec{1,2};
-    // sh.show_vec(vec);
-    // sh.show_vec(solution.searchRange_34(vec,2));
+    // sh::showContainer(vec);
+    // sh::showContainer(solution.searchRange_34(vec,2));
     std::vector<int> searchRange_34(std::vector<int>& nums, int target) {
         return {binarySearch_l(nums, target), binarySearch_r(nums, target)};
     }
@@ -671,7 +637,7 @@ public:
     //--------------------------#34---------------------------------------------//
     // --33
     // std::vector<int> vec{4,5,6,7,0,1,2};
-    // sh.show_vec(vec);
+    // sh::showContainer(vec);
     // std::cout << solution.search_33(vec,0);
     int search_33(std::vector<int>& nums, int target) {
         int gap = binarySearchGap(nums);
@@ -741,7 +707,7 @@ public:
 
     //--------------------------#41---------------------------------------------//
     // std::vector<int> vec{1,1};
-    // sh.show_vec(vec);
+    // sh::showContainer(vec);
     // std::cout << solution.firstMissingPositive_41(vec) << std::endl;
     int firstMissingPositive_41(std::vector<int>& nums) {
         int index;
@@ -826,7 +792,7 @@ public:
     //--------------------------#42---------------------------------------------//
     // //[0,1,0,2,1,0,1,3,2,1,2,1]
     // std::vector<int> vec{9,8,9,5,8,8,8,0,4};
-    // sh.show_vec(vec);
+    // sh::showContainer(vec);
     // std::cout << solution.trap_42(vec) << std::endl;
     int trap_42(std::vector<int>& height) {
         if(height.size() < 3)
@@ -937,11 +903,11 @@ public:
 
     //--------------------------#21---------------------------------------------//
     // ListNode* l1 = new ListNode(1, new ListNode(2, new ListNode(4)));
-    // sh.showList(l1);
+    // sh::showList(l1);
     // ListNode* l2 = new ListNode(1, new ListNode(3, new ListNode(4)));
-    // sh.showList(l2);
+    // sh::showList(l2);
     // solution.mergeTwoLists(l1, l2);
-    // sh.showList(l1);
+    // sh::showList(l1);
     ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
         ListNode* dummy = new ListNode();
         ListNode* head = dummy;
@@ -989,8 +955,8 @@ public:
 
     //--------------------------#49---------------------------------------------//
     // std::vector<std::string> strs{"eat","tea","tan","ate","nat","bat"};
-    // sh.show_vec(strs);
-    // sh.show_vec_vec(solution.groupAnagrams(strs));
+    // sh::showContainer(strs);
+    // sh::showVecVec(solution.groupAnagrams(strs));
     std::vector<std::vector<std::string>> groupAnagrams(std::vector<std::string>& strs) {
         if(strs.size() == 0)
             return {};
@@ -1013,9 +979,9 @@ public:
 
     //--------------------------#26---------------------------------------------//
     // std::vector<int> vec{1};
-    // sh.show_vec(vec);
+    // sh::showContainer(vec);
     // std::cout << solution.removeDuplicates_26(vec) << std::endl;
-    // sh.show_vec(vec);
+    // sh::showContainer(vec);
     int removeDuplicates_26(std::vector<int>& nums) {
         int prev(nums[0]);
         auto end = std::remove_if(nums.begin() + 1, nums.end(), [&prev](int a){
@@ -1036,7 +1002,7 @@ public:
 
     //--------------------------#35---------------------------------------------//
     // std::vector<int> vec{1,3,4,5,6};
-    // sh.show_vec(vec);
+    // sh::showContainer(vec);
     // std::cout << solution.searchInsert_35(vec, -1);
     int searchInsert_35(std::vector<int>& nums, int target) {
         int l(0), r(nums.size() - 1), mid;
@@ -1061,9 +1027,9 @@ public:
 
     //--------------------------#48---------------------------------------------//
     // std::vector<std::vector<int>> matrix = {{5,1,9,11},{2,4,8,10},{13,3,6,7},{15,14,12,16}};
-    // sh.show_vec_vec(matrix);
+    // sh::showVecVec(matrix);
     // solution.rotate_48(matrix);
-    // sh.show_vec_vec(matrix);
+    // sh::showVecVec(matrix);
     void rotate_48(std::vector<std::vector<int>>& matrix) {
         if(matrix.size() == 1)
             return;
@@ -1078,8 +1044,8 @@ public:
 
     //--------------------------#46---------------------------------------------//
     // std::vector<int> vec{1,2,3};
-    // sh.show_vec(vec);
-    // sh.show_vec_vec(solution.permute_46(vec));
+    // sh::showContainer(vec);
+    // sh::showVecVec(solution.permute_46(vec));
     std::vector<std::vector<int>> permute_46(std::vector<int>& nums) {
         std::vector<std::vector<int>> res;
         backtrack(nums, 0, res);
@@ -1119,7 +1085,7 @@ public:
 
     //--------------------------#54---------------------------------------------//
     // std::vector<std::vector<int>> matrix{{1,2,3},{4,5,6},{7,8,9}};
-    // sh.show_vec(solution.spiralOrder(matrix));
+    // sh::showContainer(solution.spiralOrder(matrix));
     std::vector<int> spiralOrder(std::vector<std::vector<int>>& matrix) {
         std::vector<int> res;
         res.resize(matrix.size() * matrix[0].size());
@@ -1162,8 +1128,8 @@ public:
     
     //--------------------------#56---------------------------------------------//
     // std::vector<std::vector<int>> matrix{{1,3},{2,6},{8,10}, {15,18}}; // {1,3},{2,6},{8,10}, {15,18} {4,5},{1,4},{0,1}
-    // sh.show_vec_vec(matrix);
-    // sh.show_vec_vec(solution.merge_56(matrix));
+    // sh::showVecVec(matrix);
+    // sh::showVecVec(solution.merge_56(matrix));
     std::vector<std::vector<int>> merge_56(std::vector<std::vector<int>>& intervals) {
         sort(intervals.begin(), intervals.end());
 
@@ -1189,7 +1155,7 @@ public:
     //--------------------------#57---------------------------------------------//
     // std::vector<std::vector<int>> intervals{{1, 5}};
     // std::vector<int> a{2,3};
-    // sh.show_vec_vec(solution.insert_57(intervals , a));
+    // sh::showVecVec(solution.insert_57(intervals , a));
     std::vector<std::vector<int>> insert_57(std::vector<std::vector<int>>& intervals, std::vector<int>& newInterval) {
         std::vector<std::vector<int>> res;
         if(intervals.size() == 0)
@@ -1232,7 +1198,7 @@ public:
     }
 
     //--------------------------#59---------------------------------------------//
-    // sh.show_vec_vec(solution.generateMatrix_59(4));
+    // sh::showVecVec(solution.generateMatrix_59(4));
     std::vector<std::vector<int>> generateMatrix_59(int n) {
         std::vector<std::vector<int>> res;
         res.reserve(n);
@@ -1249,9 +1215,9 @@ public:
 
     //--------------------------#61---------------------------------------------//
     // ListNode* l1 = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
-    // sh.showList(l1);
+    // sh::showList(l1);
     // l1 = solution.rotateRight_61(l1, 2);
-    // sh.showList(l1);
+    // sh::showList(l1);
     ListNode* rotateRight_61(ListNode* head, int k) {
         if(head == nullptr)
             return head;
@@ -1291,8 +1257,8 @@ public:
     
     //--------------------------#66---------------------------------------------//
     // std::vector<int> vec{4,3,2,1};
-    // sh.show_vec(vec);
-    // sh.show_vec(solution.plusOne(vec));
+    // sh::showContainer(vec);
+    // sh::showContainer(solution.plusOne(vec));
     std::vector<int> plusOne(std::vector<int>& digits) {
         std::vector<int> res;
         res.reserve(digits.size());
@@ -1312,7 +1278,7 @@ public:
     }
 
     //--------------------------#62---------------------------------------------//
-    // sh.print(solution.uniquePaths(3,7));
+    // sh::print(solution.uniquePaths(3,7));
     int uniquePaths(int m, int n) {
         // --easy
         std::vector<std::vector<int>> dp(m, std::vector<int>(n, 1));
@@ -1448,7 +1414,7 @@ public:
     }
 
     //--------------------------#67---------------------------------------------//
-    // sh.print(solution.addBinary_67("1010","1011"));
+    // sh::print(solution.addBinary_67("1010","1011"));
     std::string addBinary_67(std::string a, std::string b) {
         std::string res;
         int size = std::max(a.size(), b.size());
@@ -1495,6 +1461,12 @@ public:
     }
 
     //--------------------------#71---------------------------------------------//
+    // std::string str1 = "/.";
+    // std::string str2 = "/..home";
+    // std::string str3 = "/home/user/Documents/../Pictures";
+    // std::string str4 = "/.../a/../b/c/../d/./";
+    // sh::print(solution.simplifyPath_71(str2));
+    // sh::print(solution.simplifyPath_71(str1));
     std::string simplifyPath_71(std::string path) {
         if(path.length() == 1)
             return path;
@@ -1561,6 +1533,92 @@ public:
             opt_path.erase(opt_path.end()-1);
         return opt_path;
     }
+
+    //--------------------------#70---------------------------------------------//
+    // solution.climbStairs_70(4);
+    int climbStairs_70(int n) {
+        if(n == 1)
+            return 1;
+        if(n == 2)
+            return 2;
+        
+        int n1 = 2;
+        int n2 = 1;
+        for (int i = 0; i < n - 2; i++){
+            n1 += n2;
+            n2 = n1 - n2;
+        }
+        
+        return n1;
+    }
+
+    //--------------------------#20---------------------------------------------//
+    bool isValid_20(std::string s) {
+        std::stack<char> br;
+        size_t i(0);
+        for (; i < s.size(); i++)
+        {
+            if(s[i] == '[' or s[i] == '(' or s[i] == '{'){
+                br.push(s[i]);
+                continue;
+            }
+
+            if(!br.empty() and ((s[i] == ']' and br.top() == '[') or(s[i] == '}' and br.top() == '{') or (s[i] == ')' and br.top() == '('))){
+                br.pop();
+            }else{
+                return false;
+            }
+        }
+        if(br.empty() and i == s.size())
+            return true;
+        else
+            return false;
+    }
+
+    //--------------------------#50---------------------------------------------//
+    // sh::print(solution.myPow(2, -6));
+    double myPow(double x, int n) {
+        double res = 1;
+        while (n) {
+            if (n % 2){
+                res = (n > 0 ? res * x : res / x);
+            } 
+            x = x * x;
+            n /= 2;
+        }
+        return res;
+    }
+
+    //--------------------------#82---------------------------------------------//
+    // ListNode* l1 = new ListNode(1, (new ListNode(1, (new ListNode(3,(new ListNode(3,(new ListNode(5,(new ListNode(6,(new ListNode(7,(new ListNode(8)))))))))))))));
+    // sh::showList(l1);
+    // l1 = solution.deleteDuplicates_82(l1);
+    // sh::showList(l1);
+    ListNode* deleteDuplicates_82(ListNode* head) {
+        if(head == nullptr)
+            return head;
+
+        ListNode* prev = new ListNode(0, head);
+        ListNode* curr = head;
+        ListNode* res = prev;
+
+        while(curr != nullptr){
+            if(curr->next != nullptr and curr->val == curr->next->val){
+                while (curr->next != nullptr and  curr->val == curr->next->val){
+                    curr = curr->next;
+                }
+                prev->next = curr->next;
+                curr = curr->next;
+                continue;
+            }
+            curr = curr->next;
+            prev = prev->next;
+        }
+
+        return res->next;
+    }
+
+    
 //================================================================================================================================================
 private:
     bool isPalindrom_5(const std::string &str, int start, int end){
@@ -1839,21 +1897,17 @@ private:
     }
 };
 
-
 //==========================================================================//
 
 int main(){
     Solution solution;
-    ShowSmt sh;
-
-    std::string str1 = "/.";
-    std::string str2 = "/..home";
-    std::string str3 = "/home/user/Documents/../Pictures";
-    std::string str4 = "/.../a/../b/c/../d/./";
+    Time timer("Main ");
 
     
-    //sh.print(solution.simplifyPath(str2));
-    sh.print(solution.simplifyPath_71(str1));
+    
+    
+    
+    
 
 
 }
