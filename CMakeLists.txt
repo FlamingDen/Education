@@ -17,5 +17,8 @@ add_executable(Main
 )
 add_executable(LeetCode
     leetcode.cpp
+    timer.cpp
+    timer.h
+    show.h
 )
 
