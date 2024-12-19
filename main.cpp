@@ -7,6 +7,7 @@
 #include <vector>
 #include <regex>
 
+#include "timer.h"
 
 #include "point.h"
 
@@ -112,9 +113,15 @@ public:
 class Base{
     int a, b;
 public:
-    Base(): a(0), b(0) {}
-    Base(int a) : a(a), b(0){}
-    virtual ~Base(){}
+    Base(): a(0), b(0) {
+        std::cout << "Base()" << std::endl;
+    }
+    Base(int a) : a(a), b(0){
+        std::cout << "Base()" << std::endl;
+    }
+    virtual ~Base(){
+        std::cout << "~Base()" << std::endl;
+    }
     int getA(){ return a; }
     int getB(){ return b; }
     virtual void show() = 0;
@@ -122,9 +129,14 @@ public:
 
 class Child final: public  Base 
 {
+    Timer t{"Field in Child"};
 public:
-    Child(){}
-    ~Child(){}
+    Child(){
+        std::cout << "Child()" << std::endl;
+    }
+    ~Child(){
+        std::cout << "~Child()" << std::endl;
+    }
     void show() override {
         std::cout << getB() * getA()  << std::endl;
     }
@@ -178,7 +190,7 @@ double divide(double a, double b){
 
 int main(int argc, char* argv[])
 {
-    
+    Child ch;
     
 
 }

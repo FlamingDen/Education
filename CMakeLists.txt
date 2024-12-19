@@ -14,11 +14,28 @@ add_executable(Main
     main.cpp
     point.cpp
     point.h
+    utils/timer.cpp
+    utils/timer.h
 )
 add_executable(LeetCode
     leetcode.cpp
-    timer.cpp
-    timer.h
-    show.h
+    utils/timer.cpp
+    utils/timer.h
+    utils/show.h
 )
 
+target_include_directories(Main INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils
+)
+
+target_include_directories(Main PRIVATE
+    utils
+)
+
+target_include_directories(LeetCode INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils
+)
+
+target_include_directories(LeetCode PRIVATE
+    utils
+)

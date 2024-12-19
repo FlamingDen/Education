@@ -1900,14 +1900,11 @@ private:
 //==========================================================================//
 
 int main(){
-    Solution solution;
-    Time timer("Main ");
+    Solution solution;   
+    Timer timer("LeetCode.cpp(int main())");
 
-    
-    
-    
-    
-    
+
+
 
 
 }
