@@ -634,7 +634,7 @@ public:
         return {binarySearch_l(nums, target), binarySearch_r(nums, target)};
     }
 
-    //--------------------------#34---------------------------------------------//
+    //--------------------------#33---------------------------------------------//
     // --33
     // std::vector<int> vec{4,5,6,7,0,1,2};
     // sh::showContainer(vec);
@@ -1618,7 +1618,41 @@ public:
         return res->next;
     }
 
-    
+    //--------------------------#83---------------------------------------------//
+    // ListNode* l1 = new ListNode(1, (new ListNode(1, (new ListNode(3,(new ListNode(3,(new ListNode(5,(new ListNode(6)))))))))));
+    // sh::showList(l1);
+    // l1 = solution.deleteDuplicates_83(l1);
+    // sh::showList(l1);
+    ListNode* deleteDuplicates_83(ListNode* head) {
+        ListNode* curr = head;
+
+        ListNode* duplicate;
+        while (curr != nullptr)
+        {
+            if(curr->next != nullptr and curr->val == curr->next->val){
+                duplicate = curr->next;
+                curr->next = duplicate->next;
+                delete duplicate;
+                continue;
+            }
+            curr = curr->next;
+        }
+        return head;
+    }
+
+    //--------------------------#81---------------------------------------------//
+    bool search_81(std::vector<int>& nums, int target) {
+        int second = binarySearchDeepGap(nums, 0 , nums.size() - 1);
+        int ans;
+        if(second == -1){
+            ans = binarySearchRange(nums, target, 0, nums.size() - 1);
+        } else if(target >= nums[second] and target <= nums[nums.size() - 1]){
+            ans = binarySearchRange(nums, target, second, nums.size() - 1);
+        } else{
+            ans = binarySearchRange(nums, target, 0, second - 1);
+        }
+        return ans == -1 ? false : true;
+    }
 //================================================================================================================================================
 private:
     bool isPalindrom_5(const std::string &str, int start, int end){
@@ -1662,7 +1696,7 @@ private:
         nums[i] -= nums[j];
     }
     
-    // --34
+    // --34 --81
     int binarySearch(std::vector<int> &nums, int target){
         int l = 0, r = nums.size() - 1, mid;
         while(l <= r){
@@ -1722,7 +1756,7 @@ private:
         return -1;
     }
 
-    // --33
+    // --33 --81 
     // return start index of second array
     int binarySearchGap(std::vector<int> &nums){
         if(nums.size() == (0 || 1))
@@ -1755,6 +1789,39 @@ private:
             }
             if(nums[mid] < target){
                 l = mid + 1;
+            }
+        }
+        return -1;
+    }
+    int binarySearchDeepGap(std::vector<int> &nums, int left, int rigth){
+        if(nums.size() == (0 || 1))
+            return -1;
+
+        int l = left, r = rigth, mid, res;
+        if(l != 0 and nums[l] < nums[l -1])
+            return l;
+        if(r != nums.size() - 1 and nums[r] > nums[r + 1])
+            return r + 1;
+        while(l < r){
+            mid = std::ceil((r + l) / 2.);
+
+            if(l != 0 and nums[l] < nums[l -1])
+                return l;
+            if(r != nums.size() - 1 and nums[r] > nums[r + 1])
+                return r + 1;
+
+            if(nums[mid] < nums[mid-1]){
+                return mid;
+            } else if(nums[mid] > nums[l]){
+                l = mid;
+            } else if(nums[mid] < nums[r]) {
+                r = mid;
+            } else {
+                res = binarySearchDeepGap(nums, l, mid - 1);
+                if(res != -1)
+                    return res;
+                
+                return mid + 1 < r ? binarySearchDeepGap(nums, mid + 1, r): binarySearchDeepGap(nums, mid, r);
             }
         }
         return -1;
@@ -1901,8 +1968,13 @@ private:
 
 int main(){
     Solution solution;   
-    Timer timer("LeetCode.cpp(int main())");
+    Timer timer("LeetCode.cpp");
 
+    std::vector<int> vec{1,1};
+    sh::showContainer(vec);
+    std::cout << std::boolalpha << solution.search_81(vec,0);
+   
+    
 
 
 

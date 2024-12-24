@@ -129,7 +129,7 @@ public:
 
 class Child final: public  Base 
 {
-    Timer t{"Field in Child"};
+    //Timer t{"Field in Child"};
 public:
     Child(){
         std::cout << "Child()" << std::endl;
@@ -188,9 +188,9 @@ double divide(double a, double b){
     return a/b;
 }
 
-int main(int argc, char* argv[])
+int main()
 {
-    Child ch;
     
-
+    
 }
+
