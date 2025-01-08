@@ -37,10 +37,10 @@ template<typename T>
 struct TreeNode{
     T val;
     TreeNode* left = nullptr;
-    TreeNode* rigth = nullptr;
+    TreeNode* right = nullptr;
     TreeNode() : val(0){}
     TreeNode(int v) : val(v){}
-    TreeNode(int v, TreeNode* l, TreeNode* r) :  val(v), left(l), rigth(r){}
+    TreeNode(int v, TreeNode* l, TreeNode* r) :  val(v), left(l), right(r){}
 };
 
 namespace sh {
@@ -57,7 +57,7 @@ namespace sh {
         if(root == nullptr)
             return;
         showTree(root->left);
-        showTree(root->rigth);
+        showTree(root->right);
         std::cout << root->val << ", ";
     }
 
@@ -83,7 +83,7 @@ namespace sh {
             if(temp->left != nullptr)
                 q.push(temp->left);
             if(temp->rigth != nullptr)
-                q.push(temp->rigth);
+                q.push(temp->right);
         }
         std::cout << std::endl;
     }
@@ -1641,6 +1641,9 @@ public:
     }
 
     //--------------------------#81---------------------------------------------//
+    // std::vector<int> vec{1,1};
+    // sh::showContainer(vec);
+    // std::cout << std::boolalpha << solution.search_81(vec,0);
     bool search_81(std::vector<int>& nums, int target) {
         int second = binarySearchDeepGap(nums, 0 , nums.size() - 1);
         int ans;
@@ -1652,6 +1655,189 @@ public:
             ans = binarySearchRange(nums, target, 0, second - 1);
         }
         return ans == -1 ? false : true;
+    }
+
+    //--------------------------#75---------------------------------------------//
+    // std::vector<int> vec{2,0,2,1,1,0};
+    // sh::showContainer(vec);
+    // solution.sortColors_75(vec);
+    // sh::showContainer(vec);
+    void sortColors_75(std::vector<int>& nums) {
+        std::vector<int> ans(nums.size(), 1);
+
+        int l(0), r(nums.size() - 1);
+        for(size_t i(0); i < nums.size(); ++i){
+            if(nums[i] == 0){
+                ans[l++] = 0;
+                continue;
+            }
+            if(nums[i] == 2){
+                ans[r--] = 2;
+                continue;
+            }
+        }
+        std::copy(ans.begin(), ans.end(), nums.begin());
+
+        // int low = 0, mid = 0, high = nums.size()-1;
+        // while(mid <= high){
+        //     if(nums[mid] == 0){
+        //         std::swap(nums[low], nums[mid]);
+        //         low++;
+        //         mid++;
+        //     }
+        //     else if(nums[mid] == 1){
+        //         mid++;
+        //     }
+        //     else{
+        //         std::swap(nums[mid], nums[high]);
+        //         high--;
+        //     }
+        // }
+    }
+
+    //--------------------------#80---------------------------------------------//
+    // std::vector<int> vec{1,1,1,1};
+    // sh::showContainer(vec);
+    // solution.removeDuplicates_80(vec);
+    // sh::showContainer(vec);
+    int removeDuplicates_80(std::vector<int>& nums) {
+        int prev(nums[0]), k(1);
+        auto end = std::remove_if(nums.begin() + 1, nums.end(), [&prev, &k](int a){
+            if(a == prev){
+                k++;
+                if(k > 2){
+                    return true;
+                } else {
+                    return false;
+                }
+            }
+            prev = a; 
+            k = 1;    
+            return false; 
+        });
+        nums.erase(end, nums.end());
+        return nums.size();
+
+        // int i = 0;
+        // for (int n : nums)
+        //     if (i < 2 || n > nums[i-2])
+        //         nums[i++] = n;
+        // return i;
+    }
+
+    //--------------------------#73---------------------------------------------//
+    void setZeroes(std::vector<std::vector<int>>& matrix) {
+        std::unordered_set<int> r;
+        std::unordered_set<int> c;
+
+        for(size_t i(0); i != matrix.size(); ++i){
+            for(size_t j(0); j != matrix[i].size(); ++j){
+                if(matrix[i][j] == 0){
+                    r.insert(i);
+                    c.insert(j);
+                }
+            }
+        }
+
+        for(auto it = std::begin(r); it != std::end(r); ++it){
+            resetRow(matrix, *it);
+        }
+        for(auto it = std::begin(c); it != std::end(c); ++it){
+            resetColumn(matrix, *it);
+        }
+    }
+
+    //--------------------------#3042-------------------------------------------//
+    int countPrefixSuffixPairs(std::vector<std::string>& words) {
+        int res(0);
+        for(size_t i(0); i < words.size() - 1; ++i){
+            for(size_t j(i + 1); j < words.size(); ++j){
+                if(words[i].size() <= words[j].size() and isPrefixAndSuffix(words[i], words[j]))
+                    res++;
+            }
+        }
+        return res;
+    } 
+
+    //--------------------------#86---------------------------------------------//
+    // ListNode* l1 = new ListNode(1, (new ListNode(4, (new ListNode(3,(new ListNode(2,(new ListNode(5,(new ListNode(2)))))))))));
+    // sh::showList(l1);
+    // l1 = solution.partition_86(l1,3);
+    // sh::showList(l1);
+    ListNode* partition_86(ListNode* head, int x) {
+        ListNode* l_st = new ListNode;
+        ListNode* l = l_st;
+        ListNode* r_st = new ListNode;
+        ListNode* r = r_st;
+        while (head != nullptr)
+        {
+            if(head->val < x){
+                l->next = head;
+                l = l->next;
+            } else {
+                r->next = head;
+                r = r->next;
+            }
+            head = head->next;
+        }
+        l->next = r_st->next;
+        r->next = nullptr;
+        return l_st->next;
+    }
+
+    //--------------------------#94---------------------------------------------//
+    std::vector<int> inorderTraversal_94(TreeNode<int>* root) {
+        std::vector<int> res;
+        inorderTree_94(root, res);
+        return res;
+    }
+    void inorderTree_94(TreeNode<int>* root, std::vector<int>& res){
+        if(root == nullptr){
+            res.push_back(INT_MIN);
+            return;
+        }
+            
+        
+        inorderTree_94(root->left, res);
+        res.push_back(root->val);
+        inorderTree_94(root->right, res);
+    }
+
+    //--------------------------#100--------------------------------------------//
+    bool isSameTree(TreeNode<int>* p, TreeNode<int>* q) {
+        std::vector<int> res_p, res_q;
+        inorderTree_94(p, res_p);
+        inorderTree_94(q, res_q);
+        if (res_p.size() != res_q.size())
+            return false;
+        for(size_t i(0); i != res_p.size(); ++i){
+            if(res_p[i] != res_q[i])
+                return false;
+        }
+        return true;
+    }
+
+    //--------------------------#94---------------------------------------------//
+    bool isValidBST(TreeNode<int>* root) {
+        std::pair<int, int> p{root->val, root->val};
+        return isValid_94(root, p);
+    }
+    bool isValid_94(TreeNode<int>* root, std::pair<int, int>& interval){
+        if(root->left == nullptr and root->right == nullptr){
+            interval = {root->val, root->val};
+            return true;
+        }
+        bool res;
+        int l;
+        res = isValid_94(root->left, interval);
+        if(res == false || root->val < interval.second)
+            return false;
+        l = interval.first;
+
+        res = isValid_94(root->right, interval);
+        if(res == false || root->val > interval.first)
+            return false;
+        interval.first = l;
     }
 //================================================================================================================================================
 private:
@@ -1962,6 +2148,23 @@ private:
             return 2 * (n - 1) + 2 * (m - 1) - i; 
         return  2 * (n - 1) + 2 * (m - 1) + getSpiralPlace(i - 1, j - 1, n - 2, m - 2);
     }
+
+    // --73
+    void resetRow(std::vector<std::vector<int>>& matrix, int row){
+        for(size_t i(0); i != matrix[row].size(); ++i){
+            matrix[row][i] = 0;
+        }
+    }
+    void resetColumn(std::vector<std::vector<int>>& matrix, int col){
+        for(size_t i(0); i != matrix.size(); ++i){
+            matrix[i][col] = 0;
+        }
+    }
+
+    // --3042
+    bool isPrefixAndSuffix(const std::string& str1, const std::string& str2){
+        return (str2.starts_with(str1) && str2.ends_with(str1));
+    }
 };
 
 //==========================================================================//
@@ -1970,10 +2173,8 @@ int main(){
     Solution solution;   
     Timer timer("LeetCode.cpp");
 
-    std::vector<int> vec{1,1};
-    sh::showContainer(vec);
-    std::cout << std::boolalpha << solution.search_81(vec,0);
-   
+    
+    
     
 
 
