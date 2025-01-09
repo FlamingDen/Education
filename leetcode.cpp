@@ -1817,27 +1817,220 @@ public:
         return true;
     }
 
-    //--------------------------#94---------------------------------------------//
-    bool isValidBST(TreeNode<int>* root) {
+    //--------------------------#98---------------------------------------------//
+    bool isValidBST_98(TreeNode<int>* root) {
+        if(root == nullptr)
+            return true;
         std::pair<int, int> p{root->val, root->val};
-        return isValid_94(root, p);
+        return isValid_98(root, p);
     }
-    bool isValid_94(TreeNode<int>* root, std::pair<int, int>& interval){
+    bool isValid_98(TreeNode<int>* root, std::pair<int, int>& interval){
+        if (root == nullptr){}
+            return true;
         if(root->left == nullptr and root->right == nullptr){
             interval = {root->val, root->val};
             return true;
         }
         bool res;
         int l;
-        res = isValid_94(root->left, interval);
-        if(res == false || root->val < interval.second)
-            return false;
-        l = interval.first;
+        if(root->left != nullptr){
+            res = isValid_98(root->left, interval);
+            if(res == false || root->val <= interval.second)
+                return false;
+            l = interval.first;
+        } else {
+            l = root->val;
+        }
+        
 
-        res = isValid_94(root->right, interval);
-        if(res == false || root->val > interval.first)
-            return false;
+        if(root->right != nullptr){
+            res = isValid_98(root->right, interval);
+            if(res == false || root->val >= interval.first)
+                return false;
+        } else {
+            interval.second = root->val;
+        }
         interval.first = l;
+
+        return true;
+    }
+
+    //--------------------------#2185-------------------------------------------//
+    int prefixCount(std::vector<std::string>& words, std::string pref) {
+        int k(0);
+        for(size_t i(0); i != words.size(); ++i){
+            if(words[i].starts_with(pref))
+                ++k;
+        }
+        return k;
+    }
+
+    //--------------------------#97---------------------------------------------//
+    bool isInterleave(std::string s1, std::string s2, std::string s3) {
+        if(s3.length() != s1.length() + s2.length())
+        return false;
+    
+        bool table[s1.length()+1][s2.length()+1];
+        
+        for(int i=0; i<s1.length()+1; i++)
+            for(int j=0; j< s2.length()+1; j++){
+                if(i==0 && j==0)
+                    table[i][j] = true;
+                else if(i == 0)
+                    table[i][j] = ( table[i][j-1] && s2[j-1] == s3[i+j-1]);
+                else if(j == 0)
+                    table[i][j] = ( table[i-1][j] && s1[i-1] == s3[i+j-1]);
+                else
+                    table[i][j] = (table[i-1][j] && s1[i-1] == s3[i+j-1] ) || (table[i][j-1] && s2[j-1] == s3[i+j-1] );
+            }
+            
+        return table[s1.length()][s2.length()];
+    }
+
+    //--------------------------#96---------------------------------------------//
+    // sh::print(solution.numTrees(2));
+    // sh::print(solution.numTrees(3));
+    // sh::print(solution.numTrees(4));
+    // sh::print(solution.numTrees(5));
+    // sh::print(solution.numTrees(6));
+    int numTrees(int n) {
+        std::vector<int> res;
+        res.resize(n + 1, 0);
+        res[0] = 1;
+
+        for(size_t i(1); i != n + 1; ++i){
+            combinations_96(i, res);
+        }
+        return res[n];
+    }
+
+    //--------------------------#92---------------------------------------------//
+    // ListNode* l1 = new ListNode(3, (new ListNode(5)));
+    // sh::showList(l1);
+    // l1 = solution.reverseBetween_92(l1, 2, 2);
+    // sh::showList(l1);
+    ListNode* reverseBetween_92(ListNode* head, int left, int right) {
+        int count(1);
+        ListNode* prev_st = new ListNode;
+        ListNode* st;
+        ListNode* end;
+        ListNode* after_end = nullptr;
+        ListNode* curr = head;
+        prev_st->next = curr;
+        bool f(true);
+
+        while (curr != nullptr && count <= right)
+        {
+            if(count == left){
+                st = curr;
+                f = false;
+            }
+                
+            if(count == right){
+                end = curr;
+            }
+               
+            curr = curr->next;
+            ++count;
+            if(f)
+                prev_st = prev_st->next;
+        }
+        if(end != nullptr)
+            after_end = end->next;
+        
+        
+        // развернуть список между st and end
+        if(right != left){
+            prev_st->next = end;
+            ListNode* next_el;
+            ListNode* next_node = after_end;
+            curr = st;
+            count = right - left + 1;
+            while (count--)
+            {
+                next_el = curr->next;
+                curr->next = next_node;
+                next_node = curr;
+                curr = next_el;
+            }
+        }
+
+        if (left == 1)
+            head = prev_st->next;
+        return head;
+    }
+
+    //--------------------------#1408-------------------------------------------//
+    // --KMP
+    // std::vector<std::string> words{"leetcode","et","code"};
+    // sh::showContainer(words);
+    // sh::showContainer(solution.stringMatching_1408(words));
+    std::vector<std::string> stringMatching_1408(std::vector<std::string>& words) {
+        std::vector<std::string> ans;
+        bool add(false);
+        for(size_t i(0); i != words.size(); ++i){
+            std::string curr = words[i];
+            for(size_t j(0); j != words.size(); ++j){
+                if(curr.size() > words[j].size() || j == i)
+                    continue;
+                for(size_t k(0); k + curr.size() <= words[j].size(); ++k){
+                    if(curr == words[j].substr(k, curr.size())){
+                        add = true;
+                        break;
+                    }                  
+                }
+                if(add)
+                    break;
+            }
+            if(add)
+                ans.push_back(curr);
+            add = false;
+
+        }
+        return ans;
+    }
+
+    //--------------------------#88---------------------------------------------//
+    // std::vector<int> nums1{2,0};
+    // std::vector<int> nums2{1};
+    // sh::showContainer(nums1);
+    // sh::showContainer(nums2);
+    // solution.merge_88(nums1,1,nums2,1);
+    // sh::showContainer(nums1);
+    void merge_88(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n) {
+        int i{m + n - 1};
+        --m;
+        --n;
+        while(n >= 0){
+            if(n < 0 || ( m >= 0 and nums1[m] > nums2[n]) ){
+                std::swap(nums1[m--], nums1[i]);
+            } else {
+                std::swap(nums2[n--], nums1[i]);
+            }
+        }
+    }
+
+    //--------------------------#84---------------------------------------------//
+    int largestRectangleArea_84(std::vector<int>& heights) {
+        int ans(0);
+        for(size_t i(0); i != heights.size(); ++i){
+            int l(i - 1), r(i + 1);
+            int s(heights[i]);
+            // (l >= 0 and r < heights.size()) or 
+            while ((l >= 0 and heights[i] <= heights[l]) or (r < heights.size() and heights[i] <= heights[r]))
+            {
+                if(r < heights.size() and heights[i] <= heights[r]){
+                    s += heights[i];
+                    ++r;
+                }
+                if(l >= 0 and heights[i] <= heights[l]){
+                    s += heights[i];
+                    --l;
+                }    
+            }
+            ans = std::max(ans, s);
+        }
+        return ans;
     }
 //================================================================================================================================================
 private:
@@ -2165,6 +2358,18 @@ private:
     bool isPrefixAndSuffix(const std::string& str1, const std::string& str2){
         return (str2.starts_with(str1) && str2.ends_with(str1));
     }
+
+    // --96
+    void combinations_96(int k, std::vector<int>& res){
+        if (k == 1){
+            res[k] = 1;
+            return;
+        }
+            
+        for(size_t i(1); i <= k  ; ++i){
+            res[k] += res[k - i] * res[i - 1];
+        }
+    }
 };
 
 //==========================================================================//
@@ -2173,6 +2378,8 @@ int main(){
     Solution solution;   
     Timer timer("LeetCode.cpp");
 
+    std::vector<int> heights{2,1,5,6,2,3};
+    sh::print(solution.largestRectangleArea_84(heights));
     
     
     
