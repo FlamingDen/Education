@@ -1,16 +1,20 @@
 #include <iostream>
-#include <map>
-#include <unordered_set>
-#include <unordered_map>
-#include <vector>
-#include <array>
 #include <algorithm>
 #include <regex>
-#include <queue>
 #include <cmath>
 #include <numeric>
 #include <cstring>
+#include <cmath>
+
+
 #include <list>
+#include <vector>
+#include <array>
+#include <queue>
+#include <set>
+#include <unordered_set>
+#include <map>
+#include <unordered_map>
 
 #include "show.h"
 #include "timer.h"
@@ -2012,25 +2016,273 @@ public:
 
     //--------------------------#84---------------------------------------------//
     int largestRectangleArea_84(std::vector<int>& heights) {
-        int ans(0);
-        for(size_t i(0); i != heights.size(); ++i){
-            int l(i - 1), r(i + 1);
-            int s(heights[i]);
-            // (l >= 0 and r < heights.size()) or 
-            while ((l >= 0 and heights[i] <= heights[l]) or (r < heights.size() and heights[i] <= heights[r]))
-            {
-                if(r < heights.size() and heights[i] <= heights[r]){
-                    s += heights[i];
-                    ++r;
-                }
-                if(l >= 0 and heights[i] <= heights[l]){
-                    s += heights[i];
-                    --l;
-                }    
+        // int ans(0);
+        // for(size_t i(0); i != heights.size(); ++i){
+        //     int l(i - 1), r(i + 1);
+        //     int s(heights[i]);
+        //     while ((l >= 0 and heights[i] <= heights[l]) or (r < heights.size() and heights[i] <= heights[r]))
+        //     {
+        //         if(r < heights.size() and heights[i] <= heights[r]){
+        //             s += heights[i];
+        //             ++r;
+        //         }
+        //         if(l >= 0 and heights[i] <= heights[l]){
+        //             s += heights[i];
+        //             --l;
+        //         }    
+        //     }
+        //     ans = std::max(ans, s);
+        // }
+        // return ans;
+        int n=heights.size();
+        std::vector<int> nsr(n,0);
+        std::vector<int> nsl(n,0);
+
+        std::stack<int> s;
+
+        for(int i=n-1;i>=0;i--){
+            while(!s.empty() && heights[i]<=heights[s.top()]){
+                s.pop();
             }
-            ans = std::max(ans, s);
+            if(s.empty()) nsr[i]=n;
+            else nsr[i]=s.top();
+            s.push(i);
+        }
+
+        while(!s.empty()) s.pop();
+
+        for(int i=0;i<n;i++){
+            while(!s.empty() && heights[i]<=heights[s.top()]){
+                s.pop();
+            }
+            if(s.empty()) nsl[i]=-1;
+            else nsl[i]=s.top();
+            s.push(i);
+        }
+
+        int ans=0;
+
+        for(int i=0;i<n;i++){
+            ans=std::max(ans, heights[i]*(nsr[i]-nsl[i]-1));
+        }
+        return ans;      
+    }
+
+    //--------------------------#916--------------------------------------------//
+    // std::vector<std::string> words1{"amazon","apple","facebook","google","leetcode"};
+    // std::vector<std::string> words2{"e","oo"};
+    // sh::showContainer(solution.wordSubsets_916(words1, words2));
+    std::vector<std::string> wordSubsets_916(std::vector<std::string>& words1, std::vector<std::string>& words2) {
+        std::unordered_map<char, int> key;
+        std::unordered_map<char, int> tmp;
+        std::vector<std::string> ans;
+        for(size_t i(0); i != words2.size(); ++i){
+            std::string curr_str = words2[i];
+            for(size_t j(0); j != curr_str.size(); ++j){
+                ++tmp[curr_str[j]];
+            }
+            
+            for(auto it = std::begin(tmp); it != std::end(tmp); ++it){
+                if(key[it->first] < it->second){
+                    key[it->first] = it->second;
+                }
+            }
+            tmp.clear();
+        }
+
+        for(size_t i(0); i != words1.size(); ++i){
+            std::string curr_str = words1[i];
+            for(size_t j(0); j != curr_str.size(); ++j){
+                ++tmp[curr_str[j]];
+            }
+
+            bool add(true);
+            for(auto it = std::begin(key); it != std::end(key); ++it){
+                if(tmp[it->first] < it->second){
+                    add = false;
+                    break;
+                }
+            }
+            if(add){
+                ans.push_back(curr_str);
+            }
+            tmp.clear(); 
         }
         return ans;
+    }
+
+    //--------------------------#1769-------------------------------------------//
+    // std::string s("001011");
+    // sh::showContainer(solution.minOperations_1769(s));
+    std::vector<int> minOperations_1769(std::string boxes) {
+        // std::vector<int> balls;
+        // for(size_t i(0); i != boxes.size(); ++i){
+        //     if(boxes[i] == '1'){
+        //         balls.push_back(i);
+        //     }
+        // }
+        // std::vector<int> ans;
+        // ans.reserve(boxes.size());
+        // for(size_t i(0); i != boxes.size(); ++i){
+        //     int path(0);
+        //     for(size_t j(0); j != balls.size(); ++j){
+        //         path += std::abs(balls[j] - static_cast<int>(i));
+        //     }
+        //     ans.push_back(path);
+        // }
+        // return ans;
+        int n = boxes.size();
+        std::vector<int> answer(n, 0);
+
+        int ballsToLeft = 0, movesToLeft = 0;
+        int ballsToRight = 0, movesToRight = 0;
+        for (int i = 0; i < n; i++) {
+            // Left pass
+            answer[i] += movesToLeft;
+            ballsToLeft += boxes[i] - '0';
+            movesToLeft += ballsToLeft;
+
+            int j = n - 1 - i;
+            answer[j] += movesToRight;
+            ballsToRight += boxes[j] - '0';
+            movesToRight += ballsToRight;
+        }
+        return answer;
+    }
+
+    //--------------------------#13---------------------------------------------//
+    // sh::print(solution.romanToInt_13("MCMXCIV"));
+    // sh::print(solution.romanToInt_13("LVIII"));
+    int romanToInt_13(std::string s) {
+        int ans(0);
+        for(size_t i(0); i != s.size(); ++i){
+            switch (s[i])
+            {
+            case 'I':
+                if(i < s.size() and (s[i + 1] == 'V' or s[i + 1] == 'X')){
+                    if (s[i + 1] == 'V')
+                        ans += 4;
+                    else 
+                        ans += 9;
+                    ++i;
+                } else {
+                    ++ans;
+                }
+                break;
+            case 'V':
+                ans += 5;
+                break;
+            case 'X':
+                if(i < s.size() and (s[i + 1] == 'L' or s[i + 1] == 'C')){
+                    if (s[i + 1] == 'L')
+                        ans += 40;
+                    else 
+                        ans += 90;
+                    ++i;
+                } else {
+                    ans += 10;
+                }
+                break;
+            case 'L':
+                ans += 50;
+                break;
+            case 'C':
+                if(i < s.size() and (s[i + 1] == 'D' or s[i + 1] == 'M')){
+                    if (s[i + 1] == 'D')
+                        ans += 400;
+                    else 
+                        ans += 900;
+                    ++i;
+                } else {
+                    ans += 100;
+                }
+                break;
+            case 'D':
+                ans += 500;
+                break;
+            case 'M':
+                ans += 1000;
+                break;
+            default:
+                break;
+            }
+        }
+
+        return ans;
+    }
+
+    //--------------------------#90---------------------------------------------//
+    // std::vector<int> nums{1, 2, 2, 3};
+    // sh::showVecVec(solution.subsetsWithDup_90(nums));
+    std::vector<std::vector<int>> subsetsWithDup_90(std::vector<int>& nums) {
+        // std::vector<std::vector<int>> ans;
+        // std::set<int> check;
+        // std::vector<int> tmp;
+        // ans.push_back({});
+        // for(size_t i(0); i != nums.size(); ++i){
+        //     GetAllVariants_90(i, nums, ans, check, tmp);
+        //     check.insert(nums[i]);
+        // }
+        // return ans;
+        std::vector<std::vector<int>> ans;       
+        std::vector<int> curr;         
+        sort(nums.begin(), nums.end());     
+        helper_90(nums, ans, curr, 0);       
+        return ans;
+    }
+    
+    struct Shift {
+        int x = 0;
+        int y = 0;
+    };
+
+    const std::vector<Shift> SHIFTS = {
+        { 0, -1}, // left
+        { 0,  1}, // right
+        {-1,  0}, // top
+        { 1,  0}, // bottom
+    };
+    
+    bool exist_79(std::vector<std::vector<char>>& board, std::string word) {
+        std::unordered_map<char, std::vector<std::tuple<int, int, int>>> places;
+        for(size_t i(0); i != board.size(); ++i){
+            for(size_t j(0); j != board[i].size(); ++j){
+                places[board[i][j]].push_back({i, j, -1});
+            }
+        }
+        return CheckExist_79(board, word, places[word[0]], 1);
+    }
+    bool CheckExist_79(std::vector<std::vector<char>>& board, std::string& word, std::vector<std::tuple<int, int, int>> places, int ind){
+        if(places.empty() and ind <= word.size())
+            return false;
+        if(ind == word.size())
+            return true;
+
+        bool res(false);
+        std::vector<std::tuple<int, int, int>> pl;
+        int f, s, t;
+        for(auto it = std::begin(places); it != std::end(places); ++it){
+            auto [f, s, t] = *it;
+            for(size_t i(0); i != SHIFTS.size(); ++i){
+                if(i == 0 and (s == 0 or t == 1))
+                    continue;
+                if(i == 1 and (s == board[s].size() - 1 or t == 0))
+                    continue;
+                if(i == 2 and (f == 0 or t == 3))
+                    continue;
+                if(i == 3 and (f == board.size() - 1 or t == 2))
+                    continue;
+                // добавить проверку на границы
+                if(board[f + SHIFTS[i].x][s + SHIFTS[i].y] == word[ind])
+                    pl.push_back({f + SHIFTS[i].x, s + SHIFTS[i].y, i});
+            }  
+            if(!pl.empty())
+                res = CheckExist_79(board, word, pl, ind + 1);
+            if(res)
+                return res;
+            pl.clear();
+        }   
+        return res;
     }
 //================================================================================================================================================
 private:
@@ -2370,6 +2622,28 @@ private:
             res[k] += res[k - i] * res[i - 1];
         }
     }
+
+    // --90 (for 2 diffrent solutions)
+    void GetAllVariants_90(int k, std::vector<int>& nums, std::vector<std::vector<int>>& ans, std::set<int> check, std::vector<int> tmp){
+        if(check.contains(nums[k]))
+            return;
+        tmp.push_back(nums[k]);
+        ans.push_back(tmp);    
+        for(size_t i(1); i + k != nums.size(); ++i){
+            GetAllVariants_90(k + i, nums, ans, check, tmp);
+            check.insert(nums[k + i]);
+        }
+    }
+    void helper_90(std::vector<int>& nums, std::vector<std::vector<int>>& ans, std::vector<int>& curr, int idx){
+        ans.push_back(curr);       //we include current susbet into final ans
+        for(int i=idx;i<nums.size();i++){     //check for all possibilites
+            if(i > idx && nums[i] == nums[i-1])
+                continue;      //if duplicate then we continue
+            curr.push_back(nums[i]);     //we include nums[i] in current subset
+            helper_90(nums, ans, curr, i+1); 
+            curr.pop_back();         //to get subset without nums[i]
+        }
+    }
 };
 
 //==========================================================================//
@@ -2378,12 +2652,17 @@ int main(){
     Solution solution;   
     Timer timer("LeetCode.cpp");
 
-    std::vector<int> heights{2,1,5,6,2,3};
-    sh::print(solution.largestRectangleArea_84(heights));
     
     
-    
+    std::vector<std::vector<char>> board = {
+        {'A','B','C','E'},
+        {'S','F','C','S'},
+        {'A','D','E','E'},
+    };
+    std::string word("EE");
 
+    sh::showVecVec(board);
+    std::cout << std::boolalpha << solution.exist_79(board, word) << std::endl;
 
 
 
