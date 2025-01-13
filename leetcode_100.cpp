@@ -1,97 +1,6 @@
-#include <iostream>
-#include <algorithm>
-#include <regex>
-#include <cmath>
-#include <numeric>
-#include <cstring>
-#include <cmath>
-
-
-#include <list>
-#include <vector>
-#include <array>
-#include <queue>
-#include <set>
-#include <unordered_set>
-#include <map>
-#include <unordered_map>
-
+#include "ForLeetcode.h"
 #include "show.h"
 #include "timer.h"
-
-struct ListNode {
-    int val;
-    ListNode* next;
-    ListNode() : val(0), next(nullptr) {}
-    ListNode(int x) : val(x), next(nullptr) {}
-    ListNode(int x, ListNode *next) : val(x), next(next) {}
-
-    static int getListLength(ListNode* head){
-        int i(0);
-        while (head != nullptr)
-        {
-            head = head->next;
-            i++;
-        }
-        return i;
-    }
-};
-
-template<typename T>
-struct TreeNode{
-    T val;
-    TreeNode* left = nullptr;
-    TreeNode* right = nullptr;
-    TreeNode() : val(0){}
-    TreeNode(int v) : val(v){}
-    TreeNode(int v, TreeNode* l, TreeNode* r) :  val(v), left(l), right(r){}
-};
-
-namespace sh {
-    void showList(ListNode* l){
-        while (l != nullptr){
-            std::cout << l-> val << " -> ";
-            l = l->next; 
-        }
-        std::cout << "nullptr" <<  std::endl;
-    }
-    
-    template<typename T>
-    void showTree(TreeNode<T>* root){
-        if(root == nullptr)
-            return;
-        showTree(root->left);
-        showTree(root->right);
-        std::cout << root->val << ", ";
-    }
-
-    // TreeNode
-    // TreeNode<int>* root = new TreeNode<int>(4, new TreeNode<int>(5, new TreeNode<int>(12), new TreeNode<int>(11)), new TreeNode<int>(10, new TreeNode<int>(22), new TreeNode<int>(44)));
-    // sh::showTree(root);
-    // std::cout << std::endl;
-    // sh::showTreeLevel(root);
-    template<typename T>
-    void showTreeLevel(TreeNode<T>* root){
-        if (root == nullptr)
-            return;
-
-        std::queue<TreeNode<T>*> q;
-        q.push(root);
-
-        while (!q.empty())
-        {
-            TreeNode<T>* temp = q.front();
-            q.pop();
-
-            std::cout << temp->val << ", ";
-            if(temp->left != nullptr)
-                q.push(temp->left);
-            if(temp->rigth != nullptr)
-                q.push(temp->right);
-        }
-        std::cout << std::endl;
-    }
-};
 
 class Solution {
 public:
@@ -1102,7 +1011,6 @@ public:
         }
         return res;
     }
-    
 
     //--------------------------#55---------------------------------------------//
     // std::vector<int> vec{3,2,1,0,4};
@@ -2231,59 +2139,95 @@ public:
         return ans;
     }
     
-    struct Shift {
-        int x = 0;
-        int y = 0;
-    };
-
-    const std::vector<Shift> SHIFTS = {
-        { 0, -1}, // left
-        { 0,  1}, // right
-        {-1,  0}, // top
-        { 1,  0}, // bottom
-    };
-    
+    //--------------------------#79---------------------------------------------//
+    // std::vector<std::vector<char>> board = {
+    //     {'A','B','C','L'},
+    //     {'L','F','C','S'},
+    //     {'A','D','E','L'},
+    // };
+    // std::string word("SE");
+    // sh::showVecVec(board);
+    // std::cout << std::boolalpha << solution.exist_79(board, word) << std::endl;
     bool exist_79(std::vector<std::vector<char>>& board, std::string word) {
-        std::unordered_map<char, std::vector<std::tuple<int, int, int>>> places;
-        for(size_t i(0); i != board.size(); ++i){
-            for(size_t j(0); j != board[i].size(); ++j){
-                places[board[i][j]].push_back({i, j, -1});
+        int n = board.size(); // Number of rows in the board
+        int m = board[0].size(); // Number of columns in the board
+        
+        std::vector<std::vector<bool>> visited(n, std::vector<bool>(m, false)); // Array to keep track of visited cells
+        
+        // Convert the word into a character array
+        std::vector<char> wordChar(word.begin(), word.end());
+        
+        // Quick check: If the length of the word exceeds the total number of cells on the board, it can't exist
+        if (wordChar.size() > n * m)
+            return false;
+        
+        std::vector<int> counts(256, 0); // Array to store counts of each character
+        
+        // Count the occurrence of each character on the board
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                counts[board[i][j]]++;
             }
         }
-        return CheckExist_79(board, word, places[word[0]], 1);
+        
+        // Adjust the order of characters in the wordChar array based on their frequency counts to optimize search
+        int len = wordChar.size();
+        for (int i = 0; i < len / 2; i++) {
+            if (counts[wordChar[i]] > counts[wordChar[len - 1 - i]]) {
+                for (int j = 0; j < len / 2; j++) {
+                    char temp = wordChar[j];
+                    wordChar[j] = wordChar[len - 1 - j];
+                    wordChar[len - 1 - j] = temp;
+                }
+                break;
+            }
+        }
+        
+        // Decrease counts of characters in the word from the board
+        for (char c : wordChar) {
+            if (--counts[c] < 0)
+                return false; // If there are more occurrences of a character in the word than on the board, return false
+        }
+        
+        // Iterate through each cell in the board and start searching for the word
+        for (int i = 0; i < n; i++) {
+            for (int j = 0; j < m; j++) {
+                if (visit_79(board, wordChar, 0, i, j, n, m, visited))
+                    return true; // If the word is found starting from this cell, return true
+            }
+        }
+        return false; 
     }
-    bool CheckExist_79(std::vector<std::vector<char>>& board, std::string& word, std::vector<std::tuple<int, int, int>> places, int ind){
-        if(places.empty() and ind <= word.size())
-            return false;
-        if(ind == word.size())
-            return true;
+    
+    //--------------------------#78---------------------------------------------//
+    // std::vector<int> nums{1, 2, 3};
+    // sh::showVecVec(solution.subsets_78(nums));
+    std::vector<std::vector<int>> subsets_78(std::vector<int>& nums) {
+        std::vector<std::vector<int>> ans;
+        std::vector<int> curr;
+        curr.reserve(nums.size());
+        helper_78(ans, nums, curr, 0);
+        return ans;
+    }
+    void helper_78(std::vector<std::vector<int>>& ans,std::vector<int>& nums, std::vector<int> curr, int ind){
+        ans.push_back(curr);
+        for(size_t i(ind); i != nums.size(); ++i){
+            curr.push_back(nums[i]);
+            helper_78(ans, nums, curr, i + 1);
+            curr.pop_back();
+        }
+    }
 
-        bool res(false);
-        std::vector<std::tuple<int, int, int>> pl;
-        int f, s, t;
-        for(auto it = std::begin(places); it != std::end(places); ++it){
-            auto [f, s, t] = *it;
-            for(size_t i(0); i != SHIFTS.size(); ++i){
-                if(i == 0 and (s == 0 or t == 1))
-                    continue;
-                if(i == 1 and (s == board[s].size() - 1 or t == 0))
-                    continue;
-                if(i == 2 and (f == 0 or t == 3))
-                    continue;
-                if(i == 3 and (f == board.size() - 1 or t == 2))
-                    continue;
-                // добавить проверку на границы
-                if(board[f + SHIFTS[i].x][s + SHIFTS[i].y] == word[ind])
-                    pl.push_back({f + SHIFTS[i].x, s + SHIFTS[i].y, i});
-            }  
-            if(!pl.empty())
-                res = CheckExist_79(board, word, pl, ind + 1);
-            if(res)
-                return res;
-            pl.clear();
-        }   
-        return res;
+    //--------------------------#77---------------------------------------------//
+    // sh::showVecVec(solution.combine_77(4,3));
+    std::vector<std::vector<int>> combine_77(int n, int k) {
+        std::vector<std::vector<int>> ans;
+        std::vector<int> curr;
+
+        helper_combine_77(ans, curr, n, k, 1);
+        return ans;
     }
+
 //================================================================================================================================================
 private:
     bool isPalindrom_5(const std::string &str, int start, int end){
@@ -2644,26 +2588,54 @@ private:
             curr.pop_back();         //to get subset without nums[i]
         }
     }
+
+    // --79
+    bool visit_79(std::vector<std::vector<char>>& board, std::vector<char>& word, int start, int x, int y,
+            int n, int m, std::vector<std::vector<bool>>& visited) {
+        // Base case: If all characters in the word are found, return true
+        if (start == word.size())
+            return true;
+        
+        // Check for out-of-bounds, already visited cells, and character mismatch
+        if (x < 0 || x >= n || y < 0 || y >= m || visited[x][y])
+            return false;
+        
+        // If the current character in the word does not match the character on the board, return false
+        if (word[start] != board[x][y])
+            return false;
+        
+        visited[x][y] = true; // Mark the current cell as visited
+        
+        bool found = visit_79(board, word, start + 1, x + 1, y, n, m, visited)
+                || visit_79(board, word, start + 1, x - 1, y, n, m, visited)
+                || visit_79(board, word, start + 1, x, y + 1, n, m, visited)
+                || visit_79(board, word, start + 1, x, y - 1, n, m, visited);
+        
+        visited[x][y] = false; 
+        return found; 
+    }
+
+    // --77
+    void helper_combine_77(std::vector<std::vector<int>>& ans, std::vector<int>& curr, int& n, int& k, int ind){
+        if(!curr.empty() and curr.size() == k){
+            ans.push_back(curr);
+            return;
+        }
+        
+        for(size_t i(ind); i != n + 1; ++i){
+            curr.push_back(i);
+            helper_combine_77(ans, curr, n, k, i + 1);
+            curr.pop_back();
+        }
+    }
 };
 
 //==========================================================================//
 
 int main(){
     Solution solution;   
-    Timer timer("LeetCode.cpp");
+    Timer timer("LeetCode_100.cpp");
+
 
     
-    
-    std::vector<std::vector<char>> board = {
-        {'A','B','C','E'},
-        {'S','F','C','S'},
-        {'A','D','E','E'},
-    };
-    std::string word("EE");
-
-    sh::showVecVec(board);
-    std::cout << std::boolalpha << solution.exist_79(board, word) << std::endl;
-
-
-
 }

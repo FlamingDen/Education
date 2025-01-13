@@ -76,5 +76,5 @@ template <typename T>
 void sh::print(T smt)
 {
     std::cout << smt << std::endl;
-}
+};
 

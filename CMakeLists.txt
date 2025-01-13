@@ -3,7 +3,11 @@ project(Main
     LANGUAGES CXX
 )
 
-project(LeetCode
+project(LeetCode_100
+    LANGUAGES CXX
+)
+
+project(LeetCode_200
     LANGUAGES CXX
 )
 
@@ -17,13 +21,30 @@ add_executable(Main
     utils/timer.cpp
     utils/timer.h
 )
-add_executable(LeetCode
-    leetcode.cpp
+add_executable(LeetCode_100
+    leetcode_100.cpp
+    utils/ForLeetcode.h
+    utils/ForLeetcode.cpp
     utils/timer.cpp
     utils/timer.h
     utils/show.h
+    utils/Tree.h
+    utils/ListNode.h
+    utils/ListNode.cpp
 )
 
+add_executable(LeetCode_200
+    leetcode_200.cpp
+    utils/ForLeetcode.h
+    utils/ForLeetcode.cpp
+    utils/timer.cpp
+    utils/timer.h
+    utils/show.h
+    utils/Tree.h
+    utils/ListNode.h
+    utils/ListNode.cpp
+)
+#==================================================
 target_include_directories(Main INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/utils
 )
@@ -31,11 +52,20 @@ target_include_directories(Main INTERFACE
 target_include_directories(Main PRIVATE
     utils
 )
-
-target_include_directories(LeetCode INTERFACE
+#==================================================
+target_include_directories(LeetCode_100 INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/utils
 )
 
-target_include_directories(LeetCode PRIVATE
+target_include_directories(LeetCode_100 PRIVATE
+    utils
+)
+
+#==================================================
+target_include_directories(LeetCode_200 INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils
+)
+
+target_include_directories(LeetCode_200 PRIVATE
     utils
 )
