@@ -11,6 +11,10 @@ project(LeetCode_200
     LANGUAGES CXX
 )
 
+project(DailyTasksLeetcode
+    LANGUAGES CXX
+)
+
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
@@ -44,6 +48,18 @@ add_executable(LeetCode_200
     utils/ListNode.h
     utils/ListNode.cpp
 )
+
+add_executable(DailyTasksLeetcode
+    dailytasks.cpp
+    utils/ForLeetcode.h
+    utils/ForLeetcode.cpp
+    utils/timer.cpp
+    utils/timer.h
+    utils/show.h
+    utils/Tree.h
+    utils/ListNode.h
+    utils/ListNode.cpp
+)
 #==================================================
 target_include_directories(Main INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/utils
@@ -67,5 +83,14 @@ target_include_directories(LeetCode_200 INTERFACE
 )
 
 target_include_directories(LeetCode_200 PRIVATE
+    utils
+)
+
+#==================================================
+target_include_directories(DailyTasksLeetcode INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils
+)
+
+target_include_directories(DailyTasksLeetcode PRIVATE
     utils
 )

@@ -2228,6 +2228,120 @@ public:
         return ans;
     }
 
+    //--------------------------#39---------------------------------------------//
+    // std::vector<int> candidates{2,3,5};
+    // sh::showVecVec(solution.combinationSum_39(candidates, 8));
+    std::vector<std::vector<int>> combinationSum_39(std::vector<int>& candidates, int target) {
+        std::vector<std::vector<int>> ans;
+        std::vector<int> curr;
+        help__39(candidates, curr, target, ans, 0);
+        return ans;
+    }
+    void help__39(std::vector<int>& candidates, std::vector<int>& curr, int target, std::vector<std::vector<int>>& ans, int ind){
+        if(target == 0){
+            ans.push_back(curr);
+            return;
+        }
+        if(ind == candidates.size())
+            return;
+
+        for(size_t i(ind); i != candidates.size(); ++i){
+            if(target - candidates[i] < 0)
+                continue;
+            curr.push_back(candidates[i]);
+            help__39(candidates, curr, target - candidates[i], ans, i);
+            curr.pop_back();
+        }
+    }
+
+    //--------------------------#40---------------------------------------------//
+    // std::vector<int> candidates{1,1,1,2,5,6,7};
+    // sh::showVecVec(solution.combinationSum2_40(candidates, 8));
+    std::vector<std::vector<int>> combinationSum2_40(std::vector<int>& candidates, int target) {
+        std::vector<std::vector<int>> ans;
+        std::vector<int> curr;
+        std::sort(std::begin(candidates), std::end(candidates));
+        help__40(candidates, curr, target, ans, 0);
+        return ans;
+    }
+    void help__40(std::vector<int>& candidates, std::vector<int>& curr, int target, std::vector<std::vector<int>>& ans, int ind){
+        if(target == 0){
+            ans.push_back(curr);
+            return;
+        }
+        if(ind == candidates.size())
+            return;
+
+        for(size_t i(ind); i != candidates.size(); ++i){
+            if(target - candidates[i] < 0)
+                continue;
+            if(i > ind and candidates[i] == candidates[i - 1])
+                continue;
+            
+            curr.push_back(candidates[i]);
+            help__40(candidates, curr, target - candidates[i], ans, i + 1);
+            curr.pop_back();
+        }
+    }
+
+    //--------------------------#216---------------------------------------------//
+    // sh::showVecVec(solution.combinationSum3_216(3, 9));
+    std::vector<std::vector<int>> combinationSum3_216(int k, int n) {
+        std::vector<int> nums(9);
+        for(size_t i(0); i != 9; ++i){
+            nums[i] = i + 1;
+        }
+        std::vector<std::vector<int>> ans;
+        std::vector<int> curr;
+        help__216(nums, curr, k, n, ans, 0);
+        return ans;
+    }
+    void help__216(std::vector<int>& candidates, std::vector<int>& curr,int k, int target, std::vector<std::vector<int>>& ans, int ind){
+        if(target == 0 and curr.size() == k){
+            ans.push_back(curr);
+            return;
+        }
+        if(ind == candidates.size() or curr.size() >= k) 
+            return;
+
+        for(size_t i(ind); i != candidates.size(); ++i){  
+            if(target - candidates[i] < 0)
+                continue;
+            curr.push_back(candidates[i]);
+            help__216(candidates, curr, k, target - candidates[i], ans, i + 1);
+            if(!curr.empty())
+                curr.pop_back();
+        }
+    }
+
+    //--------------------------#16---------------------------------------------//
+    // std::vector<int> nums{-1,2,1,-4};
+    // sh::print(solution.threeSumClosest(nums, 1));
+    int threeSumClosest(std::vector<int>& nums, int target) {
+        sort(nums.begin(), nums.end());
+        int closest_sum = INT_MAX / 2;  // A large value but not overflow
+        
+        for (int i = 0; i < nums.size() - 2; ++i) {
+            int left = i + 1, right = nums.size() - 1;
+            while (left < right) {
+                int current_sum = nums[i] + nums[left] + nums[right];
+                if (abs(current_sum - target) < abs(closest_sum - target)) {
+                    closest_sum = current_sum;
+                }
+                if (current_sum < target) {
+                    ++left;
+                } else if (current_sum > target) {
+                    --right;
+                } else {
+                    return current_sum;
+                }
+            }
+        }
+        
+        return closest_sum;
+    }
+    
+
 //================================================================================================================================================
 private:
     bool isPalindrom_5(const std::string &str, int start, int end){
@@ -2636,6 +2750,6 @@ int main(){
     Solution solution;   
     Timer timer("LeetCode_100.cpp");
 
-
+    
     
 }
