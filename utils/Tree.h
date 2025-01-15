@@ -41,7 +41,7 @@ namespace sh {
             std::cout << temp->val << ", ";
             if(temp->left != nullptr)
                 q.push(temp->left);
-            if(temp->rigth != nullptr)
+            if(temp->right != nullptr)
                 q.push(temp->right);
         }
         std::cout << std::endl;

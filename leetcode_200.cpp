@@ -43,12 +43,75 @@ public:
 
     //--------------------------#104--------------------------------------------//
     // TreeNode<int>* root = new TreeNode<int>(3, new TreeNode<int>(9), new TreeNode<int>(20, new TreeNode<int>(15), new TreeNode<int>(7)));
-    // sh::print(solution.maxDepth(root));
-    int maxDepth(TreeNode<int>* root) {
+    // sh::print(solution.maxDepth_104(root));
+    int maxDepth_104(TreeNode<int>* root) {
         if(root == nullptr){
             return 0;
         }
-        return 1 + std::max(maxDepth(root->left), maxDepth(root->right));
+        return 1 + std::max(maxDepth_104(root->left), maxDepth_104(root->right));
+    }
+
+    //--------------------------#105--------------------------------------------//
+    // std::vector<int> v1{3,1,2,4};
+    // std::vector<int> v2{1,2,3,4};
+    // sh::showTreeLevel(solution.buildTree_105(v1, v2));
+    TreeNode<int>* buildTree_105(std::vector<int>& preorder, std::vector<int>& inorder) {
+        std::unordered_map<int, int> pos;
+        int start(0);
+        for(size_t i(0); i != inorder.size(); ++i){
+            pos[inorder[i]] = i;
+        }
+        
+        return help_105(preorder, inorder, pos, 0, preorder.size() - 1, start, true);
+    }
+
+    //--------------------------#107--------------------------------------------//
+    std::vector<std::vector<int>> levelOrderBottom_107(TreeNode<int>* root) {
+        std::vector<std::vector<int>> ans;
+        std::vector<int> tmp;
+        std::queue<TreeNode<int>*> q;
+        q.push(root);
+
+        TreeNode<int>* curr;
+        while (!q.empty())
+        {
+            size_t size = q.size();
+            while (size--)  
+            {
+                curr = q.front();
+                q.pop();
+
+                if(curr->left != nullptr){
+                    q.push(curr->left);
+                }
+                if(curr->right != nullptr){
+                    q.push(curr->right);
+                }
+                tmp.push_back(curr->val);
+            }
+            ans.push_back(tmp);
+            tmp.clear();
+        }
+        std::reverse(std::begin(ans), std::end(ans));
+        return ans;
+    }
+
+    //--------------------------#108--------------------------------------------//
+    // std::vector<int> v{-10,-3,0,5,9};
+    // sh::showTreeLevel(solution.sortedArrayToBST_108(v));
+    TreeNode<int>* sortedArrayToBST_108(std::vector<int>& nums) {
+        return help_108(nums, 0, nums.size());
+    }
+
+    //--------------------------#109--------------------------------------------//
+    TreeNode<int>* sortedListToBST(ListNode* head) {
+        std::vector<int> nums;
+        while (head != nullptr)
+        {
+            nums.push_back(head->val);
+            head = head->next;
+        }
+        return help_108(nums, 0, nums.size());
     }
 
     //--------------------------#111--------------------------------------------//
@@ -56,22 +119,28 @@ public:
         return depth_111(root);
     }
 
-    //--------------------------#108--------------------------------------------//
-    TreeNode<int>* sortedArrayToBST(std::vector<int>& nums) {
-        TreeNode<int>* root = new TreeNode<int>;
-        help_108(nums, 0, nums.size() - 1, root);
-        return root;
+    //--------------------------#112--------------------------------------------//
+    bool hasPathSum_112(TreeNode<int>* root, int targetSum) {
+        if(root == nullptr)
+            return false;
+        return help_112(root, targetSum);
     }
-    void help_108(std::vector<int>& nums, int l, int r, TreeNode<int>* curr){
-        if(r - l > 3){
-            int mid = (r - l) / 2;
-            curr->val = nums[mid];
 
-            curr->left = new TreeNode<int>;
-            curr->right = new TreeNode<int>;
-            help_108(nums, 0, mid - 1, curr->left);
-            help_108(nums, mid + 1, nums.size() - 1, curr->right);
+    //--------------------------#118--------------------------------------------//
+    // sh::showVecVec(solution.generate(5));
+    std::vector<std::vector<int>> generate(int numRows) {
+        std::vector<std::vector<int>> ans;
+        std::vector<int> curr;
+
+        for(size_t i(1); i - 1 != numRows; ++i){
+            curr.resize(i, 1);
+            for(size_t j(1); j < curr.size() - 1; ++j){
+                curr[j] = ans[i - 2][j - 1] + ans[i - 2][j];
+            }
+            ans.push_back(curr);
+            curr.clear();
         }
+        return ans;
     }
 private:
     void helper_101(TreeNode<int>* root, std::vector<int>& vals, bool left){
@@ -165,7 +234,40 @@ private:
             left = left ? false : true;         
         }
     }
-    
+    TreeNode<int>* help_105(std::vector<int>& bylevels, std::vector<int>& inorder, std::unordered_map<int, int>& pos, int l, int r, int& ind, bool st){
+        if(ind >= bylevels.size())
+            return nullptr;
+        if(st == false) {
+            if(l == r){
+                return new TreeNode<int>(bylevels[ind]);
+            }
+            if(l > r or pos[bylevels[ind]] > r or pos[bylevels[ind]] < l){
+                return nullptr;
+            }
+        }
+        st = false;
+        TreeNode<int>* root = new TreeNode<int>(bylevels[ind]);
+        
+        root->left = help_105(bylevels, inorder, pos, l, pos[root->val] - 1, ++ind , st);
+        if (root->left == nullptr)
+            --ind;
+        root->right = help_105(bylevels, inorder, pos, pos[root->val] + 1, r, ++ind,  st);
+        if (root->right == nullptr)
+            --ind;
+        
+        return root;
+    }
+    TreeNode<int>* help_108(std::vector<int>& nums, int l, int r){
+        if(l >= r)
+            return nullptr;
+
+        int mid = (r + l) / 2; 
+        TreeNode<int>* node = new TreeNode<int>(nums[mid]);
+
+        node->left = help_108(nums, l, mid);
+        node->right = help_108(nums, mid + 1, r);
+        return node;
+    }
     int depth_111(TreeNode<int>* root){
         if(root == nullptr)
             return 0;
@@ -200,6 +302,21 @@ private:
         }
         return depth;
     }
+    bool help_112(TreeNode<int>* root, int targetSum){
+        if(root == nullptr)
+            return false;
+        if(root->left == nullptr and root->right == nullptr and targetSum - root->val == 0){
+            return true;
+        }
+        bool res(false);
+        res = help_112(root->left, targetSum - root->val);
+        if(res == true)
+            return res;
+        res = help_112(root->right, targetSum - root->val);
+        if(res == true)
+            return res;
+        return res;
+    }
 };
 
 int main(){
@@ -207,5 +324,4 @@ int main(){
     Timer timer("LeetCode_200.cpp");
     
     
-
 }
