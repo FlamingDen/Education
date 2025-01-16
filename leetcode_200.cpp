@@ -2,7 +2,20 @@
 #include "show.h"
 #include "timer.h"
 
+class Node {
+    public:
+        int val;
+        Node* left;
+        Node* right;
+        Node* next;
 
+        Node() : val(0), left(NULL), right(NULL), next(NULL) {}
+
+        Node(int _val) : val(_val), left(NULL), right(NULL), next(NULL) {}
+
+        Node(int _val, Node* _left, Node* _right, Node* _next)
+            : val(_val), left(_left), right(_right), next(_next) {}
+    };
 
 class Solution {
 public:
@@ -126,9 +139,76 @@ public:
         return help_112(root, targetSum);
     }
 
+    //--------------------------#113--------------------------------------------//
+    std::vector<std::vector<int>> pathSum_113(TreeNode<int>* root, int targetSum) {
+        if(root == nullptr)
+            return {};
+        std::vector<std::vector<int>> res;
+        std::vector<int> curr;
+        help_113(root, targetSum, res, curr);
+        return res;
+    }
+
+    //--------------------------#114--------------------------------------------//
+    void flatten_114(TreeNode<int>* root) {
+        help_114(root);
+    }
+    
+    //--------------------------#116--------------------------------------------//
+    Node* connect_116(Node* root) {
+        std::queue<Node*> q;
+        if(root)
+            q.push(root);
+
+        Node* curr;
+        while (!q.empty())
+        {
+            size_t s = q.size();
+            while (s--)
+            {
+                curr = q.front();
+                q.pop();
+                if(s)
+                    curr->next = q.front();
+                
+                if(curr->left != nullptr)
+                    q.push(curr->left);
+                if(curr->right != nullptr)
+                    q.push(curr->right);
+            }
+        }
+        return root;
+    }
+
+    //--------------------------#117--------------------------------------------//
+    Node* connect_117(Node* root) {
+        std::queue<Node*> q;
+        if(root)
+            q.push(root);
+
+        Node* curr;
+        while (!q.empty())
+        {
+            size_t s = q.size();
+            while (s--)
+            {
+                curr = q.front();
+                q.pop();
+                if(s)
+                    curr->next = q.front();
+                
+                if(curr->left != nullptr)
+                    q.push(curr->left);
+                if(curr->right != nullptr)
+                    q.push(curr->right);
+            }
+        }
+        return root;
+    }
+
     //--------------------------#118--------------------------------------------//
-    // sh::showVecVec(solution.generate(5));
-    std::vector<std::vector<int>> generate(int numRows) {
+    // sh::showVecVec(solution.generate_118(5));
+    std::vector<std::vector<int>> generate_118(int numRows) {
         std::vector<std::vector<int>> ans;
         std::vector<int> curr;
 
@@ -142,6 +222,34 @@ public:
         }
         return ans;
     }
+
+    //--------------------------#437--------------------------------------------//
+    //         10
+    //        /  \
+    //       5   -3
+    //     /  \    \
+    //    3    2    11
+    //   / \    \
+    //  3  -2    1 
+    // TreeNode<int>* root = new TreeNode<int>(10,
+    //     new TreeNode<int>(5,
+    //         new TreeNode<int>(3,
+    //             new TreeNode<int>(3),
+    //             new TreeNode<int>(-2)),
+    //         new TreeNode<int>(2,
+    //             nullptr,
+    //             new TreeNode<int>(1))
+    //     ),
+    //     new TreeNode<int>(-3,
+    //         nullptr, 
+    //         new TreeNode<int>(11))
+    // );
+    // sh::print(solution.pathSum_437(root, 8));
+    int pathSum_437(TreeNode<int>* root, int targetSum) {
+        std::vector<long> partial_sum;
+        return help_437(root, targetSum, partial_sum);
+    }
+    
 private:
     void helper_101(TreeNode<int>* root, std::vector<int>& vals, bool left){
         if(root == nullptr){
@@ -317,11 +425,84 @@ private:
             return res;
         return res;
     }
+    void help_113(TreeNode<int>* root, int targetSum, std::vector<std::vector<int>>& res, std::vector<int>& curr){
+        if(root == nullptr){
+            if(targetSum == 0){
+                res.push_back(curr);
+            }
+            return;
+        }
+            
+        curr.push_back(root->val);
+        help_113(root->left, targetSum - root->val, res, curr);
+        help_113(root->right, targetSum - root->val, res, curr);
+        curr.pop_back();
+    }
+    void help_114(TreeNode<int>* root){
+        if(root == nullptr)
+            return;
+
+
+        TreeNode<int>* tmp = root->right;
+        root->right = root->left;
+        root->left = nullptr;
+        TreeNode<int>* node = root;
+        
+        while(node->right != nullptr){
+            node = node->right;
+        }
+        node->right = tmp;
+
+        help_114(root->right);
+    }
+    int help_437(TreeNode<int>* root, int targetSum, std::vector<long>& partial_sum){
+        if(root == nullptr)
+            return 0;
+
+        int count(0);     
+        partial_sum.push_back(root->val);
+        for(size_t i(0); i != partial_sum.size(); ++i){
+            if(i != partial_sum.size() - 1)
+                partial_sum[i] += root->val;
+            
+            if(targetSum - partial_sum[i] == 0)
+                ++count;
+        }
+        
+        int l = help_437(root->left, targetSum, partial_sum); 
+        int r = help_437(root->right, targetSum, partial_sum);
+        partial_sum.pop_back();
+        for(size_t i(0); i != partial_sum.size(); ++i){
+            partial_sum[i] -= root->val;
+        }
+        return count + l + r;
+    }
 };
 
 int main(){
     Solution solution;   
     Timer timer("LeetCode_200.cpp");
-    
-    
+      
+    Node* root = new Node(-9,
+        new Node(-3,
+            nullptr,
+            new Node(4,
+                new Node(-6),
+                nullptr,
+                nullptr
+            ),
+            nullptr
+        ),
+        new Node(2,
+            new Node(4,
+                new Node(-5),
+                nullptr,
+                nullptr
+            ),
+            new Node(0),
+            nullptr
+        ),
+        nullptr    
+    );
+    solution.connect_117(root);
 }

@@ -64,13 +64,31 @@ public:
             num &= value;
         }
     }
+
+    //--------------------------#2425-------------------------------------------//
+    int xorAllNums(std::vector<int>& nums1, std::vector<int>& nums2) {
+        int res(0);
+        int bitwise2(0);
+        for(size_t i(0); i != nums2.size(); ++i){
+            bitwise2 ^= nums2[i];
+        }
+        int n = nums2.size();
+        for(size_t i(0); i != nums1.size(); ++i){
+            int curr = nums1[i];
+            if(n % 2 == 1)
+                res ^= (curr ^ bitwise2);
+            else 
+                res ^= bitwise2;
+        }
+        return res;
+    }
 };
 
 int main(){
     Solution solution;   
     Timer timer("DailyTasksLeetcode.cpp");
-    
-    
+
+
 
     
 }

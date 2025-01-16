@@ -1,5 +1,28 @@
 ﻿#pragma once
 
+//-------------Sample------------------------//
+//         10
+//        /  \
+//       5   -3
+//     /  \    \
+//    3    2    11
+//   / \    \
+//  3  -2    1 
+// TreeNode<int>* root = new TreeNode<int>(10,
+//     new TreeNode<int>(5,
+//         new TreeNode<int>(3,
+//             new TreeNode<int>(3),
+//             new TreeNode<int>(-2)),
+//         new TreeNode<int>(2,
+//             nullptr,
+//             new TreeNode<int>(1))
+//     ),
+//     new TreeNode<int>(-3,
+//         nullptr, 
+//         new TreeNode<int>(11))
+// );
+
+
 template<typename T>
 struct TreeNode{
     T val;
