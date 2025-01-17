@@ -1,5 +1,7 @@
 ﻿#include "ListNode.h"
 
+#include <iostream>
+
 //==============================================================================
 ListNode::ListNode() : val(0), next(nullptr) {}
 ListNode::ListNode(int x) : val(x), next(nullptr) {}

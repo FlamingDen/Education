@@ -1698,12 +1698,12 @@ public:
     }
 
     //--------------------------#94---------------------------------------------//
-    std::vector<int> inorderTraversal_94(TreeNode<int>* root) {
+    std::vector<int> inorderTraversal_94(TreeNode* root) {
         std::vector<int> res;
         inorderTree_94(root, res);
         return res;
     }
-    void inorderTree_94(TreeNode<int>* root, std::vector<int>& res){
+    void inorderTree_94(TreeNode* root, std::vector<int>& res){
         if(root == nullptr){
             res.push_back(INT_MIN);
             return;
@@ -1716,7 +1716,7 @@ public:
     }
 
     //--------------------------#100--------------------------------------------//
-    bool isSameTree(TreeNode<int>* p, TreeNode<int>* q) {
+    bool isSameTree(TreeNode* p, TreeNode* q) {
         std::vector<int> res_p, res_q;
         inorderTree_94(p, res_p);
         inorderTree_94(q, res_q);
@@ -1730,13 +1730,13 @@ public:
     }
 
     //--------------------------#98---------------------------------------------//
-    bool isValidBST_98(TreeNode<int>* root) {
+    bool isValidBST_98(TreeNode* root) {
         if(root == nullptr)
             return true;
         std::pair<int, int> p{root->val, root->val};
         return isValid_98(root, p);
     }
-    bool isValid_98(TreeNode<int>* root, std::pair<int, int>& interval){
+    bool isValid_98(TreeNode* root, std::pair<int, int>& interval){
         if (root == nullptr){}
             return true;
         if(root->left == nullptr and root->right == nullptr){
@@ -2341,7 +2341,54 @@ public:
         return closest_sum;
     }
     
+    //--------------------------#437--------------------------------------------//
+    //         10
+    //        /  \
+    //       5   -3
+    //     /  \    \
+    //    3    2    11
+    //   / \    \
+    //  3  -2    1 
+    // TreeNode* root = new TreeNode(10,
+    //     new TreeNode(5,
+    //         new TreeNode(3,
+    //             new TreeNode(3),
+    //             new TreeNode(-2)),
+    //         new TreeNode(2,
+    //             nullptr,
+    //             new TreeNode(1))
+    //     ),
+    //     new TreeNode(-3,
+    //         nullptr, 
+    //         new TreeNode(11))
+    // );
+    // sh::print(solution.pathSum_437(root, 8));
+    int pathSum_437(TreeNode* root, int targetSum) {
+        std::vector<long> partial_sum;
+        return help_437(root, targetSum, partial_sum);
+    }
+    int help_437(TreeNode* root, int targetSum, std::vector<long>& partial_sum){
+        if(root == nullptr)
+            return 0;
 
+        int count(0);     
+        partial_sum.push_back(root->val);
+        for(size_t i(0); i != partial_sum.size(); ++i){
+            if(i != partial_sum.size() - 1)
+                partial_sum[i] += root->val;
+            
+            if(targetSum - partial_sum[i] == 0)
+                ++count;
+        }
+        
+        int l = help_437(root->left, targetSum, partial_sum); 
+        int r = help_437(root->right, targetSum, partial_sum);
+        partial_sum.pop_back();
+        for(size_t i(0); i != partial_sum.size(); ++i){
+            partial_sum[i] -= root->val;
+        }
+        return count + l + r;
+    }
 //================================================================================================================================================
 private:
     bool isPalindrom_5(const std::string &str, int start, int end){

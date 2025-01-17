@@ -33,6 +33,7 @@ add_executable(LeetCode_100
     utils/timer.h
     utils/show.h
     utils/Tree.h
+    utils/Tree.cpp
     utils/ListNode.h
     utils/ListNode.cpp
 )
@@ -45,6 +46,7 @@ add_executable(LeetCode_200
     utils/timer.h
     utils/show.h
     utils/Tree.h
+    utils/Tree.cpp
     utils/ListNode.h
     utils/ListNode.cpp
 )
@@ -57,6 +59,7 @@ add_executable(DailyTasksLeetcode
     utils/timer.h
     utils/show.h
     utils/Tree.h
+    utils/Tree.cpp
     utils/ListNode.h
     utils/ListNode.cpp
 )

@@ -8,65 +8,44 @@
 //    3    2    11
 //   / \    \
 //  3  -2    1 
-// TreeNode<int>* root = new TreeNode<int>(10,
-//     new TreeNode<int>(5,
-//         new TreeNode<int>(3,
-//             new TreeNode<int>(3),
-//             new TreeNode<int>(-2)),
-//         new TreeNode<int>(2,
+// TreeNode* root = new TreeNode(10,
+//     new TreeNode(5,
+//         new TreeNode(3,
+//             new TreeNode(3),
+//             new TreeNode(-2)),
+//         new TreeNode(2,
 //             nullptr,
-//             new TreeNode<int>(1))
+//             new TreeNode(1))
 //     ),
-//     new TreeNode<int>(-3,
+//     new TreeNode(-3,
 //         nullptr, 
-//         new TreeNode<int>(11))
+//         new TreeNode(11))
 // );
-
-
-template<typename T>
-struct TreeNode{
-    T val;
-    TreeNode* left = nullptr;
-    TreeNode* right = nullptr;
-    TreeNode() : val(0){}
-    TreeNode(int v) : val(v){}
-    TreeNode(int v, TreeNode* l, TreeNode* r) :  val(v), left(l), right(r){}
+struct TreeNode {
+    int val;
+    TreeNode *left;
+    TreeNode *right;
+    TreeNode();
+    TreeNode(int x);
+    TreeNode(int x, TreeNode *left, TreeNode *right);
 };
 
 namespace sh {
-    template<typename T>
-    void showTree(TreeNode<T>* root){
-        if(root == nullptr)
-            return;
-        showTree(root->left);
-        showTree(root->right);
-        std::cout << root->val << ", ";
-    }
+    void showTree(TreeNode* root);
 
-    // TreeNode
-    // TreeNode<int>* root = new TreeNode<int>(4, new TreeNode<int>(5, new TreeNode<int>(12), new TreeNode<int>(11)), new TreeNode<int>(10, new TreeNode<int>(22), new TreeNode<int>(44)));
-    // sh::showTree(root);
-    // std::cout << std::endl;
-    // sh::showTreeLevel(root);
-    template<typename T>
-    void showTreeLevel(TreeNode<T>* root){
-        if (root == nullptr)
-            return;
+    void showTreeLevel(TreeNode* root);
+};
 
-        std::queue<TreeNode<T>*> q;
-        q.push(root);
 
-        while (!q.empty())
-        {
-            TreeNode<T>* temp = q.front();
-            q.pop();
+//==============================================================================
+class Node {
+public:
+    int val;
+    Node* left;
+    Node* right;
+    Node* next;
 
-            std::cout << temp->val << ", ";
-            if(temp->left != nullptr)
-                q.push(temp->left);
-            if(temp->right != nullptr)
-                q.push(temp->right);
-        }
-        std::cout << std::endl;
-    }
+    Node();
+    Node(int _val);
+    Node(int _val, Node* _left, Node* _right, Node* _next);
 };

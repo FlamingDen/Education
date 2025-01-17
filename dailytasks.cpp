@@ -2,6 +2,7 @@
 #include "show.h"
 #include "timer.h"
 
+using namespace std;
 
 class Solution {
 public:
@@ -82,13 +83,28 @@ public:
         }
         return res;
     }
+
+    //--------------------------#2683-------------------------------------------//
+    bool doesValidArrayExist(std::vector<int>& derived) {
+        std::pair<int, int> start, curr;
+        for(size_t i(0); i != derived.size(); ++i){
+            if(i == 0){
+                start.first = derived[i] ^ 1;
+                start.second = derived[i] ^ 0;
+                curr = start;
+            }
+            curr.first ^= derived[i];
+            curr.second ^= derived[i]; 
+        }
+        return start.first == curr.first || start.second == curr.second;
+    }
 };
 
 int main(){
     Solution solution;   
     Timer timer("DailyTasksLeetcode.cpp");
 
-
-
+    std::vector<int> dev{0,1};
+    sh::print(solution.doesValidArrayExist(dev));
     
 }
