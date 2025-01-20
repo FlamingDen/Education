@@ -252,7 +252,25 @@ class Solution {
 
         help_114(root->right);
     }
+    int help_129(TreeNode* root, int curr_num){
+        if(!root)
+            return 0;
 
+        curr_num = curr_num * 10 + root->val;
+        if (!root->left and !root->right)
+            return curr_num;
+        
+        return help_129(root->left, curr_num) + help_129(root->right, curr_num); 
+    }
+    void check_130(std::vector<std::vector<char>>& board, int i, int j) {
+        if (board[i][j] == 'O') {
+            board[i][j] = '1';
+            if (i > 1) check_130(board, i - 1, j);
+            if (j > 1) check_130(board, i, j - 1);
+            if (i + 1 < board.size()) check_130(board, i + 1, j);
+            if (j + 1 < board[0].size()) check_130(board, i, j + 1);
+        }
+    }
 public:
     //--------------------------#101--------------------------------------------//
     // TreeNode* root = new TreeNode(1, new TreeNode(2, new TreeNode(4), new TreeNode(5)), new TreeNode(3, new TreeNode(6), new TreeNode(7)));
@@ -573,7 +591,7 @@ public:
     //--------------------------#121--------------------------------------------//
     // std::vector<int> v{7,1,5,3,6,4,4,7,3,9};
     // sh::print(solution.maxProfit(v));
-    int maxProfit(std::vector<int>& prices) {
+    int maxProfit_121(std::vector<int>& prices) {
         int buy = prices[0];
         int profit = 0;
         for (int i = 1; i < prices.size(); i++) {
@@ -585,12 +603,123 @@ public:
         }
         return profit;
     }
+
+    //--------------------------#122--------------------------------------------//
+    // std::vector<int> v{7,6,4,3,1};
+    // sh::print(solution.maxProfit_122(v));
+    int maxProfit_122(std::vector<int>& prices) {
+        int buy = prices[0];
+        int profit(0);
+        for(size_t i(1); i != prices.size(); ++i){
+            if(prices[i] < buy)
+                buy = prices[i];
+            else if (prices[i] > buy)
+            {
+                profit += prices[i] - buy;
+                buy = prices[i];
+            }   
+        }
+        return profit;
+    }
+
+    //--------------------------#123--------------------------------------------//
+    // std::vector<int> v{3,3,5,0,0,3,1,4};
+    // sh::print(solution.maxProfit_123(v));
+    int maxProfit_123(std::vector<int>& prices) {
+        int oneBuyOneSell = 0;
+        int twoBuyTwoSell = 0;
+        int oneBuy = INT_MAX;
+        int twoBuy = INT_MAX;
+        for(int i = 0; i < prices.size(); i++) {
+            const int p = prices[i];
+            oneBuy = std::min(oneBuy, p);
+            oneBuyOneSell = std::max(oneBuyOneSell, p - oneBuy);
+            twoBuy = std::min(twoBuy, p - oneBuyOneSell);
+            twoBuyTwoSell = std::max(twoBuyTwoSell, p - twoBuy);
+        }
+        return twoBuyTwoSell;
+    }
+
+    //--------------------------#125--------------------------------------------//
+    // sh::print(solution.isPalindrome_125("ab2a"));
+    bool isPalindrome_125(std::string s) {
+        int l(0), r(s.size() - 1);
+        bool res(true);
+        
+        while (l < r)
+        {
+            while(l <= r and !((tolower(s[l]) >= 'a' and tolower(s[l]) <= 'z') or (s[l] >= '0' and s[l] <= '9')))
+                ++l;
+            if(l >= r)
+                break;
+            while(l <= r and !((tolower(s[r]) >= 'a' and tolower(s[r]) <= 'z') or (s[r] >= '0' and s[r] <= '9')))
+                --r;
+            if(l >= r)
+                break;
+            if(tolower(s[l++]) != tolower(s[r--])){
+                res = false;
+                break;
+            }
+        }
+        return res;
+    }
+
+    //--------------------------#128--------------------------------------------//
+    // std::vector<int> v{100,4,105,1,3,2,101, 102,103,104};
+    // sh::print(solution.longestConsecutive(v));
+    int longestConsecutive_128(std::vector<int>& nums) {
+        if(nums.empty())
+            return 0;
+        std::set<int> seq(std::begin(nums), std::end(nums));
+        
+        int len(1), res(1);
+        std::set<int>::iterator prev = std::begin(seq);
+        for(auto it = ++std::begin(seq); it != std::end(seq); ++it){
+            *prev == *it - 1 ? ++len : len = 1;
+            res = std::max(res, len);
+            prev = it;
+        }
+        return res;
+    }
+
+    //--------------------------#129--------------------------------------------//
+    int sumNumbers(TreeNode* root) {
+        return help_129(root, 0);
+    }
+    
+    //--------------------------#130--------------------------------------------//
+    // std::vector<std::vector<char>> board{
+    //     {'O','O','X','O' },
+    //     {'O','O','O','O' },
+    //     {'O','O','O','O' }
+    // };
+    // sh::showVecVec(board);
+    // solution.solve_130(board);
+    // sh::showVecVec(board);
+    void solve_130(std::vector<std::vector<char>>& board) {
+        if (board.empty()) return;
+        int row = board.size(), col = board[0].size();
+        for (int i = 0; i < row; ++i) {
+            check_130(board, i, 0);             // first column
+            check_130(board, i, col - 1);       // last column
+        }
+        for (int j = 1; j < col - 1; ++j) {
+            check_130(board, 0, j);             // first row
+            check_130(board, row - 1, j);       // last row
+        }
+        for (int i = 0; i < row; ++i)
+            for (int j = 0; j < col; ++j)
+                if (board[i][j] == 'O') board[i][j] = 'X';
+                else if (board[i][j] == '1') board[i][j] = 'O';
+    }
+    
 };
 
 int main(){
     Solution solution;   
     Timer timer("LeetCode_200.cpp");
-      
     
     
+
+
 }

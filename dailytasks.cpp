@@ -85,6 +85,8 @@ public:
     }
 
     //--------------------------#2683-------------------------------------------//
+    // std::vector<int> dev{0,1};
+    // sh::print(solution.doesValidArrayExist(dev));
     bool doesValidArrayExist(std::vector<int>& derived) {
         std::pair<int, int> start, curr;
         for(size_t i(0); i != derived.size(); ++i){
@@ -98,13 +100,41 @@ public:
         }
         return start.first == curr.first || start.second == curr.second;
     }
+
+    //--------------------------#2661-------------------------------------------//
+    // std::vector<int> arr{8,2,4,9,3,5,7,10,1,6};
+    // std::vector<std::vector<int>> mat{
+    //     {8,2,9,10,4},
+    //     {1,7,6,3,5}
+    // };
+    // sh::print(solution.firstCompleteIndex(arr, mat));
+    int firstCompleteIndex(vector<int>& arr, vector<vector<int>>& mat) {
+        int n = mat.size();
+        int m = mat[0].size();
+        std::unordered_map<int, int> check(n * m);
+        for(size_t i(0); i != n + m; ++i){
+            check[i] =  i < n ?  m : n;    
+        }
+        std::unordered_map<int, std::pair<int, int>> matrix(n * m);
+        for(size_t i(0); i != n; ++i){
+            for(size_t j(0); j != m; ++j){
+                matrix[mat[i][j]] = {i, j};
+            }
+        }
+        
+        size_t i(0);
+        for(; i != arr.size(); ++i){
+            if(!--check[matrix[arr[i]].first] || !--check[matrix[arr[i]].second + n])
+                return i;
+        }
+        return -1;
+    }
 };
 
 int main(){
     Solution solution;   
     Timer timer("DailyTasksLeetcode.cpp");
 
-    std::vector<int> dev{0,1};
-    sh::print(solution.doesValidArrayExist(dev));
+    
     
 }
