@@ -271,6 +271,65 @@ class Solution {
             if (j + 1 < board[0].size()) check_130(board, i, j + 1);
         }
     }
+    void Comb_131( std::vector<std::vector<std::string>>& res, std::string& s, std::vector<std::string>& curr, int start){
+        int n = s.length();
+        if(start == n){
+            res.push_back(curr);
+        } else {
+            for(size_t i(start); i != n; ++i){
+                if(IsPalinnrom_131(s, start, i)){
+                    curr.push_back(s.substr(start, i - start + 1));
+                    Comb_131(res, s, curr, i + 1);
+                    curr.pop_back();
+                }
+            }
+        }
+        
+    }
+    bool IsPalinnrom_131(std::string& s, int l, int r){
+        while (l < r)
+        {
+            if(s[l++] != s[r--])
+                return false;
+        }
+        return true;
+    }
+    bool Segmented_139(std::string& s,  std::unordered_set<std::string>& dict, std::vector<bool>& dp, int st){
+        if(dp[st])
+            return false;
+        for(auto it = std::begin(dict); it != std::end(dict); ++it){
+            if(s.substr(st, it->size()) == *it){
+                Segmented_139(s, dict, dp,  st + it->size());
+            }
+        }
+        dp[st] = true;
+        return dp[s.size()];
+    }
+    void Segmented_140(std::string& s, std::unordered_set<std::string>& dict,std::vector<std::string>& res, std::vector<std::string>& curr, int st){
+        if(st == s.size()){
+            res.push_back(GetStr(curr));
+            return;
+        }
+           
+        for(auto it = std::begin(dict); it != std::end(dict); ++it){
+            std::string str = s.substr(st, it->size());
+            if(str == *it){
+                curr.push_back(str);
+                Segmented_140(s, dict, res, curr,  st + it->size());
+                curr.pop_back();
+            }
+        }
+        
+    }
+    std::string GetStr(std::vector<std::string> str){
+        std::string res;
+        for(const auto& s : str){
+            if(!res.empty())
+                res.push_back(' ');
+            res.append(s);
+        }
+        return res;
+    }
 public:
     //--------------------------#101--------------------------------------------//
     // TreeNode* root = new TreeNode(1, new TreeNode(2, new TreeNode(4), new TreeNode(5)), new TreeNode(3, new TreeNode(6), new TreeNode(7)));
@@ -713,13 +772,145 @@ public:
                 else if (board[i][j] == '1') board[i][j] = 'O';
     }
     
+    //--------------------------#131--------------------------------------------//
+    std::vector<std::vector<std::string>> partition_131(std::string s) {
+        std::vector<std::vector<std::string>> res;
+        std::vector<std::string> curr;
+        Comb_131(res, s, curr, 0);
+        return res;
+    }
+    
+    //--------------------------#136--------------------------------------------//
+    int singleNumber_136(std::vector<int>& nums) {
+        int num(0);
+        for(size_t i(0); i != nums.size(); ++i)
+            num ^= nums[i];
+        return num;
+        //return std::accumulate(begin(nums), end(nums), 0, std::bit_xor<int>());
+    }
+
+    //--------------------------#137--------------------------------------------//
+    // std::vector<int> nums{2,2,2,3};
+    // sh::print(solution.singleNumber_137(nums));
+    int singleNumber_137(std::vector<int>& nums) {
+        int ones = 0;
+        int twos = 0;
+
+        for (const int num : nums) {
+            ones ^= (num & ~twos);
+            twos ^= (num & ~ones);
+        }
+
+        return ones;
+        // std::vector<int> bits(32, 0);
+        // for(size_t i(0); i != nums.size(); ++i){
+        //     int curr = nums[i];
+        //     int bit, j(0);
+        //     while (j != 32)
+        //     {
+        //         bit = curr % 2;
+        //         curr = curr >> 1;
+        //         bits[j++] += bit;  
+        //     }
+        // }
+        // int res(0);
+        // for(size_t i(0); i != bits.size(); ++i){
+        //     if(bits[i] % 3 != 0){
+        //         res += 1 << i;
+        //     }
+        // }
+        // return res;
+    }
+
+    //--------------------------#139--------------------------------------------//
+    // std::string s = "leetcode";
+    // std::vector<std::string> wordDict = {"leet","code"};
+    // sh::print(solution.wordBreak_139(s, wordDict));
+    bool wordBreak_139(std::string s, std::vector<std::string>& wordDict) {
+        std::unordered_set<std::string> dict(std::begin(wordDict), std::end(wordDict));
+        std::vector<bool> dp(s.size() + 1);
+        return Segmented_139(s, dict, dp, 0);
+    }
+
+    //--------------------------#140--------------------------------------------//
+    // std::string s = "catsanddog";
+    // std::vector<std::string> wordDict = {"cat","cats","and","sand","dog"};
+    // sh::showContainer(solution.wordBreak_140(s, wordDict));
+    std::vector<std::string> wordBreak_140(std::string s, std::vector<std::string>& wordDict) {
+        std::unordered_set<std::string> dict(std::begin(wordDict), std::end(wordDict));
+        std::vector<std::string> res;
+        std::vector<std::string> curr;
+        Segmented_140(s, dict, res, curr, 0);
+        return res;
+    } 
+    
+    //--------------------------#141--------------------------------------------//
+    bool hasCycle_141(ListNode *head) {
+        std::unordered_set<ListNode*> check;
+        while (head != nullptr)
+        {
+            if(check.contains(head)){
+                return true;
+            }
+            check.insert(head);
+            head = head->next;
+        }
+        return false;
+    }
+
+    //--------------------------#142--------------------------------------------//
+    ListNode *detectCycle_142(ListNode *head) {
+        ListNode* slow = head;
+        ListNode* fast = head;
+        while (fast && fast->next) {
+            slow = slow->next;
+            fast = fast->next->next;
+            if (slow == fast) {
+                slow = head;
+                while (slow != fast) {
+                    slow = slow->next;
+                    fast = fast->next;
+                }
+                return slow;
+            }
+        }
+        return nullptr;
+        // std::unordered_set<ListNode*> check;
+        // while (head != nullptr)
+        // {
+        //     if(check.contains(head)){
+        //         return head;
+        //     }
+        //     check.insert(head);
+        //     head = head->next;
+        // }
+        // return nullptr;
+    }
+
+    //--------------------------#143--------------------------------------------//
+    void reorderList(ListNode* head) {
+        std::vector<ListNode*> nodes;
+        while(head != nullptr){
+            nodes.push_back(head);
+            head = head->next;
+        }
+        ListNode* curr = nodes[0];
+        for(size_t i(1); i != nodes.size(); ++i){
+            int pos = i % 2 == 0 ? i / 2 : nodes.size() - i / 2 - 1; 
+            ListNode* next_node = nodes[pos];
+            curr->next = next_node;
+            curr = curr->next;
+        }
+        curr->next = nullptr;
+    }
 };
 
 int main(){
     Solution solution;   
     Timer timer("LeetCode_200.cpp");
     
-    
-
-
+    ListNode l1(1, new ListNode(2, new ListNode(3,(new ListNode(4, new ListNode(5))))));
+    sh::showList(&l1);
+    solution.reorderList(&l1);
+    sh::showList(&l1);
 }

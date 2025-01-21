@@ -129,12 +129,28 @@ public:
         }
         return -1;
     }
+
+    //--------------------------#2017-------------------------------------------//
+    // std::vector<std::vector<int>> grid{
+    //     {2, 5, 4},
+    //     {1, 5, 1}
+    // };
+    // sh::print(solution.gridGame(grid));
+    long long gridGame(std::vector<std::vector<int>>& grid) {
+        long long top = std::accumulate(begin(grid[0]), end(grid[0]), 0);
+        long long bottom(0), res(LLONG_MAX);
+        for(size_t i(0); i != grid[0].size(); ++i){
+            top -= grid[0][i];
+            res = min(res, max(top, bottom));
+            bottom += grid[1][i];
+        }
+        return res;
+    }
 };
 
 int main(){
     Solution solution;   
     Timer timer("DailyTasksLeetcode.cpp");
 
-    
-    
+   
 }
