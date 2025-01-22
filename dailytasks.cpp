@@ -5,6 +5,12 @@
 using namespace std;
 
 class Solution {
+    std::vector<std::pair<int , int>> SHIFTS{
+        {-1, 0}, // top
+        {1,  0}, // bottom
+        {0, -1}, // left
+        {0,  1}  // right
+    };
 public:
     //--------------------------#2657-------------------------------------------//
     // std::vector<int> A{2,3,1};
@@ -146,6 +152,42 @@ public:
         }
         return res;
     }
+
+    //--------------------------#1765-------------------------------------------//
+    // vector<vector<int>> isWater{
+    //     {0,1},
+    //     {0,0}
+    // };
+    // sh::showVecVec(solution.highestPeak(isWater));
+    vector<vector<int>> highestPeak(vector<vector<int>>& isWater) {
+        vector<vector<int>> res(isWater.size(), std::vector<int>(isWater[0].size(), INT_MAX));
+        std::queue<std::pair<int, int>> q;
+        for(size_t i(0); i != isWater.size(); ++i){
+            for(size_t j(0); j != isWater[0].size(); ++j){
+                if(isWater[i][j] == 1){
+                    q.push({i, j});
+                    res[i][j] = 0;
+                }  
+            }
+        }
+
+        pair<int, int> curr;
+        while (!q.empty())
+        {
+            curr = q.front();
+            q.pop();
+
+            for(size_t i(0); i != SHIFTS.size(); ++i){
+                int x = curr.first + SHIFTS[i].first;
+                int y = curr.second + SHIFTS[i].second;
+                if(!(x < 0 or x >= res.size() or y < 0 or y >= res[0].size()) and res[x][y] > 1 + res[curr.first][curr.second]){
+                    res[x][y] = 1 + res[curr.first][curr.second];
+                    q.push({x, y});
+                }
+            }
+        }
+        return res;
+    }
 };
 
 int main(){
@@ -153,4 +195,5 @@ int main(){
     Timer timer("DailyTasksLeetcode.cpp");
 
    
+    
 }

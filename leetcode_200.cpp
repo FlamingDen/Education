@@ -699,6 +699,24 @@ public:
         return twoBuyTwoSell;
     }
 
+    //--------------------------#124--------------------------------------------//
+    int maxPathSum_124(TreeNode* root) {
+        int res(root->val);
+        GetPathSum_124(root, res);
+        return res;
+    }
+    int GetPathSum_124(TreeNode* root, int& res){
+        if(!root)
+            return 0;
+        
+        int leftSum = std::max(GetPathSum_124(root->left, res), 0);
+        int rightSum = std::max(GetPathSum_124(root->right, res), 0);
+        
+        res = std::max(res, root->val + leftSum + rightSum);
+
+        return root->val + std::max(leftSum, rightSum);
+    }
+
     //--------------------------#125--------------------------------------------//
     // sh::print(solution.isPalindrome_125("ab2a"));
     bool isPalindrome_125(std::string s) {
@@ -888,7 +906,11 @@ public:
     }
 
     //--------------------------#143--------------------------------------------//
-    void reorderList(ListNode* head) {
+    // ListNode l1(1, new ListNode(2, new ListNode(3,(new ListNode(4, new ListNode(5))))));
+    // sh::showList(&l1);
+    // solution.reorderList_143(&l1);
+    // sh::showList(&l1);
+    void reorderList_143(ListNode* head) {
         std::vector<ListNode*> nodes;
         while(head != nullptr){
             nodes.push_back(head);
@@ -903,14 +925,96 @@ public:
         }
         curr->next = nullptr;
     }
+
+    //--------------------------#144--------------------------------------------//
+    std::vector<int> preorderTraversal_144(TreeNode* root) {
+        std::vector<int> res;
+        PreOrder_144(root, res);
+        return res;
+    }
+    void PreOrder_144(TreeNode* root, std::vector<int>& res){
+        if(!root){
+            return;
+        }
+        res.push_back(root->val);
+        PreOrder_144(root->right, res);
+        PreOrder_144(root->left, res);
+    }
+
+    //--------------------------#145--------------------------------------------//
+    std::vector<int> postorderTraversal_145(TreeNode* root) {
+        std::vector<int> res;
+        PostOrder_145(root, res);
+        return res;
+    }
+    void PostOrder_145(TreeNode* root, std::vector<int>& res){
+        if(!root){
+            return;
+        }
+        PostOrder_145(root->left, res);
+        PostOrder_145(root->right, res);
+        res.push_back(root->val);
+    }
+
+    //--------------------------#147--------------------------------------------//
+    // ListNode l1(4, new ListNode(2, new ListNode(1,(new ListNode(3)))));
+    // sh::showList(&l1);
+    // solution.insertionSortList(&l1);
+    ListNode* insertionSortList_147(ListNode* head) {
+        ListNode* dummy = new ListNode();
+        dummy->next = head;
+        ListNode* end = dummy->next;
+        ListNode* curr;
+        ListNode* prev;
+        ListNode* next_el;
+        while (end->next != nullptr)
+        {
+            // new elem 
+            next_el = end->next;
+
+            // swap pointers
+            end->next = next_el->next;
+            next_el->next = nullptr;
+
+            // find new place and insert nwxt_el in
+            prev = dummy;
+            curr = dummy->next;
+            while (prev != end and curr->val < next_el->val )
+            {
+                prev = curr;
+                curr = curr->next;
+            }
+
+            prev->next = next_el;
+            next_el->next = curr;
+            if(prev == end)
+                end = end->next;
+        }
+        return dummy->next;
+    }
+
+    //--------------------------#148--------------------------------------------//
+    ListNode* sortList(ListNode* head) {
+        std::vector<int> tmp;
+        ListNode* curr = head;
+        while (curr){
+            tmp.push_back(curr->val);
+            curr = curr->next;
+        }
+            
+        std::sort(begin(tmp), end(tmp));
+        curr = head;
+        for(size_t i(0); i != tmp.size(); ++i){  
+            curr->val = tmp[i];
+            curr = curr->next;
+        }
+        return head;
+    }
 };
 
 int main(){
     Solution solution;   
     Timer timer("LeetCode_200.cpp");
     
-    ListNode l1(1, new ListNode(2, new ListNode(3,(new ListNode(4, new ListNode(5))))));
-    sh::showList(&l1);
-    solution.reorderList(&l1);
-    sh::showList(&l1);
+
 }

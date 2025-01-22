@@ -24,6 +24,7 @@ add_executable(Main
     point.h
     utils/timer.cpp
     utils/timer.h
+    utils/show.h
 )
 add_executable(LeetCode_100
     leetcode_100.cpp

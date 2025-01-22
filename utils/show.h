@@ -27,7 +27,7 @@ void sh::showContainer(const T& c){
     std::cout << "[";
     for(auto it = std::begin(c); it != std::end(c); ++it){
         if(std::next(it) == std::end(c)){
-            std::cout << *it <<']'<<  std::endl;
+            std::cout << *it << ']' <<  std::endl;
             break;
         }
         std::cout << *it << ", ";
@@ -59,16 +59,16 @@ void sh::showVecVec(const std::vector<std::vector<T>> &v)
         std::cout << "[[ Empty ]] \n";
         return; 
     }
-    std::cout <<'[';
+    std::cout <<'[' << std::endl;
     for (int i = 0; i < std::ssize(v); i++)
     {
-        if(i ==  std::ssize(v) - 1){
+        std::cout.width(4);
+        if(i == std::ssize(v) - 1){
             showContainer(v[i]);
             std::cout << ']' << std::endl;
             break;
         }
         showContainer(v[i]);
-        std::cout << ",";
     }
 }
 
