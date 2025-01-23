@@ -188,12 +188,41 @@ public:
         }
         return res;
     }
+
+    //--------------------------#1267-------------------------------------------//
+    // std::vector<std::vector<int>> grid{
+    //     {1,0},
+    //     {1,1}
+    // };
+    // sh::print(solution.countServers(grid));
+    int countServers(vector<vector<int>>& grid) {
+        std::unordered_map<int, int> check_row(grid.size());
+        std::unordered_map<int, int> check_col(grid.size());
+        std::vector<std::pair<int, int>> servs;
+        int servers(0);
+        for(size_t i(0); i != grid.size(); ++i){
+            for(size_t j(0); j != grid[0].size(); ++j){
+                if(grid[i][j] == 1){
+                    check_row[i]++;
+                    check_col[j]++;
+                    servs.push_back({i, j});
+                }
+            }
+        }
+        for(size_t i(0); i != servs.size(); ++i){
+            int x = servs[i].first;
+            int y = servs[i].second;
+            if(check_row[x] > 1 or check_col[y] > 1)
+                ++servers;
+        }
+        return servers;
+    }
 };
 
 int main(){
     Solution solution;   
     Timer timer("DailyTasksLeetcode.cpp");
 
-   
+    
     
 }

@@ -798,6 +798,76 @@ public:
         return res;
     }
     
+    //--------------------------#134--------------------------------------------//
+    // std::vector<int> gas{1,2,3,4,5};
+    // std::vector<int> cost{3,4,5,1,2};
+    // sh::print(solution.canCompleteCircuit_134(gas, cost));
+    int canCompleteCircuit_134(std::vector<int>& gas, std::vector<int>& cost) {
+        int n = gas.size();
+        int sum(0), profit, prev;
+        int max(-1), index(n - 1);
+        for(size_t i(n - 1); i + 1 > 0; --i){
+            profit = gas[i] - cost[i];
+            sum += profit;
+            if(i != n - 1){
+                profit += prev;
+            }
+            if(max < profit){
+                max = profit;
+                index = i;
+            }
+            prev = profit;
+        }
+        return sum < 0 ? -1 : index; 
+    }
+
+    //--------------------------#133--------------------------------------------//
+    // Node* l1 = new Node(1);
+    // Node* l2 = new Node(2);
+    // Node* l3 = new Node(3);
+    // Node* l4 = new Node(4);
+    // l1->neighbors.push_back(l2);
+    // l1->neighbors.push_back(l4);
+    // l2->neighbors.push_back(l1);
+    // l2->neighbors.push_back(l3);
+    // l3->neighbors.push_back(l2);
+    // l3->neighbors.push_back(l4);
+    // l4->neighbors.push_back(l1);
+    // l4->neighbors.push_back(l3);
+    // Node* n = solution.cloneGraph_133(l1);
+    // Node* cloneGraph_133(Node* node) {
+    //     if(!node)
+    //         return nullptr;
+    //     std::unordered_map<int, Node*> nodes;
+    //     std::unordered_set<int> visited;
+    //     std::queue<Node*> q;
+    //     q.push(node);
+    //     Node* curr;
+    //     while (!q.empty())
+    //     {
+    //         curr = q.front();
+    //         q.pop();
+    //         Node* new_node = nodes.contains(curr->val) ? nodes[curr->val] : new Node(curr->val);
+    //         nodes[curr->val] = new_node;
+    //         visited.insert(curr->val);
+    //         std::vector<Node*>& connections = curr->neighbors; 
+    //         for(size_t i(0); i != connections.size(); ++i){
+    //             if(nodes.contains(connections[i]->val)){
+    //                 new_node->neighbors.push_back(nodes[connections[i]->val]);
+    //             } else {
+    //                 Node* con = new Node(connections[i]->val);
+    //                 nodes[connections[i]->val] = con;
+    //                 new_node->neighbors.push_back(con); 
+    //             }
+    //             if(!visited.contains(connections[i]->val)){
+    //                 q.push(connections[i]);
+    //                 visited.insert(connections[i]->val);
+    //             }
+    //         }
+    //     }
+    //     return nodes[1];
+    // }
+
     //--------------------------#136--------------------------------------------//
     int singleNumber_136(std::vector<int>& nums) {
         int num(0);
@@ -994,7 +1064,7 @@ public:
     }
 
     //--------------------------#148--------------------------------------------//
-    ListNode* sortList(ListNode* head) {
+    ListNode* sortList_148(ListNode* head) {
         std::vector<int> tmp;
         ListNode* curr = head;
         while (curr){
@@ -1010,11 +1080,88 @@ public:
         }
         return head;
     }
+
+    //--------------------------#160--------------------------------------------//
+    ListNode *getIntersectionNode_160(ListNode *headA, ListNode *headB) {
+		int lenA = 0;
+		int lenB = 0;
+		ListNode* ptrA = headA;
+		ListNode* ptrB = headB;
+        while(ptrA->next or ptrB->next)
+        {
+            if(ptrA){
+                ++lenA;
+                ptrA = ptrA->next;
+            }
+            if(ptrB){
+                ++lenB;
+                ptrB = ptrB->next;
+            }     
+        }
+        if(ptrA != ptrB)
+            return nullptr;
+        ++lenA;
+        ++lenB;
+        
+		int diff = abs(lenA - lenB);
+		if(lenA > lenB){
+			while(diff){
+				headA = headA -> next;
+				diff--;
+			}
+		}
+		else{
+			while(diff){
+				headB = headB -> next;
+				diff--;
+			}
+		}
+		while(headA != nullptr and headB != nullptr){
+			if(headA == headB)
+				return headA;
+			headA = headA -> next;
+			headB = headB -> next;
+		}
+		return nullptr;
+	}
+
+    //--------------------------#162--------------------------------------------//
+    // std::vector<int> nums{4,3,2,1};
+    // sh::print(solution.findPeakElement_162(nums));
+    int findPeakElement_162(std::vector<int>& nums) {
+        if(nums.size() == 1)
+            return 0;
+        return findPeak_162(nums, 0, nums.size() - 1);
+    }
+    int findPeak_162(std::vector<int>& nums, int l, int r){
+        if(l > r)
+            return -1;
+        int mid = (l + r) / 2;
+        int left(-1), right(-1);
+        if(mid == 0){
+            if(nums[mid] > nums[mid + 1])
+                return mid;
+            right = findPeak_162(nums, mid + 1, r);
+        } else if (mid == nums.size() - 1)
+        {
+            if(nums[mid] > nums[mid - 1])
+                return mid;
+            left = findPeak_162(nums, l, mid - 1);
+        } else {
+            if(nums[mid] > nums[mid + 1] and nums[mid] > nums[mid - 1])
+                return mid;
+            left = findPeak_162(nums, l, mid - 1);
+            right = findPeak_162(nums, mid + 1, r);
+        }
+        return left == -1 ? right : left;
+    }
+
+
 };
 
 int main(){
     Solution solution;   
     Timer timer("LeetCode_200.cpp");
     
-
+    
 }
