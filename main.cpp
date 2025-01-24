@@ -7,7 +7,10 @@
 #include <vector>
 #include <regex>
 
+#include <typeinfo>
+
 #include "timer.h"
+#include "show.h"
 
 #include "point.h"
 
@@ -188,9 +191,39 @@ double divide(double a, double b){
     return a/b;
 }
 
+template<typename T>
+class G{
+    T x;
+};
+
 int main()
 {
+    // // --12.1
+    // B* pB = new B;
+    // B* pD1 = new D1;
     
+    // const std::type_info& inf = typeid(*pB);
+    // sh::print(inf.name());
+    // sh::print(inf.hash_code());
+
+    // const std::type_info& inf1 = typeid(*pD1);
+    // std::cout << inf.name() << std::endl;
+    // sh::print(inf1.name());
+
+    // pB = new D2;
+    // sh::print(typeid(*pB).name());
+
+    // long b;
+    // sh::print(typeid(b).name());
+    // sh::print(typeid(long long).name());
+
+    // G<int> var_i;
+    // G<char> var_d;
+    // std::cout << std::boolalpha;
+    // sh::print(typeid(var_i) == typeid(var_d));
+
+    // -- 12.2
     
+
 }
 
