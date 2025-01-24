@@ -217,6 +217,48 @@ public:
         }
         return servers;
     }
+
+    //--------------------------#802--------------------------------------------//
+    // std::vector<std::vector<int>> graph{
+    //     {1,2},
+    //     {2,3},
+    //     {5},
+    //     {0},
+    //     {5},
+    //     {},
+    //     {}
+    // };
+    // sh::showContainer(solution.eventualSafeNodes(graph));
+    std::vector<int> eventualSafeNodes(std::vector<std::vector<int>>& graph) {
+        std::vector<int> res;
+        std::queue<int> q;
+        std::vector<std::vector<int>> gr(graph.size());
+        std::vector<int> sizes(graph.size(), 0), safe(graph.size());
+        for(size_t i(0); i != graph.size(); ++i){
+            for(size_t j(0); j != graph[i].size(); ++j){
+                gr[graph[i][j]].push_back(i);
+            }
+            sizes[i] = graph[i].size();
+            if(sizes[i] == 0)
+                q.push(i);
+        }
+
+        while (!q.empty())
+        {
+            int curr = q.front();
+            q.pop();
+            safe[curr] = 1;
+            for(const auto& v : gr[curr]){
+                if(--sizes[v] == 0)
+                    q.push(v);
+            }
+        }
+        for(size_t i(0); i != graph.size(); ++i){
+            if(safe[i])
+                res.push_back(i);
+        }
+        return res;
+    }
 };
 
 int main(){

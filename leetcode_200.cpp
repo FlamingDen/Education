@@ -2,6 +2,33 @@
 #include "show.h"
 #include "timer.h"
 
+    //--------------------------#173--------------------------------------------//
+class BSTIterator {
+    std::stack<TreeNode*> st;
+
+    void PushNodes(TreeNode* node){
+        while(node){
+            st.push(node);
+            node = node->left;
+        }
+    }
+public:
+    BSTIterator(TreeNode* root) {
+        PushNodes(root);
+    }
+    
+    int next(){
+        TreeNode* curr = st.top();
+        st.pop();
+        PushNodes(curr->right);
+        return curr->val;
+    }
+    
+    bool hasNext() {
+        return !st.empty(); 
+    }
+};
+
 class Solution {
     void helper_101(TreeNode* root, std::vector<int>& vals, bool left){
         if(root == nullptr){
@@ -119,11 +146,7 @@ class Solution {
         
         return root;
     }
-    TreeNode* help_106(
-        std::vector<int>& postorder,
-        std::vector<int>& inorder, 
-        std::unordered_map<int, int>& pos, 
-        int l, int r, int& ind, bool st)
+    TreeNode* help_106(std::vector<int>& postorder, std::vector<int>& inorder, std::unordered_map<int, int>& pos, int l, int r, int& ind, bool st)
     {
         if(ind < 0){
             return nullptr;
@@ -1156,7 +1179,126 @@ public:
         return left == -1 ? right : left;
     }
 
+    //--------------------------#165--------------------------------------------//
+    // std::string version1("1");
+    // std::string version2("1.1");
+    // sh::print(solution.compareVersion_165(version1, version2));
+    int compareVersion_165(std::string version1, std::string version2) {
+        int res(0);
+        int prev1(0), prev2(0);
+        int ptr1(0), ptr2(0);
+        while (ptr1 < version1.size() or ptr2 < version2.size())
+        {
+            while (ptr1 < version1.size() and version1[ptr1] != '.')
+                ++ptr1;
+            while (ptr2 < version2.size() and version2[ptr2] != '.')
+                ++ptr2;
 
+            if(prev1 != ptr1 and prev2 != ptr2){
+                int str1 = std::stoi(version1.substr(prev1, ptr1 - prev1));
+                int str2 = std::stoi(version2.substr(prev2, ptr2 - prev2));
+                if(str1 != str2)
+                    return str1 < str2 ? -1 : 1;
+            } else if(prev1 == ptr1){
+                ptr2 = prev2;
+                while (ptr2 < version2.size()){
+                    if(version2[ptr2] != '0' and version2[ptr2] != '.')
+                        return -1;
+                    ++ptr2;
+                }
+            } else if(prev2 == ptr2){
+                ptr1 = prev1;
+                while (ptr1 < version1.size()){
+                    if(version1[ptr1] != '0' and version1[ptr1] != '.')
+                        return 1;
+                    ++ptr1;
+                }    
+            }
+            if(ptr2 < version2.size() and version2[ptr2] == '.')
+                ptr2++;
+            if(ptr1 < version1.size() and version1[ptr1] == '.')
+                ptr1++;
+            prev1 = ptr1;
+            prev2 = ptr2;
+            
+        }
+        return res;
+    }
+
+    //--------------------------#167--------------------------------------------//
+    // std::vector<int> num{-1, 0};
+    // sh::showContainer(solution.twoSum_167(num, -1));
+    std::vector<int> twoSum_167(std::vector<int>& numbers, int target) {
+        std::vector<int> ans(2, 0);
+        int l(0), r(numbers.size() - 1);
+        while (l < r)   
+        {
+            if(numbers[l] + numbers[r] == target){
+                ans[0] = ++l;
+                ans[1] = ++r;
+                break;
+            } else if (numbers[l] + numbers[r] > target){
+                r--;
+            } else {
+                l++;
+            }
+        }
+        return ans;
+    }
+   
+    //--------------------------#168--------------------------------------------//
+    // sh::print(solution.convertToTitle_168(52));
+    std::string convertToTitle_168(int columnNumber) {
+        std::string ans;
+        while (columnNumber != 0)
+        {
+            columnNumber--;
+            int curr = columnNumber % 26;
+            ans = (char('A' + curr)) + ans;
+            columnNumber /= 26;
+        }
+        return ans;
+    }
+
+    //--------------------------#169--------------------------------------------//
+    int majorityElement_169(std::vector<int>& nums) {
+        int count = 0;
+        int candidate = 0;
+        
+        for (int num : nums) {
+            if (count == 0) 
+                candidate = num;
+            
+            if (num == candidate) 
+                count++;
+            else
+                count--;
+        }
+        return candidate;
+    }
+
+    //--------------------------#171--------------------------------------------//
+    // sh::print(solution.titleToNumber("ZY"));
+    int titleToNumber(std::string columnTitle) {
+        int ans(0);
+        for(size_t i(0); i != columnTitle.size(); ++i){
+            char curr = columnTitle[i] ;
+            ans *= 26;
+            ans += ++curr - 'A';
+        }
+        return ans;
+    }
+
+    //--------------------------#172--------------------------------------------//
+    int trailingZeroes(int n) {
+        int count = 0;
+        while (n != 0) {
+            int tmp = n / 5;
+            count += tmp;
+            n = tmp;
+        }
+        return count;
+    }
 };
 
 int main(){
