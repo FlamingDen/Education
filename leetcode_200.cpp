@@ -1299,6 +1299,197 @@ public:
         }
         return count;
     }
+
+    //--------------------------#175--------------------------------------------//
+    // SELECT p.firstName, p.lastName, a.city, a.state
+    // FROM Person p
+    // left join Address a
+    //     ON p.personId = a.personId;
+
+    //--------------------------#176--------------------------------------------//
+    // WITH highest_salary AS (
+    //     SELECT MAX(salary) AS salary
+    //     FROM Employee
+    // )
+    // SELECT MAX(salary) AS "SecondHighestSalary" 
+    // FROM Employee
+    // WHERE salary < (SELECT salary FROM highest_salary);
+    // };
+
+    //--------------------------#187--------------------------------------------//
+    std::vector<std::string> findRepeatedDnaSequences(std::string s) {
+        if(s.size() < 10)
+            return {};
+        std::unordered_map<std::string, int> m;
+        std::vector<std::string> ans;
+
+        for(size_t i(0); i != s.size() - 9; ++i)
+            m[s.substr(i, 10)]++;
+        
+
+        for(auto it = std::begin(m); it != std::end(m); ++it){
+            if(it->second >= 2)
+                ans.push_back(it->first);
+        }
+        return ans;
+    }
+
+    //--------------------------#189--------------------------------------------//
+    // std::vector<int> v{1,2,3,4,5};
+    // sh::showContainer(v);
+    // solution.rotate_189(v, 3);
+    // sh::showContainer(v);
+    void rotate_189(std::vector<int>& nums, int k) {
+        k = k % nums.size();
+        if(k == 0)
+            return;
+        int swaped_pos(0), j(0);
+        int nok = std::abs((int)nums.size() * k) / std::gcd(nums.size(), k);
+        int n = nok / k;
+        for(size_t i(0); i != nums.size() - 1; ++i){
+            int pos = (swaped_pos + k) % nums.size();
+            std::swap(nums[j], nums[pos]);
+            swaped_pos = pos;
+            if(--n == 0){
+                ++j;
+                ++swaped_pos;
+                n = nok / k;
+            }
+        }
+    }
+
+    //--------------------------#190--------------------------------------------//
+    uint32_t reverseBits_190(uint32_t n) {
+        uint32_t ans(0);
+        for(size_t i(0); i != 32; ++i){
+            if((n >> i) % 2 != 0){
+                ans |= (1 << 31 - i);
+            } 
+        }
+        return ans;
+    }
+
+    //--------------------------#191--------------------------------------------//
+    int hammingWeight_191(int n) {
+        int ans(0);
+        for(size_t i(0); i != 32; ++i){
+            if((n >> i) % 2 == 1)
+                ++ans;
+        }
+        return ans;
+    }
+
+    //--------------------------#198--------------------------------------------//
+    // std::vector<int> v{2,7,9,3,1};
+    // sh::print(solution.rob_198(v));
+    int rob_198(std::vector<int>& nums) {
+        std::vector<int> dp(nums.size(), 0);
+        dp[0] = nums[0];
+        dp[1] = std::max(nums[0], nums[1]);
+
+        for(size_t i(2); i != nums.size(); ++i)
+            dp[i] = std::max(dp[i-2] + nums[i], dp[i - 1]);
+        
+        
+        return dp[nums.size() - 1];
+    }
+
+    //--------------------------#199--------------------------------------------//
+    std::vector<int> rightSideView(TreeNode* root) {
+        if(!root)
+            return {};
+        std::vector<int> ans;
+        std::queue<TreeNode*> q;
+        q.push(root);
+
+        TreeNode* curr;
+        while (!q.empty())
+        {
+            int s = q.size();
+            while (s--)
+            {
+                curr = q.front();
+                q.pop();
+
+                if(curr->left)
+                    q.push(curr->left);
+                if(curr->right)
+                    q.push(curr->right);
+
+                if(s == 0)
+                    ans.push_back(curr->val);
+            }
+        }
+        return ans;
+    }
+
+    //--------------------------#200--------------------------------------------//
+    // std::vector<std::vector<char>> grid{
+    //     {'1','1','0','0','0'},
+    //     {'1','1','0','0','0'},
+    //     {'0','0','1','0','0'},
+    //     {'0','0','0','1','1'}
+    // };
+    // sh::print(solution.numIslands_200(grid));
+    int numIslands_200(std::vector<std::vector<char>>& grid) {
+        std::vector<std::vector<bool>> visited(grid.size(), std::vector<bool>(grid[0].size(), false));
+        int ans(0);
+       
+        for(size_t i(0); i != grid.size(); ++i){
+            for(size_t j(0); j != grid[0].size(); ++j){
+                if(!visited[i][j] and grid[i][j] == '1' ){
+                    ++ans;
+                    CheckIslad(grid, visited, {i, j});
+                }
+            }
+        }   
+
+        return ans;
+    }
+    void CheckIslad(std::vector<std::vector<char>>& grid, std::vector<std::vector<bool>>& visited, std::pair<int, int> start){
+        std::queue<std::pair<int, int>> q;
+        q.push(start);
+        std::vector<std::pair<int, int>> SHIFTS{
+            {-1, 0},
+            { 1, 0},
+            {0 ,-1},
+            {0 , 1}
+        };
+        while (!q.empty())
+        {   
+            auto [x, y] = q.front();
+            q.pop();
+            visited[x][y] = true;
+
+            for(size_t i(0); i != SHIFTS.size(); ++i){
+                int x_ = x + SHIFTS[i].first;
+                int y_ = y + SHIFTS[i].second;
+                if(x_ >= 0 and x_ < grid.size() and y_ >= 0 and y_ < grid[0].size() and grid[x_][y_] == '1' and !visited[x_][y_]){
+                    q.push({x_, y_});
+                    visited[x_][y_] = true;
+                }
+            }
+        }
+    }
+
+    //--------------------------#179--------------------------------------------//
+    // std::vector<int> nums{3,30,34,5,9};
+    // sh::print(solution.largestNumber_179(nums));
+    std::string largestNumber_179(std::vector<int>& nums) {
+        std::string ans;
+
+        std::sort(std::begin(nums), std::end(nums),[](int a, int b){
+            std::string a_ = std::to_string(a);
+            std::string b_ = std::to_string(b);
+            return (a_ + b_) > (b_ + a_);
+        });
+        if(nums[0] == 0)
+            return "0";
+
+        for(size_t i(0); i != nums.size(); ++i)
+           ans.append(std::to_string(nums[i])); 
+        return ans;
+    }
 };
 
 int main(){
