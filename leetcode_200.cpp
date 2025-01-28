@@ -29,6 +29,36 @@ public:
     }
 };
 
+    //--------------------------#155--------------------------------------------//
+    // MinStack* minStack = new MinStack();
+    // minStack->push(-2);
+    // minStack->push(0);
+    // minStack->push(-3);
+    // sh::print(minStack->getMin()); // return -3
+    // minStack->pop();
+    // sh::print(minStack->top());    // return 0
+    // sh::print(minStack->getMin());
+class MinStack {
+    std::vector< std::pair<int,int> > s;
+public:
+    MinStack() { }
+    
+    void push(int val) {
+        if(s.empty())
+            s.push_back({val,val});
+        else
+            s.push_back({val,std::min(s.back().second,val)});    
+    }
+    
+    void pop() { s.pop_back(); }
+    
+    int top() { return s.back().first; }
+    
+    int getMin() {
+        return s.back().second; 
+    }
+};
+
 class Solution {
     void helper_101(TreeNode* root, std::vector<int>& vals, bool left){
         if(root == nullptr){
@@ -1490,11 +1520,86 @@ public:
            ans.append(std::to_string(nums[i])); 
         return ans;
     }
+
+    //--------------------------#151--------------------------------------------//
+    // std::string str("a good example");
+    // sh::print(solution.reverseWords_151(str));
+    std::string reverseWords_151(std::string s) {
+        std::string ans;
+        ans.reserve(s.size());
+        int end(0), j(0);
+        while (s[j] == ' '){
+            j++;
+        }
+        
+
+        for(size_t i(s.size() - 1); i + 1 - j > 0; --i){
+            if(s[i] == ' '){
+                if(i != s.size() - 1)
+                    ans.push_back(s[i]);
+                while (i + 1 - j > 0 and s[i] == ' '){
+                    --i;
+                }
+            }
+            // word
+            std::string tmp;
+            if(s[i] != ' '){
+                while (i + 1 - j > 0 and s[i] != ' '){
+                    tmp.push_back(s[i]);
+                    --i;
+                }
+                std::reverse(std::begin(tmp), std::end(tmp));
+                ++i;
+            }
+            ans.append(tmp);
+
+        }
+        return ans;
+    }
+
+    //--------------------------#152--------------------------------------------//
+    // std::vector<int> nums{2,3,-2,4};
+    // solution.maxProduct_152(nums);
+    int maxProduct_152(std::vector<int>& nums) {
+        // int prod(1);
+        // int result(INT_MIN);
+        
+        // for (int i = 0; i < nums.size(); i++) {
+        //     prod *= nums[i];
+        //     result = std::max(prod, result);
+        //     if(prod == 0) 
+        //         prod = 1;
+        // }
+        // prod = 1;
+        
+        // for (int i = nums.size() - 1; i >= 0; i--) {
+        //     prod *=  nums[i];
+        //     result = std::max(prod, result);
+        //     if(prod == 0) 
+        //         prod = 1;      
+        // }
+        // return result;
+
+        int maxi = nums[0];
+        int mini = nums[0];
+        int ans = nums[0];
+        for(int i = 1;i < nums.size();i++){
+            if(nums[i] < 0){
+                std::swap(maxi,mini);
+            }
+            maxi = std::max(nums[i],maxi*nums[i]);
+            mini = std::min(nums[i],mini*nums[i]);
+            ans = std::max(ans,maxi);
+        }
+        return ans;
+    }
+
 };
 
 int main(){
     Solution solution;   
     Timer timer("LeetCode_200.cpp");
+    
     
     
 }

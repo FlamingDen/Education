@@ -291,12 +291,52 @@ public:
             ans[i]=rpath[queries[i][1]][queries[i][0]];
         return ans;
     }
+
+    //--------------------------#2658-------------------------------------------//
+    // vector<vector<int>> grid{
+    //     {0, 6, 0}
+    // };
+    // sh::print(solution.findMaxFish(grid));
+    int findMaxFish(vector<vector<int>>& grid) {
+        std::vector<std::vector<bool>> visited(grid.size(), std::vector<bool>(grid[0].size(), false));
+        int fish(0);
+        for(size_t i(0); i != grid.size(); ++i){
+            for(size_t j(0); j != grid[0].size(); ++j){
+                if(!visited[i][j] and grid[i][j] > 0){
+                    fish = std::max(fish, ToFish(grid, visited, {i, j}));
+                }
+            }
+        }
+        return fish;
+    }
+    int ToFish(vector<vector<int>>& grid, std::vector<std::vector<bool>>& visited, std::pair<int , int> start) {
+        queue<std::pair<int , int>> q;
+        q.push(start);
+        int fish(0);
+
+        while (!q.empty())
+        {
+            auto [x , y] = q.front();
+            q.pop();
+            visited[x][y] = true;
+            fish += grid[x][y];
+
+            for(size_t i(0); i != SHIFTS.size(); ++i){
+                int x_ = x + SHIFTS[i].first;
+                int y_ = y + SHIFTS[i].second;
+                if(x_ >= 0 and x_ < grid.size() and y_ >= 0 and y_ < grid[0].size() and grid[x_][y_] > 0 and !visited[x_][y_]){
+                    q.push({x_, y_});
+                    visited[x_][y_] = true;
+                }
+            }   
+        } 
+        return fish;
+    } 
 };
 
 int main(){
     Solution solution;   
     Timer timer("DailyTasksLeetcode.cpp");
 
-    
     
 }
