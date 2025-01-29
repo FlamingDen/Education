@@ -13,6 +13,7 @@
 #include "show.h"
 
 #include "point.h"
+#include "DSU.hpp"
 
 class B;
 class D1;
@@ -227,6 +228,6 @@ int main()
     // -- 12.3
 
     
-
+    
 }
 

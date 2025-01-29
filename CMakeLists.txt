@@ -29,6 +29,8 @@ add_executable(Main
     utils/timer.cpp
     utils/timer.h
     utils/show.h
+    algo/DSU.hpp
+    algo/DSU.cpp
 )
 add_executable(LeetCode_100
     leetcode_100.cpp
@@ -84,10 +86,12 @@ add_executable(DailyTasksLeetcode
 #==================================================
 target_include_directories(Main INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/utils
+    ${CMAKE_CURRENT_SOURCE_DIR}/algo
 )
 
 target_include_directories(Main PRIVATE
     utils
+    algo
 )
 #==================================================
 target_include_directories(LeetCode_100 INTERFACE

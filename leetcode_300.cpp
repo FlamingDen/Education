@@ -64,12 +64,77 @@ public:
         }
         return head;
     }
+
+    //--------------------------#204--------------------------------------------//
+    int countPrimes_204(int n) {
+        int cnt = 0;
+        std::vector<bool> prime(n + 1, true);
+        prime[0] = prime[1] = false;
+        for (int i = 2; i < n; i++) {
+            if (prime[i]) {
+                cnt++;
+                for (int j = i * 2; j < n; j = j + i) {
+                    prime[j] = 0;
+                }
+            }
+        }
+        return cnt;
+    }
+
+    //--------------------------#205--------------------------------------------//
+    // std::string s{"badc"}; 
+    // std::string t{"baba"};
+    // std::cout << std::boolalpha;
+    // sh::print(solution.isIsomorphic_205(s, t));
+    bool isIsomorphic_205(std::string s, std::string t) {
+        if(s.size() != t.size())
+            return false;
+
+        std::unordered_map<char, char> convert;
+        std::unordered_set<char> storage;
+        for(size_t i(0); i != s.size(); ++i){
+            if(!convert.contains(s[i])){
+                if(!storage.contains(t[i])){
+                    convert[s[i]] = t[i];
+                    storage.insert(t[i]);
+                } else {
+                    return false;
+                }
+            }
+                
+            if(convert[s[i]] != t[i])
+                return false;   
+        }
+        return true;
+    }
+
+    //--------------------------#206--------------------------------------------//
+    // ListNode* l1 = new ListNode(1, new ListNode(2, new ListNode(3,(new ListNode(4, new ListNode(5))))));
+    // sh::showList(l1);
+    // l1 = solution.reverseList_206(l1);
+    // sh::showList(l1);
+    ListNode* reverseList_206(ListNode* head) {
+        if(!head or !head->next)
+            return head;
+        ListNode *prev, *curr, *next;
+        prev = nullptr;
+        curr = head;
+        
+        while (curr)
+        {
+            next = curr->next;
+            curr->next = prev;
+
+            prev = curr;
+            curr = next;
+        }
+        return prev;
+    }
 };
 
 int main(){
     Solution solution;   
     Timer timer("LeetCode_300.cpp");
-    
     
     
 }
