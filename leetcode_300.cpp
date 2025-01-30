@@ -2,6 +2,61 @@
 #include "show.h"
 #include "timer.h"
 
+    //--------------------------#211--------------------------------------------//
+    // WordDictionary* wordDictionary = new WordDictionary();
+    // wordDictionary->addWord("bad");
+    // wordDictionary->addWord("dad");
+    // wordDictionary->addWord("mad");
+    // std::cout << std::boolalpha;
+    // sh::print(wordDictionary->search("pad")); // return False
+    // sh::print(wordDictionary->search("bad")); // return True
+    // sh::print(wordDictionary->search(".ad")); // return True
+    // sh::print(wordDictionary->search("b..")); // return True
+class WordDictionary {
+private:
+    struct Vertex
+    {
+        std::unordered_map<char, std::shared_ptr<Vertex>> to;
+        bool terminal = {false};
+    };
+    std::shared_ptr<Vertex> root;
+public:
+    WordDictionary() {
+        root = std::make_shared<Vertex>();
+    }
+    
+    void addWord(std::string word) {
+        auto currVer = root;
+        for (auto c : word)
+        {
+            if(!currVer->to.contains(c)){
+                currVer->to.insert({c, std::make_shared<Vertex>()});
+            }
+            currVer = currVer->to[c];
+        }
+        currVer->terminal = true;
+    }
+    
+    bool search(std::string word, std::shared_ptr<Vertex> root_ = nullptr) {
+        std::shared_ptr<Vertex> currVer = root_ == nullptr ? root : root_;
+        for (size_t i(0); i != word.size(); ++i)
+        {
+            if(word[i] == '.'){
+                for(auto it = std::begin(currVer->to); it != std::end(currVer->to); ++it){
+                    if(search(word.substr(i + 1, word.size() - i), it->second)){
+                        return true;
+                    }
+                }
+            }
+            if(!currVer->to.contains(word[i])){
+                return false;
+            }
+            currVer = currVer->to[word[i]];
+        }
+        return currVer->terminal;
+    }
+};
+
 class Solution {
 public:
 
@@ -130,11 +185,64 @@ public:
         }
         return prev;
     }
+
+    //--------------------------#208--------------------------------------------//
+    // algo -> Trie.hpp and Trie.cpp
+
+    //--------------------------#209--------------------------------------------//
+    // std::vector<int> nums{2,3,1,2,4,3};
+    // sh::print(solution.minSubArrayLen_209(7, nums));
+    int minSubArrayLen_209(int target, std::vector<int>& nums) {
+        int l(0), sum(0), len(INT_MAX);
+        for(int i(0); i != nums.size(); ++i){
+            sum += nums[i];
+            if(sum >= target){
+                len = std::min(len , i - l + 1);
+                while(l != i and sum >= target){
+                    sum -= nums[l++];
+                    if(sum >= target)
+                        len = std::min(len , i - l + 1);
+                }
+            }
+        }
+        return len == INT_MAX ? 0 : len;
+    }
+
+    //--------------------------#215--------------------------------------------//
+    int findKthLargest_215(std::vector<int>& nums, int k) {
+        std::sort(begin(nums), end(nums));
+        return nums[nums.size() - k];
+    }
+
+    //--------------------------#213--------------------------------------------//
+    // std::vector<int> nums{1,3,1,3,100};
+    // sh::print(solution.rob_213(nums));
+    int rob_213(std::vector<int>& nums) {
+        if(nums.size() == 1){
+            return nums[0];
+        }
+        if(nums.size() == 2){
+            return std::max(nums[0], nums[1]);
+        }
+
+        std::vector<int> dp1(nums.size() - 1, 0);
+        std::vector<int> dp2(nums.size() - 1, 0);
+        dp1[0] = nums[0];
+        dp1[1] = std::max(dp1[0], nums[1]); 
+        dp2[0] = nums[1];
+        dp2[1] = std::max(dp2[0], nums[2]);
+        for(size_t i(2); i < nums.size() - 1; ++i){
+            dp1[i] = std::max(nums[i] + dp1[i - 2], dp1[i - 1]);
+            dp2[i] = std::max(nums[i + 1] + dp2[i - 2], dp2[i - 1]);
+        }
+        return std::max(dp1.back(), dp2.back());
+    }
 };
 
 int main(){
     Solution solution;   
     Timer timer("LeetCode_300.cpp");
+    
     
     
 }

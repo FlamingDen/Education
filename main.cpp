@@ -14,6 +14,7 @@
 
 #include "point.h"
 #include "DSU.hpp"
+#include "Trie.hpp"
 
 class B;
 class D1;
@@ -226,8 +227,5 @@ int main()
     // -- 12.2
 
     // -- 12.3
-
-    
-    
 }
 

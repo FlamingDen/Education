@@ -31,6 +31,8 @@ add_executable(Main
     utils/show.h
     algo/DSU.hpp
     algo/DSU.cpp
+    algo/Trie.hpp
+    algo/Trie.cpp
 )
 add_executable(LeetCode_100
     leetcode_100.cpp
