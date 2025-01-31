@@ -237,6 +237,89 @@ public:
         }
         return std::max(dp1.back(), dp2.back());
     }
+
+    //--------------------------#217--------------------------------------------//
+    // std::vector<int> nums{1,2,3,1};
+    // sh::print(solution.containsDuplicate_217(nums));
+    bool containsDuplicate_217(std::vector<int>& nums) {
+        std::unordered_map<int, int> fr;
+        for(size_t i(0); i != nums.size(); ++i){
+            int val = ++fr[nums[i]];
+            if(val > 1)
+                return true;
+        }
+        return false;
+    }
+
+    //--------------------------#219--------------------------------------------//
+    bool containsNearbyDuplicate_219(std::vector<int>& nums, int k) {
+        std::unordered_map<int, int> fr;
+        for(int i = 0; i != nums.size(); ++i){
+            if(fr.count(nums[i]) and i - fr[nums[i]] <= k)
+                    return true;
+            fr[nums[i]] = i; 
+        }
+        return false; 
+    }
+
+    //--------------------------#220--------------------------------------------//
+    // std::vector<int> nums{10,100,10,90,11,9};
+    // std::cout << std::boolalpha;
+    // sh::print(solution.containsNearbyAlmostDuplicate(nums, 1, 2));
+    bool containsNearbyAlmostDuplicate(std::vector<int>& nums, int indexDiff, int valueDiff) {
+        std::multiset<int> fr;
+        for(int i = 0; i != nums.size(); ++i){
+            auto lb = fr.lower_bound(nums[i] - valueDiff);
+            if(lb != fr.end() and *lb - nums[i] <= valueDiff)
+                return true;
+            fr.insert(nums[i]); 
+            if(fr.size() > indexDiff)
+                fr.erase(nums[i - indexDiff]);
+        }
+        return false; 
+    }
+
+    //--------------------------#221--------------------------------------------//
+    // std::vector<std::vector<char>> matrix{
+    //     {'1','1','1','1','1'},
+    //     {'0','1','1','1','1'},
+    //     {'1','1','1','1','1'},
+    //     {'1','1','1','1','1'},
+    //     {'1','1','1','1','1'}
+    // };
+    // sh::print(solution.maximalSquare_221(matrix));
+    int maximalSquare_221(std::vector<std::vector<char>>& matrix) {
+        std::vector<std::vector<int>> dp(matrix.size() + 1, std::vector<int>(matrix[0].size() + 1, 0));
+        int res(0);
+        for(size_t i(1); i != matrix.size() + 1; ++i){
+            for(size_t j(1); j != matrix[0].size() + 1; ++j){
+                int curr_val = matrix[i - 1][j - 1] - '0';
+                if(curr_val){
+                    curr_val = std::min({dp[i - 1][j], dp[i][j - 1], dp[i-1][j-1]}) + 1;
+                }
+                dp[i][j] = curr_val;
+                res = std::max(res, curr_val);
+            } 
+        }
+        return res * res;
+    }
+
+    //--------------------------#222--------------------------------------------//
+    int countNodes(TreeNode* root) {
+        int h = countTreeHeight( root );
+        if(h == 0)
+            return 0;
+
+        if( countTreeHeight(root->right) == (h-1) )
+            return (1 << (h-1)) + countNodes(root->right);   
+        else
+            return (1 << (h-2)) + countNodes(root->left); 
+    }
+    inline int countTreeHeight( TreeNode* node){
+        if(!node)
+            return 0;
+        return 1 + countTreeHeight( node->left );
+    }
 };
 
 int main(){
