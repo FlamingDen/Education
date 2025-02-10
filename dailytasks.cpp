@@ -389,11 +389,30 @@ public:
             }
         }
     }
+
+    //--------------------------#3174-------------------------------------------//
+    std::string clearDigits(std::string s) {
+        std::string res;
+        int tmp(0);
+
+        for(size_t i(s.size() - 1); i + 1 > 0; --i){
+            if(std::isdigit(s[i])){
+                tmp++;
+            } else if(tmp == 0){
+                res.push_back(s[i]);
+            } else {
+                --tmp;
+            }
+        }
+        std::reverse(std::begin(res), std::end(res));
+        return res;
+    }
 };
 
 int main(){
     Solution solution;   
     Timer timer("DailyTasksLeetcode.cpp");
 
+    sh::print(solution.clearDigits("asabc123"));
     
 }

@@ -57,6 +57,88 @@ public:
     }
 };
 
+    //--------------------------#225--------------------------------------------//
+    // MyStack* obj = new MyStack();
+    // obj->push(4);
+    // int param_2 = obj->pop();
+    // int param_3 = obj->top();
+    // bool param_4 = obj->empty();
+class MyStack {
+    std::queue<int> q;
+public:
+    MyStack() {    
+    }
+    
+    void push(int x) {
+        q.push(x);
+    }
+    
+    int pop() {
+        int s = q.size() - 1;
+        int a;
+        for(size_t i(0); i < q.size(); ++i){
+            a = q.front();
+            q.pop();
+            if(s--){
+                q.push(a);
+            }
+        }
+        return a;
+    }
+    
+    int top() {
+        return q.back();
+    }
+    
+    bool empty() {
+        return q.empty();
+    }
+};
+
+    //--------------------------#232--------------------------------------------//
+class MyQueue {
+    std::stack<int> st;
+    bool reverse = false;
+
+    void ReverseSt(){
+        std::stack<int> nst;
+        while (!st.empty())
+        {
+            nst.push(st.top());
+            st.pop();
+        }
+        std::swap(st, nst);
+        reverse = !reverse;
+    }
+public:
+    MyQueue() {}
+    
+    void push(int x) {
+        if(reverse)
+            ReverseSt();
+        st.push(x);
+    }
+    
+    int pop() {
+        if(!reverse)
+            ReverseSt();
+        int x = st.top();
+        st.pop();
+        return x;
+    }
+    
+    int peek() {
+        if(!reverse)
+            ReverseSt();
+        return st.top();
+    }
+    
+    bool empty() {
+        return st.empty();
+    }
+};
+
+
 class Solution {
 public:
 
@@ -320,12 +402,138 @@ public:
             return 0;
         return 1 + countTreeHeight( node->left );
     }
+
+    //--------------------------#223--------------------------------------------//
+    // sh::print(solution.computeArea(-3, 0, 3, 4, 0, -1, 9, 2));
+    int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
+        int x = GetSide(ax1, ax2, bx1, bx2);
+        int y = GetSide(ay1, ay2, by1, by2);
+        int S1 = (ax2 - ax1) * (ay2 - ay1);
+        int S2 = (bx2 - bx1) * (by2 - by1);
+        return  S1 + S2 - x * y;
+    }
+    int GetSide(int ax1, int ax2, int bx1, int bx2){
+        if(ax1 >= bx1 and ax1 <= bx2 and ax2 >= bx1 and ax2 <= bx2)
+            return ax2 - ax1;
+        if(ax1 <= bx1 and ax1 <= bx2 and ax2 >= bx1 and ax2 >= bx2)
+            return bx2 - bx1;
+        if(ax1 >= bx1 and ax1 <= bx2)
+            return bx2 - ax1;
+        if(ax2 >= bx1 and ax2 <= bx2)
+            return ax2 - bx1;
+        return 0;
+    }
+
+    //--------------------------#226--------------------------------------------//
+    TreeNode* invertTree(TreeNode* root) {
+        InvTree(root); 
+        return root;
+    }
+    void InvTree(TreeNode* root){
+        if(!root)
+            return;
+        
+        std::swap(root->left, root->right);
+        InvTree(root->left);
+        InvTree(root->right);
+    }
+
+    //--------------------------#228--------------------------------------------//
+    // std::vector<int> nums{0,1,2,4,5,7};
+    // sh::showContainer(solution.summaryRanges(nums));
+    std::vector<std::string> summaryRanges(std::vector<int>& nums) {
+        std::vector<std::string> res;
+        int l(0);
+        for(size_t i(0); i != nums.size(); ++i){
+            if(!(i != nums.size() - 1 and nums[i] == nums[i + 1] - 1)){
+                if(l == i){
+                    res.push_back(std::to_string(nums[i]));
+                } else {
+                    res.push_back(std::to_string(nums[l]) + "->" + std::to_string(nums[i]));
+                }
+                l = i + 1;
+            }
+        }
+        return res; 
+    }
+
+    //--------------------------#229--------------------------------------------//
+    std::vector<int> majorityElement(std::vector<int>& nums) {
+        int num1 = INT_MIN, num2 = INT_MIN;
+        int count1 = 0, count2 = 0;
+        for(auto element : nums){
+            if(num1 == element){
+                count1++;
+            }
+            else if(num2 == element){
+                count2++;
+            }
+            else if(count1 == 0){
+                num1 = element;
+                count1 = 1;
+            }
+            else if(count2 == 0){
+                num2 = element;
+                count2 = 1;
+            }
+            else{
+                count1--;
+                count2--;
+            }
+        }
+        std::vector<int> output;
+        int countMajority = nums.size()/3;
+        count1 = 0, count2 = 0;
+        for(auto element : nums){
+            if(num1 == element){
+                count1++;
+            }
+            if(num2 == element){
+                count2++;
+            }
+        }
+        if(count1 > countMajority){
+            output.push_back(num1);
+        }
+        if(count2 > countMajority){
+            output.push_back(num2);
+        }
+        return output;
+    }
+
+    //--------------------------#230--------------------------------------------//
+    // TreeNode* root = new TreeNode(3, new TreeNode(1, nullptr, new TreeNode(2)), new TreeNode(4));
+    // sh::print(solution.kthSmallest(root, 1));
+    int kthSmallest(TreeNode* root, int k) {
+        int min(INT_MAX), iter(0);
+        KSmallestHelp(root, k, min, iter);
+        return min;
+    }
+    void KSmallestHelp(TreeNode* root, int k, int& min, int& iter){
+        if(!root or iter == k)
+            return;
+
+        KSmallestHelp(root->left, k, min, iter);
+        if(iter != k){
+            min = root->val;
+            ++iter;
+        } else {
+            return;
+        }
+        KSmallestHelp(root->right, k, min, iter);
+    }
+
+    //--------------------------#231--------------------------------------------//
+    bool isPowerOfTwo(int n) {
+        if(n <= 0)
+            return false;
+        return  !(n & (n - 1));
+    }
 };
 
 int main(){
     Solution solution;   
     Timer timer("LeetCode_300.cpp");
-    
     
     
 }

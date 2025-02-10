@@ -6,6 +6,7 @@
 #include <fstream>
 #include <vector>
 #include <regex>
+#include <new>
 
 #include <typeinfo>
 
@@ -198,6 +199,26 @@ class G{
     T x;
 };
 
+void* operator new(size_t count){
+    std::cout << "new: allocate " << count << " bytes" << std::endl;
+    if(auto ptr = std::malloc(count); ptr != nullptr)
+        return ptr;
+    throw std::bad_alloc();
+}
+
+void* operator new[](size_t count){
+    std::cout << "new[] -> ";
+    return ::operator new(count);
+}
+
+// N* b = new N;
+// N* barr = new N[1];
+class N{
+    int b;
+public:
+    ~N() {}
+};
+
 int main()
 {
     // // --12.1
@@ -227,5 +248,7 @@ int main()
     // -- 12.2
 
     // -- 12.3
+
+    
 }
 
