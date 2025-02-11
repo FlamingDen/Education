@@ -387,15 +387,15 @@ public:
     }
 
     //--------------------------#222--------------------------------------------//
-    int countNodes(TreeNode* root) {
+    int countNodes_222(TreeNode* root) {
         int h = countTreeHeight( root );
         if(h == 0)
             return 0;
 
         if( countTreeHeight(root->right) == (h-1) )
-            return (1 << (h-1)) + countNodes(root->right);   
+            return (1 << (h-1)) + countNodes_222(root->right);   
         else
-            return (1 << (h-2)) + countNodes(root->left); 
+            return (1 << (h-2)) + countNodes_222(root->left); 
     }
     inline int countTreeHeight( TreeNode* node){
         if(!node)
@@ -404,8 +404,8 @@ public:
     }
 
     //--------------------------#223--------------------------------------------//
-    // sh::print(solution.computeArea(-3, 0, 3, 4, 0, -1, 9, 2));
-    int computeArea(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
+    // sh::print(solution.computeArea_223(-3, 0, 3, 4, 0, -1, 9, 2));
+    int computeArea_223(int ax1, int ay1, int ax2, int ay2, int bx1, int by1, int bx2, int by2) {
         int x = GetSide(ax1, ax2, bx1, bx2);
         int y = GetSide(ay1, ay2, by1, by2);
         int S1 = (ax2 - ax1) * (ay2 - ay1);
@@ -425,7 +425,7 @@ public:
     }
 
     //--------------------------#226--------------------------------------------//
-    TreeNode* invertTree(TreeNode* root) {
+    TreeNode* invertTree_226(TreeNode* root) {
         InvTree(root); 
         return root;
     }
@@ -440,8 +440,8 @@ public:
 
     //--------------------------#228--------------------------------------------//
     // std::vector<int> nums{0,1,2,4,5,7};
-    // sh::showContainer(solution.summaryRanges(nums));
-    std::vector<std::string> summaryRanges(std::vector<int>& nums) {
+    // sh::showContainer(solution.summaryRanges_228(nums));
+    std::vector<std::string> summaryRanges_228(std::vector<int>& nums) {
         std::vector<std::string> res;
         int l(0);
         for(size_t i(0); i != nums.size(); ++i){
@@ -458,7 +458,7 @@ public:
     }
 
     //--------------------------#229--------------------------------------------//
-    std::vector<int> majorityElement(std::vector<int>& nums) {
+    std::vector<int> majorityElement_229(std::vector<int>& nums) {
         int num1 = INT_MIN, num2 = INT_MIN;
         int count1 = 0, count2 = 0;
         for(auto element : nums){
@@ -503,8 +503,8 @@ public:
 
     //--------------------------#230--------------------------------------------//
     // TreeNode* root = new TreeNode(3, new TreeNode(1, nullptr, new TreeNode(2)), new TreeNode(4));
-    // sh::print(solution.kthSmallest(root, 1));
-    int kthSmallest(TreeNode* root, int k) {
+    // sh::print(solution.kthSmallest_230(root, 1));
+    int kthSmallest_230(TreeNode* root, int k) {
         int min(INT_MAX), iter(0);
         KSmallestHelp(root, k, min, iter);
         return min;
@@ -524,16 +524,82 @@ public:
     }
 
     //--------------------------#231--------------------------------------------//
-    bool isPowerOfTwo(int n) {
+    bool isPowerOfTwo_231(int n) {
         if(n <= 0)
             return false;
         return  !(n & (n - 1));
     }
+
+    //--------------------------#234--------------------------------------------//
+    // ListNode* l1 = new ListNode(1, new ListNode(0, new ListNode(0)));
+    // sh::showList(l1);
+    // sh::print(solution.isPalindrome_234(l1));
+    bool isPalindrome_234(ListNode* head) {
+        std::vector<int> nums;
+        ListNode *slow = head, *fast = head;
+        while (fast != nullptr and fast->next != nullptr){
+            nums.push_back(slow->val);
+            slow = slow->next;
+            fast = fast->next->next;
+        }
+        if(fast)
+            slow = slow->next;
+        
+        int i(nums.size() - 1);
+        while (slow){
+            if(nums[i--] != slow->val)
+                return false;
+            slow = slow->next;
+        }
+        return true;
+    }
+
+    //--------------------------#235--------------------------------------------//
+    TreeNode* lowestCommonAncestor_235(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if(root->val > p->val and root->val > q->val){
+            return lowestCommonAncestor_235(root->left, p, q);
+        }
+        if(root->val < p->val and root->val < q->val){
+            return lowestCommonAncestor_235(root->right, p, q);
+        }
+        return root;
+    }
+
+    //--------------------------#236--------------------------------------------//
+    TreeNode* lowestCommonAncestor_236(TreeNode* root, TreeNode* p, TreeNode* q) {
+        if (!root || root == p || root == q)
+            return root;
+        TreeNode* left = lowestCommonAncestor_236(root->left, p, q);
+        TreeNode* right = lowestCommonAncestor_236(root->right, p, q);
+        return !left ? right : !right ? left : root;
+    }
+  
+    //--------------------------#237--------------------------------------------//
+    void deleteNode_237(ListNode* node) {
+        ListNode* to_del = node->next;
+        *node = *to_del;
+        delete to_del;
+    }
+
+    //--------------------------#238--------------------------------------------//
+    std::vector<int> productExceptSelf(std::vector<int>& nums) {
+        std::vector<int> ans(nums.size(), 1);
+        int pref(1), suff(1);
+        for(size_t i(0); i != nums.size() - 1; ++i){
+            pref *= nums[i];
+            suff *= nums[nums.size() - 1 - i];
+            ans[i + 1] *= pref;
+            ans[nums.size() - 2 - i] *= suff;
+        }        
+        return ans;
+    }
 };
+
+
 
 int main(){
     Solution solution;   
     Timer timer("LeetCode_300.cpp");
-    
-    
+
+   
 }

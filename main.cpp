@@ -219,8 +219,50 @@ public:
     ~N() {}
 };
 
+void func(float&& a) {
+    std::cout << "f&& " << a << std::endl;
+}
+
+void func(int&& a) {
+    std::cout << "i&& " << a << std::endl;
+}
+
+// void func(float& a) {
+//     std::cout << "f& " << a << std::endl;
+// }
+
+// void func(int& a) {
+//     std::cout << "i& " << a << std::endl;
+// }
+
+template <typename T>
+void test(T&& v) {
+    std::cout << "Common -> ";
+    func(v);
+    std::cout << "std::move -> " ;
+    func(std::move(v));
+    std::cout << "std::forward<T> -> " ;
+    func(std::forward<T>(v));
+}
+
 int main()
 {
+
+    float a = 1.1f;
+    int b = 2;
+
+    std::cout << "      For rvalue : " << std::endl;
+    std::cout << "  float 1.1f : " << std::endl;
+    test(1.1f);
+    std::cout << "  int 2 : " << std::endl;
+    test(2);
+    std::cout << std::endl << std::endl;
+    std::cout << "      For lvalue : " << std::endl;
+    std::cout << "  float 1.1f : " << std::endl;
+    test(a);
+    std::cout << "  int 2 : " << std::endl;
+    test(b);
+
     // // --12.1
     // B* pB = new B;
     // B* pD1 = new D1;
