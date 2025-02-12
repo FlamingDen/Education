@@ -22,7 +22,7 @@ class D1;
 class D2;
 class D3;
 
- 
+//==============================================================================//
 class B{
     int b;
 public:
@@ -116,6 +116,7 @@ public:
     }
 };
 
+//==============================================================================//
 class Base{
     int a, b;
 public:
@@ -148,7 +149,7 @@ public:
     }
 };
 
-
+//==============================================================================//
 std::istream& manip(std::istream &out){ 
     out.width(20);
     out.precision(5);
@@ -199,6 +200,8 @@ class G{
     T x;
 };
 
+//==============================================================================//
+// свой new
 void* operator new(size_t count){
     std::cout << "new: allocate " << count << " bytes" << std::endl;
     if(auto ptr = std::malloc(count); ptr != nullptr)
@@ -219,6 +222,21 @@ public:
     ~N() {}
 };
 
+//==============================================================================//
+// интересный случай с move семантикой
+// float a = 1.1f;
+// int b = 2;
+// std::cout << "      For rvalue : " << std::endl;
+// std::cout << "  float 1.1f : " << std::endl;
+// test(1.1f);
+// std::cout << "  int 2 : " << std::endl;
+// test(2);
+// std::cout << std::endl << std::endl;
+// std::cout << "      For lvalue : " << std::endl;
+// std::cout << "  float 1.1f : " << std::endl;
+// test(a);
+// std::cout << "  int 2 : " << std::endl;
+// test(b);
 void func(float&& a) {
     std::cout << "f&& " << a << std::endl;
 }
@@ -227,13 +245,13 @@ void func(int&& a) {
     std::cout << "i&& " << a << std::endl;
 }
 
-// void func(float& a) {
-//     std::cout << "f& " << a << std::endl;
-// }
+void func(float& a) {
+    std::cout << "f& " << a << std::endl;
+}
 
-// void func(int& a) {
-//     std::cout << "i& " << a << std::endl;
-// }
+void func(int& a) {
+    std::cout << "i& " << a << std::endl;
+}
 
 template <typename T>
 void test(T&& v) {
@@ -242,30 +260,14 @@ void test(T&& v) {
     std::cout << "std::move -> " ;
     func(std::move(v));
     std::cout << "std::forward<T> -> " ;
-    func(std::forward<T>(v));
+    func(std::forward<T&&>(v));
 }
 
 int main()
 {
-
-    float a = 1.1f;
-    int b = 2;
-
-    std::cout << "      For rvalue : " << std::endl;
-    std::cout << "  float 1.1f : " << std::endl;
-    test(1.1f);
-    std::cout << "  int 2 : " << std::endl;
-    test(2);
-    std::cout << std::endl << std::endl;
-    std::cout << "      For lvalue : " << std::endl;
-    std::cout << "  float 1.1f : " << std::endl;
-    test(a);
-    std::cout << "  int 2 : " << std::endl;
-    test(b);
-
     // // --12.1
     // B* pB = new B;
-    // B* pD1 = new D1;
+    // B* pD1 = new D1;`
     
     // const std::type_info& inf = typeid(*pB);
     // sh::print(inf.name());
