@@ -421,6 +421,32 @@ public:
         }
         return x.substr(0, j);
     }
+
+    //--------------------------#2342-------------------------------------------//
+    // std::vector<int> nums{18,43,36,13,7};
+    // sh::print(solution.maximumSum(nums));
+    int maximumSum(vector<int>& nums) {
+        std::map<int, int> m;
+        int res(-1);
+        for(size_t i(0); i != nums.size(); ++i){
+            int digits_sum(0);
+            int x(nums[i]);
+            while (x){
+                digits_sum += x % 10;
+                x /= 10;
+            }
+            auto [exist_el, inserted] = m.insert({digits_sum, nums[i]});
+            if (!inserted){
+                if(exist_el->second + nums[i] > res)
+                    res = exist_el->second + nums[i];
+                if(nums[i] > exist_el->second)
+                    exist_el->second = nums[i];
+            } else {
+                exist_el->second = nums[i];
+            }
+        }
+        return res;
+    }
 };
 
 int main(){

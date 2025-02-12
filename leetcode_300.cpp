@@ -582,7 +582,7 @@ public:
     }
 
     //--------------------------#238--------------------------------------------//
-    std::vector<int> productExceptSelf(std::vector<int>& nums) {
+    std::vector<int> productExceptSelf_238(std::vector<int>& nums) {
         std::vector<int> ans(nums.size(), 1);
         int pref(1), suff(1);
         for(size_t i(0); i != nums.size() - 1; ++i){
@@ -593,6 +593,88 @@ public:
         }        
         return ans;
     }
+
+    //--------------------------#240--------------------------------------------//
+    bool searchMatrix_240(std::vector<std::vector<int>>& matrix, int target) {
+        int row(0), col(matrix[0].size() - 1);
+        while (row < matrix.size() and col >= 0){
+            if(matrix[row][col] == target)
+                return true;
+            matrix[row][col] > target ? --col : ++row;
+        }
+        return false;
+    }
+
+    //--------------------------#242--------------------------------------------//
+    bool isAnagram_242(std::string s, std::string t) {
+        if(s.size() != t.size()){
+            return false;
+        }
+
+        std::map<char, int> rate;
+        for(size_t i(0); i != s.size(); ++i){
+            rate[s[i]]++;
+            rate[t[i]]--;
+        }
+        for(const auto& x: rate){
+            if(x.second != 0)
+                return false;
+        }
+        return true;
+    }
+
+    //--------------------------#257--------------------------------------------//
+    // TreeNode* root = new TreeNode(1, new TreeNode(2, nullptr, new TreeNode(5)), new TreeNode(3));
+    // sh::showContainer(solution.binaryTreePaths_257(root));
+    std::vector<std::string> binaryTreePaths_257(TreeNode* root) {
+        std::vector<std::string> res; 
+        std::vector<int> curr;
+        GetPathsToLeafs(root, res, curr);
+        return res;
+    }
+    void GetPathsToLeafs(TreeNode* root, std::vector<std::string>& res, std::vector<int>& curr){
+        if(!root)
+            return;
+        if(!root->left and !root->right){
+            curr.push_back(root->val);
+            res.push_back(BuildPath(curr));
+            curr.pop_back();
+            return;
+        }
+
+        curr.push_back(root->val);
+        GetPathsToLeafs(root->left, res, curr);
+        GetPathsToLeafs(root->right, res, curr);
+        curr.pop_back();
+    }
+    std::string BuildPath(const std::vector<int>& curr){
+        std::string s;
+        s.reserve(curr.size()*3);
+        for(size_t i(0); i != curr.size(); ++i){
+            if(i != 0)
+                s.append("->");
+            s.append(std::to_string(curr[i]));
+        }
+        return std::move(s);
+    }
+
+    //--------------------------#258--------------------------------------------//
+    // sh::print(solution.addDigits(38));
+    int addDigits(int num) {
+        int sum(0);
+        while (num >= 10)
+        {
+            while (num)
+            {
+                sum += num % 10;
+                num /= 10;
+                
+            }
+            num = sum;
+            sum = 0;
+        }
+        return num;
+    }
 };
 
 
@@ -601,5 +683,5 @@ int main(){
     Solution solution;   
     Timer timer("LeetCode_300.cpp");
 
-   
+    
 }

@@ -219,7 +219,12 @@ void* operator new[](size_t count){
 class N{
     int b;
 public:
-    ~N() {}
+    N(): b(0){
+        std::cout << "N()" << std::endl;
+    }
+    ~N() {
+        std::cout << "~N()" << std::endl;
+    }
 };
 
 //==============================================================================//
@@ -263,36 +268,35 @@ void test(T&& v) {
     func(std::forward<T&&>(v));
 }
 
+//==============================================================================//
+// свой std::move()
+
+void foo(int& v){ std::cout << "int&  " << v << std::endl; }
+void foo(int&& v){ std::cout << "int&& " << v << std::endl; }
+
+template<typename T>
+std::remove_reference_t<T>&& custom_move(T&& value)
+{
+    return static_cast<std::remove_reference_t<T>&&>(value); 
+}
+
+template<typename T>
+T&& custom_forward(std::remove_reference_t<T>& value)
+{
+    return static_cast<T&&>(value);
+}
+
+template<typename T>
+T&& custom_forward(std::remove_reference_t<T>&& value)
+{
+    static_assert(!std::is_lvalue_reference_v<T>);
+    return static_cast<T&&>(value);
+}
+
+//==============================================================================//
 int main()
 {
-    // // --12.1
-    // B* pB = new B;
-    // B* pD1 = new D1;`
     
-    // const std::type_info& inf = typeid(*pB);
-    // sh::print(inf.name());
-    // sh::print(inf.hash_code());
 
-    // const std::type_info& inf1 = typeid(*pD1);
-    // std::cout << inf.name() << std::endl;
-    // sh::print(inf1.name());
-
-    // pB = new D2;
-    // sh::print(typeid(*pB).name());
-
-    // long b;
-    // sh::print(typeid(b).name());
-    // sh::print(typeid(long long).name());
-
-    // G<int> var_i;
-    // G<char> var_d;
-    // std::cout << std::boolalpha;
-    // sh::print(typeid(var_i) == typeid(var_d));
-
-    // -- 12.2
-
-    // -- 12.3
-
-    
 }
 
