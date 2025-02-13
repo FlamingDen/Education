@@ -447,12 +447,52 @@ public:
         }
         return res;
     }
+
+    //--------------------------#2208-------------------------------------------//
+    // std::vector<int> nums{1,1,1};
+    // sh::print(solution.halveArray(nums));
+    int halveArray(vector<int>& nums) {
+        std::priority_queue<double> pq;
+        double sum(0);
+        for(size_t i(0); i != nums.size(); ++i){
+            sum += nums[i];
+            pq.push(nums[i]);
+        }
+        int c(0);
+        double target = sum / 2;
+        while (sum > target)
+        {
+            double curr = pq.top() / 2;
+            pq.pop();
+            sum -= curr;
+            pq.push(curr);
+            ++c;
+        }
+        return c;
+    }
+
+    //--------------------------#3066-------------------------------------------//
+    // std::vector<int> nums{999999999,999999999,999999999};
+    // sh::print(solution.minOperations(nums, 1000000000));
+    int minOperations(vector<int>& nums, int k) {
+        std::priority_queue< long long, std::vector< long long>, std::greater< long long>> pq(std::begin(nums), std::end(nums));
+        int n(0);
+        while(pq.top() < k){
+            long long x = pq.top();
+            pq.pop();
+            long long y = pq.top();
+            pq.pop();
+
+            pq.push(x * 2 + y);
+            ++n;
+        }
+        return n;
+    }
 };
 
 int main(){
     Solution solution;   
     Timer timer("DailyTasksLeetcode.cpp");
 
-    
     
 }

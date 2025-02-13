@@ -659,8 +659,8 @@ public:
     }
 
     //--------------------------#258--------------------------------------------//
-    // sh::print(solution.addDigits(38));
-    int addDigits(int num) {
+    // sh::print(solution.addDigits_258(38));
+    int addDigits_258(int num) {
         int sum(0);
         while (num >= 10)
         {
@@ -675,6 +675,93 @@ public:
         }
         return num;
     }
+
+    //--------------------------#260--------------------------------------------//
+    std::vector<int> singleNumber_260(std::vector<int>& nums) {
+        int firstXorSec(0), mask(1), first(0);
+        for (auto &num: nums) 
+            firstXorSec ^= num;
+        
+        while (!(firstXorSec & mask)) 
+            mask <<= 1;
+        
+        for (auto &num: nums){
+            if (num & mask) 
+                first ^= num;
+        }
+
+        return {first, firstXorSec ^ first};
+    }
+
+    //--------------------------#263--------------------------------------------//
+    bool isUgly_263(int n) 
+    {
+        if (n <= 0) return false;
+        while(n > 1)
+        {
+            if (n % 2 == 0) n = n / 2;
+            else if (n % 3 == 0) n = n / 3;
+            else if (n % 5 == 0) n = n / 5;
+            else break;
+        }
+        return (n == 1);
+    }
+
+    //--------------------------#264--------------------------------------------//
+    int nthUglyNumber_264(int n) {
+        if(n <= 0) return false; 
+        if(n == 1) return true; 
+        int t2 = 0, t3 = 0, t5 = 0; 
+        std::vector<int> k(n);
+        k[0] = 1;
+        for(int i  = 1; i < n ; i ++)
+        {
+            k[i] = std::min(k[t2]*2,std::min(k[t3]*3,k[t5]*5));
+            if(k[i] == k[t2]*2) t2++; 
+            if(k[i] == k[t3]*3) t3++;
+            if(k[i] == k[t5]*5) t5++;
+        }
+        return k[n-1];
+    }
+
+    //--------------------------#268--------------------------------------------//
+    // std::vector<int> nums{0,1};
+    // sh::print(solution.missingNumber_268(nums));
+    int missingNumber_268(std::vector<int>& nums) {
+        int total = (1. + nums.size()) / 2 * nums.size();
+        int sum = std::accumulate(std::begin(nums), std::end(nums),0);
+        return total - sum;
+    }
+
+    //--------------------------#300--------------------------------------------//
+    // std::vector<int> nums{0,1,0,3,2,3};
+    // sh::print(solution.lengthOfLIS_300(nums));
+    int lengthOfLIS_300(std::vector<int>& nums) {
+        std::map<int, std::set<int>> hist;
+        hist.insert({1,{nums[0]}});
+        for(size_t i(1); i != nums.size(); ++i){
+            for(auto it = std::rbegin(hist); it != std::rend(hist); ++it){
+                int len =it->first;
+                auto& curr_set = it->second;
+
+                auto f = std::lower_bound(std::begin(curr_set), std::end(curr_set), nums[i]);
+                if(f != std::begin(curr_set)){
+                    hist[++len] = {nums[i]};
+                    break;
+                } else if(*it == *std::begin(hist)){
+                    hist[1].insert(nums[i]);
+                }
+            }
+        }
+        return hist.rbegin()->first;
+        // std::vector<int> res;
+        // for(int i=0; i<nums.size(); i++) {
+        //     auto it = std::lower_bound(res.begin(), res.end(), nums[i]);
+        //     if(it==res.end()) res.push_back(nums[i]);
+        //     else *it = nums[i];
+        // }
+        // return res.size();
+    }
 };
 
 
@@ -683,5 +770,6 @@ int main(){
     Solution solution;   
     Timer timer("LeetCode_300.cpp");
 
-    
+   
+
 }
