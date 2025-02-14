@@ -4,6 +4,32 @@
 
 using namespace std;
 
+    //--------------------------#1352-------------------------------------------// 
+    // ProductOfNumbers* obj = new ProductOfNumbers();
+    // obj->add(7);
+    // sh::print(obj->getProduct(1));
+class ProductOfNumbers {
+    std::vector<int> nums;
+public:
+    ProductOfNumbers() {}
+    
+    void add(int num) {
+        if(num == 0){
+            nums.clear();
+        } else {
+            nums.push_back(num * (nums.empty() ? 1 :nums.back()));
+        }
+    }
+    
+    int getProduct(int k) {
+        if(k > nums.size())
+            return 0;
+        if(k == nums.size())
+            return nums.back();
+        return nums.back() / nums[nums.size() - k - 1];
+    }
+};
+
 class Solution {
     std::vector<std::pair<int , int>> SHIFTS{
         {-1, 0}, // top

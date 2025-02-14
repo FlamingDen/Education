@@ -15,6 +15,10 @@ project(LeetCode_300
     LANGUAGES CXX
 )
 
+project(LeetCode_400
+    LANGUAGES CXX
+)
+
 project(DailyTasksLeetcode
     LANGUAGES CXX
 )
@@ -73,6 +77,19 @@ add_executable(LeetCode_300
     utils/ListNode.cpp
 )
 
+add_executable(LeetCode_400
+    leetcode_400.cpp
+    utils/ForLeetcode.h
+    utils/ForLeetcode.cpp
+    utils/timer.cpp
+    utils/timer.h
+    utils/show.h
+    utils/Tree.h
+    utils/Tree.cpp
+    utils/ListNode.h
+    utils/ListNode.cpp
+)
+
 add_executable(DailyTasksLeetcode
     dailytasks.cpp
     utils/ForLeetcode.h
@@ -119,6 +136,15 @@ target_include_directories(LeetCode_300 INTERFACE
 )
 
 target_include_directories(LeetCode_300 PRIVATE
+    utils
+)
+
+#==================================================
+target_include_directories(LeetCode_400 INTERFACE
+    ${CMAKE_CURRENT_SOURCE_DIR}/utils
+)
+
+target_include_directories(LeetCode_400 PRIVATE
     utils
 )
 

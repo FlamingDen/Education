@@ -762,6 +762,70 @@ public:
         // }
         // return res.size();
     }
+
+    //--------------------------#299--------------------------------------------//
+    std::string getHint(std::string secret, std::string guess) {
+        std::unordered_map<char, int> s;
+        std::unordered_map<char, int> g;
+        int x(0), y(0);
+        for(size_t i(0); i != secret.size(); ++i){
+            if(secret[i] == guess[i]){
+                ++x;
+            } else {
+                ++s[secret[i]];
+                ++g[guess[i]];
+            }
+        }
+        for(auto it = std::begin(s); it != std::end(s); ++it){
+            auto f = g.find(it->first);
+            if(f != g.end()){
+                y += std::min(it->second, f->second);
+            }
+        }
+        return std::to_string(x) + "A" + std::to_string(y) + "B";
+    }
+
+    //--------------------------#290--------------------------------------------//
+    // std::string s("dog cat cat dog");
+    // std::cout << std::boolalpha;
+    // sh::print(solution.wordPattern("abba", s));
+    bool wordPattern(std::string pattern, std::string s) {
+        std::vector<std::string> words = Split(s, " ");
+        if(words.size() != pattern.size())
+            return false;
+        std::unordered_map<char, std::string> m;
+        std::set<std::string> set;
+        int i(0);
+        for(char ch : pattern){
+            auto word = m.find(ch);
+            if(word != m.end()){
+                if(word->second != words[i])
+                    return false;
+            } else {
+                if(set.contains(words[i]))
+                    return false;
+                m.insert({ch, words[i]});
+                set.insert(words[i]);
+            }
+            ++i;
+        }
+        return true;
+    }
+    std::vector<std::string> Split(const std::string& str, std::string delimiter){
+        std::vector<std::string> res;
+        int pos(0);
+        int ds = delimiter.size();
+        for(size_t i(0); i != str.size(); ++i){
+            if(str.substr(i, ds) == delimiter ){
+                res.push_back(str.substr(pos, i - pos));
+                pos = i + ds;
+                i += ds - 1;
+            }else if(i == str.size() - 1){
+                res.push_back(str.substr(pos));
+            }
+        }
+        return res;
+    }
 };
 
 
@@ -770,6 +834,7 @@ int main(){
     Solution solution;   
     Timer timer("LeetCode_300.cpp");
 
-   
+    
+
 
 }
