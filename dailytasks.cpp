@@ -514,6 +514,34 @@ public:
         }
         return n;
     }
+
+    //--------------------------#1079-------------------------------------------//
+    // std::string s("AAB");
+    // sh::print(solution.numTilePossibilities(s));
+    int numTilePossibilities(string tiles) {
+        std::vector<int> charCount(26, 0);
+        int sz(0);
+        for (char ch : tiles) {
+            if(++charCount[ch - 'A'] == 1)
+                ++sz;
+        }
+        std::sort(std::begin(charCount), std::end(charCount), std::greater<int>());
+        charCount.resize(sz);
+        return buildChar(charCount);
+    }
+    int buildChar(std::vector<int> charCount) {
+        int totalCount = 0;
+        for (int i = 0; i < charCount.size(); i++) {
+            if (charCount[i]) {
+                totalCount++;
+                charCount[i]--;
+                totalCount += buildChar(charCount);
+                charCount[i]++;
+            }
+        }
+        return totalCount;
+    }
+    
 };
 
 int main(){

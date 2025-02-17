@@ -16,6 +16,7 @@
 #include "point.h"
 #include "DSU.hpp"
 #include "Trie.hpp"
+#include "Sorting.hpp"
 
 class B;
 class D1;
@@ -202,17 +203,17 @@ class G{
 
 //==============================================================================//
 // свой new
-void* operator new(size_t count){
-    std::cout << "new: allocate " << count << " bytes" << std::endl;
-    if(auto ptr = std::malloc(count); ptr != nullptr)
-        return ptr;
-    throw std::bad_alloc();
-}
+// void* operator new(size_t count){
+//     std::cout << "new: allocate " << count << " bytes" << std::endl;
+//     if(auto ptr = std::malloc(count); ptr != nullptr)
+//         return ptr;
+//     throw std::bad_alloc();
+// }
 
-void* operator new[](size_t count){
-    std::cout << "new[] -> ";
-    return ::operator new(count);
-}
+// void* operator new[](size_t count){
+//     std::cout << "new[] -> ";
+//     return ::operator new(count);
+// }
 
 // N* b = new N;
 // N* barr = new N[1];
@@ -297,6 +298,5 @@ T&& custom_forward(std::remove_reference_t<T>&& value)
 int main()
 {
     
-
 }
 

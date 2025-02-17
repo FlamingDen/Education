@@ -37,7 +37,10 @@ add_executable(Main
     algo/DSU.cpp
     algo/Trie.hpp
     algo/Trie.cpp
+    algo/Sorting.hpp
+    algo/Sorting.cpp
 )
+
 add_executable(LeetCode_100
     leetcode_100.cpp
     utils/ForLeetcode.h
