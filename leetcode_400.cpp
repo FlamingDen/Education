@@ -30,7 +30,7 @@ public:
     //--------------------------#326--------------------------------------------//
     // std::cout << std::boolalpha;
     // sh::print(solution.isPowerOfThree(1));
-    bool isPowerOfThree(int n) {
+    bool isPowerOfThree_326(int n) {
         while (n % 3 == 0 and n > 3){
             n /= 3;
         }  
@@ -40,7 +40,7 @@ public:
     //--------------------------#306--------------------------------------------//
     // std::cout << std::boolalpha;
     // sh::print(solution.isAdditiveNumber("121474836472147483648"));
-    bool isAdditiveNumber(string num) {
+    bool isAdditiveNumber_306(string num) {
         for(size_t i(1); i <= num.size() / 2; ++i){
             for(size_t j(1); j <= (num.size() - i) / 2; ++j){
                 if(CheckAdditional(num.substr(0,i), num.substr(i,j), num, i + j))
@@ -70,40 +70,66 @@ public:
         return true;
     }
 
-    //--------------------------#315--------------------------------------------//
-    // vector<int> countSmaller(vector<int>& nums) {
-    //     vector<int> res(nums.size());
-    //     res.push_back(0);
-    //     std::map<int, std::pair<int, int>> m;
-    //     m.insert({nums.back(), {1, 0}});
-    //     int j(1);
-    //     for(size_t i(nums.size() - 2); i + 1 > 0; --i, ++j){
-    //         auto it = std::lower_bound(m.begin(), m.end(), nums[i]);
-    //         auto& [freq, n] = it->second;
-    //         if(it == m.end()){
-    //             auto curr = m.rbegin()->second;
-    //             m.insert({nums[i],{1, curr.first + curr.second}});
-    //             res.push_back(curr.first + curr.second);
-    //         } else if(it->first == nums[i]){
-    //             ++freq;
-    //             ++it;
-    //             while (it++ != m.end()){
-    //                 n++;
-    //             }
-    //             res.push_back(n);
-    //         } else {
-    //             m.insert({nums[i],{1, j}});
-    //             res.push_back(j);
-    //         }
-    //     }
-    //     std::reverse(begin(res), end(res));
-    //     return res;
-    // }
+    //--------------------------#318--------------------------------------------//
+    int maxProduct(vector<string>& words) {
+        vector<int> mask(words.size());
+        int result = 0;
+        for (int i=0; i<words.size(); ++i) {
+            for (char c : words[i])
+                mask[i] |= 1 << (c - 'a');
+            for (int j=0; j<i; ++j)
+                if (!(mask[i] & mask[j]))
+                    result = max(result, int(words[i].size() * words[j].size()));
+        }
+        return result;
+    }
+ 
+    //--------------------------#319--------------------------------------------//
+    // sh::print(solution.bulbSwitch_319(5));
+    int bulbSwitch_319(int n) {
+        int res(1);
+        for(size_t i(2); i <= n; ++i){
+            bool lamp(true);
+            for(size_t j(2); j <= i; ++j){
+                if(i % j == 0)
+                    lamp = !lamp;
+            }
+            if(lamp)
+                ++res;
+        }
+        return res;
+        // 2 решение
+        // sqrt(n);
+    }
+
+    //--------------------------#322--------------------------------------------//
+    int coinChange_322(vector<int>& coins, int amount) {
+        int res(INT_MAX);
+        std::reverse(coins.begin(), coins.end());
+        for(size_t i(0); i != coins.size(); ++i){
+            int count(0);
+            int sum(amount);
+            int j = i;
+            while (sum != 0 and j < coins.size()){
+                int c = sum / coins[j];
+                sum -= c * coins[j];
+                count += c;
+                ++j;
+            }
+            if(sum == 0)
+                res = min(res, count);
+        }
+        return res == INT_MAX ? -1 : res;
+    }
 };
 
 int main() {
     Solution solution;   
     Timer timer("LeetCode_400.cpp");
-    
-    
+ 
+     
+    vector<int> coins{186,419,83,408};
+    sh::print(solution.coinChange_322(coins, 6249));
+
+
 }

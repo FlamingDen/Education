@@ -542,11 +542,31 @@ public:
         return totalCount;
     }
     
+    //--------------------------#2375-------------------------------------------//
+    // sh::print(solution.smallestNumber("IIIDIDDD"));
+    string smallestNumber(string pattern) {
+        std::vector<int> st(pattern.size() + 1);
+        string res;
+        int ind(0);
+        for(size_t i(0); i <= pattern.size(); ++i){
+            st[ind++] = i + 1;
+
+            if(i == pattern.size() or pattern[i] == 'I'){
+                while (ind > 0){
+                    res += to_string(st[--ind]);
+                }
+                
+            }
+        }
+        return res;
+    }
 };
 
 int main(){
     Solution solution;   
     Timer timer("DailyTasksLeetcode.cpp");
+
+    
 
     
 }
