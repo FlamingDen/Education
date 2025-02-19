@@ -560,6 +560,36 @@ public:
         }
         return res;
     }
+
+    //--------------------------#1415-------------------------------------------//
+    string getHappyString(int n, int k) {
+        std::vector<char> chars{'a', 'b', 'c'};
+        std::vector<std::string> res;
+        string curr;
+        GenerateABC(n, k, res, curr, chars, -1);
+
+        return k > res.size() ? "" : res[k - 1];
+    }
+    void GenerateABC(const int n, const int k, std::vector<std::string>& res, string& curr, const std::vector<char>& chars, int j){
+        if(curr.size() == n){
+            res.push_back(curr);
+            return;
+        }
+        if(res.size() == k){
+            return;
+        }
+        
+
+        for(size_t i(0); i != chars.size(); ++i){
+            if(i == j)
+                continue;
+            
+            curr.push_back(chars[i]);
+            GenerateABC(n, k, res, curr, chars, i);
+            curr.pop_back();
+        }
+
+    }
 };
 
 int main(){
@@ -567,6 +597,6 @@ int main(){
     Timer timer("DailyTasksLeetcode.cpp");
 
     
-
+    sh::print(solution.getHappyString(3, 9));
     
 }

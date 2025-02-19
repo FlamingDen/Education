@@ -103,23 +103,22 @@ public:
     }
 
     //--------------------------#322--------------------------------------------//
-    int coinChange_322(vector<int>& coins, int amount) {
-        int res(INT_MAX);
-        std::reverse(coins.begin(), coins.end());
-        for(size_t i(0); i != coins.size(); ++i){
-            int count(0);
-            int sum(amount);
-            int j = i;
-            while (sum != 0 and j < coins.size()){
-                int c = sum / coins[j];
-                sum -= c * coins[j];
-                count += c;
-                ++j;
+    int coinChange_322(vector<int>& coins, int n) {
+        int dp[++n];
+        dp[0] = 0;
+        sort(begin(coins), end(coins));
+        
+        for (int i = 1; i < n; i++) {
+            dp[i] = INT_MAX;
+            for (const int& c: coins) {
+                if (i - c < 0) 
+                    break;
+                
+                if (dp[i - c] != INT_MAX)
+                    dp[i] = min(dp[i], 1 + dp[i - c]);
             }
-            if(sum == 0)
-                res = min(res, count);
         }
-        return res == INT_MAX ? -1 : res;
+        return dp[--n] == INT_MAX ? -1 : dp[n];
     }
 };
 
@@ -131,5 +130,6 @@ int main() {
     vector<int> coins{186,419,83,408};
     sh::print(solution.coinChange_322(coins, 6249));
 
-
+    auto sp1 = std::shared_ptr<int>(new int(10));   // 1
+    auto sp2 = std::make_shared<int>(10);           // 2
 }
