@@ -103,6 +103,8 @@ public:
     }
 
     //--------------------------#322--------------------------------------------//
+    // vector<int> coins{186,419,83,408};
+    // sh::print(solution.coinChange_322(coins, 6249));
     int coinChange_322(vector<int>& coins, int n) {
         int dp[++n];
         dp[0] = 0;
@@ -120,16 +122,63 @@ public:
         }
         return dp[--n] == INT_MAX ? -1 : dp[n];
     }
+
+    //--------------------------#328--------------------------------------------//
+    // ListNode* l1 = new ListNode(1, new ListNode(2, new ListNode(3,(new ListNode(4, new ListNode(5))))));
+    // sh::showList(l1);
+    // l1 = solution.oddEvenList_328(l1);
+    // sh::showList(l1);
+    ListNode* oddEvenList_328(ListNode* head) {
+        if(!head)
+            return head;
+
+        ListNode *even = new ListNode;
+        ListNode *st_even = even;
+        ListNode *odd = new ListNode;
+        ListNode *st_odd = odd;
+        ListNode *curr = head;
+        int n(0);
+        while (curr){
+            if(n++ % 2 == 0){
+                even->next = curr;
+                even = even->next;
+            } else {
+                odd->next = curr;
+                odd = odd->next;
+            }
+            curr = curr->next;
+        }
+        even->next = st_odd->next;
+        odd->next = nullptr;
+        return st_even->next;
+    }
+
+    //--------------------------#338--------------------------------------------//
+    vector<int> countBits_338(int n) {
+        vector<int> res(n);
+        res.push_back(0);  // for num = 0
+        if (n == 0) return res;
+        
+        for (int i = 1; i <= n; i++) {
+            if (i % 2 == 0) 
+                res[i] = res[i / 2];
+            else
+                res[i] = res[i - 1] + 1;
+        }
+        return res;
+    }
+
+    //--------------------------#342--------------------------------------------//
+    bool isPowerOfFour_342(int num) {
+        return num > 0 && (num & (num - 1)) == 0 && (num & 0xAAAAAAAA) == 0;
+    }
 };
 
 int main() {
     Solution solution;   
     Timer timer("LeetCode_400.cpp");
- 
-     
-    vector<int> coins{186,419,83,408};
-    sh::print(solution.coinChange_322(coins, 6249));
 
-    auto sp1 = std::shared_ptr<int>(new int(10));   // 1
-    auto sp2 = std::make_shared<int>(10);           // 2
+
+    
+    
 }

@@ -562,23 +562,35 @@ public:
     }
 
     //--------------------------#1415-------------------------------------------//
+    // sh::print(solution.getHappyString(3, 9));
     string getHappyString(int n, int k) {
         std::vector<char> chars{'a', 'b', 'c'};
-        std::vector<std::string> res;
         string curr;
+        int res(0);
         GenerateABC(n, k, res, curr, chars, -1);
+        return curr;
 
-        return k > res.size() ? "" : res[k - 1];
+        // if (k > (3 << (n - 1))) return ""; // Check if k is out of bounds
+        // queue<string> q;
+        // q.push("");  // Start with an empty string
+        // while (k) {
+        //     string curr = q.front();
+        //     q.pop(); 
+        //     for (char c = 'a'; c <= 'c'; c++) {
+        //         if (curr.empty() || curr.back() != c) {
+        //             q.push(curr + c);
+        //             if (curr.size() + 1 == n) k--;
+        //         }
+        //         if (k == 0) break;
+        //     }
+        // }
+        // return q.back();
     }
-    void GenerateABC(const int n, const int k, std::vector<std::string>& res, string& curr, const std::vector<char>& chars, int j){
+    void GenerateABC(const int n, const int k, int& res, string& curr, const std::vector<char>& chars, int j){
         if(curr.size() == n){
-            res.push_back(curr);
+            ++res;
             return;
         }
-        if(res.size() == k){
-            return;
-        }
-        
 
         for(size_t i(0); i != chars.size(); ++i){
             if(i == j)
@@ -586,9 +598,22 @@ public:
             
             curr.push_back(chars[i]);
             GenerateABC(n, k, res, curr, chars, i);
+            if(res == k){
+                return;
+            }
             curr.pop_back();
         }
+    }
 
+    //--------------------------#1980-------------------------------------------//
+    string findDifferentBinaryString(vector<string>& nums) {
+        string res;
+        res.reserve(nums[0].size());
+
+        for(size_t i(0); i != nums.size(); ++i){
+            res.push_back(nums[i][i] == '0' ? '1' : '0');
+        }
+        return res;
     }
 };
 
@@ -597,6 +622,5 @@ int main(){
     Timer timer("DailyTasksLeetcode.cpp");
 
     
-    sh::print(solution.getHappyString(3, 9));
     
 }

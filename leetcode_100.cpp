@@ -2389,7 +2389,101 @@ public:
         }
         return count + l + r;
     }
-//================================================================================================================================================
+
+    //--------------------------#18---------------------------------------------//
+    // std::vector<int> nums{2,2,2,2,2};
+    // sh::showVecVec(solution.fourSum_18(nums, 8));
+    std::vector<std::vector<int>> fourSum_18(std::vector<int>& nums, int target) {
+        if(nums.size() < 4)
+            return {};
+
+        std::vector<std::vector<int>> res;
+        std::vector<int> curr;
+        curr.reserve(4);
+        std::sort(nums.begin(), nums.end());
+        GenerateRes_18(nums, target, res, curr, 0);
+        return res;
+    }
+    void GenerateRes_18(std::vector<int>& nums, int target,  std::vector<std::vector<int>>& res, std::vector<int>& curr, int ind){
+        if(curr.size() == 2){
+            int l(ind), r(nums.size() - 1);
+            while (l < r){
+                int t = nums[l] + nums[r];
+                if(t == target){
+                    curr.push_back(nums[l++]);
+                    curr.push_back(nums[r--]);
+                    res.push_back(curr);
+                    curr.pop_back();
+                    curr.pop_back();
+                    while (l < r and nums[l] == nums[l - 1]) ++l;
+                    while (l < r and nums[r] == nums[r + 1]) --r;   
+                } else if(t > target){
+                    r--;
+                } else {
+                    l++;
+                }     
+            }
+            
+        } else {
+            for(size_t i(ind); i < nums.size(); ++i){
+                if(i > 0 and i > ind and nums[i] == nums[i - 1])
+                    continue;
+                curr.push_back(nums[i]);
+                GenerateRes_18(nums, target - nums[i], res, curr, i + 1);
+                curr.pop_back();
+            }
+        }
+    }
+
+    //--------------------------#12---------------------------------------------//
+    std::string intToRoman_12(int num) {
+        std::string res;
+        std::vector<std::pair<int, std::string>> nums
+        {{1000, "M"}, {900, "CM"}, {500, "D"}, {400, "CD"},
+        {100, "C"}, {90, "XC"}, {50, "L"}, {40, "XL"},
+        {10, "X"}, {9, "IX"}, {5, "V"}, {4, "IV"}, {1, "I"}};
+        for (int i(0); i < nums.size(); i++) {
+            while (num >= nums[i].first) {
+                res += nums[i].second;
+                num -= nums[i].first;
+            }
+        }
+        return res;
+    }
+    
+    //--------------------------#22---------------------------------------------//
+    std::vector<std::string> generateParenthesis_22(int n) {
+        char brackets[2]{'(', ')'};
+        std::vector<std::string> res;
+        std::string curr;
+        GenerateParenthesisHelp(n * 2, res, curr, 0, brackets);
+        return res;
+    }    
+    void GenerateParenthesisHelp(int n, std::vector<std::string>& res, std::string& curr, int opened, char brackets[]){
+        if(n == 0 and opened == 0){
+            res.push_back(curr);
+        }
+
+        for(size_t i(0); i < 2; ++i){
+            if(i == 0 and opened < n){
+                curr.push_back(brackets[i]);
+                GenerateParenthesisHelp(n - 1, res, curr, opened + 1, brackets);
+                curr.pop_back();
+            } 
+            if(i == 1 and opened != 0){
+                curr.push_back(brackets[i]);
+                GenerateParenthesisHelp(n - 1, res, curr, opened - 1, brackets);
+                curr.pop_back();
+            }
+            
+        }
+    }
+
+    //--------------------------#25---------------------------------------------//
+    ListNode* reverseKGroup(ListNode* head, int k) {
+        
+    }
+    //================================================================================================================================================
 private:
     bool isPalindrom_5(const std::string &str, int start, int end){
         int l = start, r = end;
@@ -2798,5 +2892,5 @@ int main(){
     Timer timer("LeetCode_100.cpp");
 
     
-    
+    sh::showContainer(solution.generateParenthesis_22(2));
 }
