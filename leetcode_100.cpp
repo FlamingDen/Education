@@ -2452,6 +2452,7 @@ public:
     }
     
     //--------------------------#22---------------------------------------------//
+    // sh::showContainer(solution.generateParenthesis_22(2));
     std::vector<std::string> generateParenthesis_22(int n) {
         char brackets[2]{'(', ')'};
         std::vector<std::string> res;
@@ -2480,8 +2481,78 @@ public:
     }
 
     //--------------------------#25---------------------------------------------//
-    ListNode* reverseKGroup(ListNode* head, int k) {
-        
+    // ListNode* l1 = new ListNode(1, new ListNode(2, new ListNode(3,new ListNode(4,new ListNode(5,new ListNode(6))))));
+    // sh::showList(l1);
+    // l1 = solution.reverseKGroup_25(l1, 3);
+    // sh::showList(l1);
+    ListNode* reverseKGroup_25(ListNode* head, int k) {
+        int n(1);
+        ListNode dummy;
+        ListNode *dum_ptr = &dummy;
+
+        ListNode *startKGroup = head;
+        ListNode *curr = head;
+        ListNode *prev_end = dum_ptr;
+        while (curr){
+            if(n == k){
+                ListNode *next = curr->next;
+                curr->next = nullptr;
+
+                ListNode *endKGroup = startKGroup;
+                startKGroup = ReverseListNode_25(startKGroup);
+                
+                prev_end->next = startKGroup;
+                prev_end = endKGroup;
+
+                endKGroup->next = next;
+                curr = next;
+                startKGroup = next;
+
+                n = 1;
+            } else {
+                curr = curr->next;
+                n++;
+            }
+        }
+        return dum_ptr->next;
+    }
+    ListNode* ReverseListNode_25(ListNode* node){
+        if(!node and !node->next)
+            return node;
+
+        ListNode *curr = node;
+        ListNode *next = curr->next;
+        ListNode *prev = nullptr;
+        while(curr){
+            curr->next = prev;
+            prev = curr;
+            curr = next;
+            if(curr)
+                next = curr->next;
+        }
+        return prev;
+    }
+    
+    //--------------------------#32---------------------------------------------//
+    int longestValidParentheses_32(std::string s) {
+        std::vector<int> dp(s.size() + 1);
+        std::stack<int> st;
+        int res(0);
+        for(size_t i(0); i < s.size(); ++i){
+            if(s[i] == '('){
+                dp[i + 1] = 0;
+                st.push(i + 1); 
+            } else {
+                if(!st.empty()){
+                    dp[i + 1] = dp[st.top() - 1] + dp[i] + 1;
+                    st.pop();
+                    res = std::max(res, dp[i + 1]);
+                } else {
+                    dp[i + 1] = 0;
+                } 
+            }
+        }
+        return res*2;
     }
     //================================================================================================================================================
 private:
@@ -2892,5 +2963,6 @@ int main(){
     Timer timer("LeetCode_100.cpp");
 
     
-    sh::showContainer(solution.generateParenthesis_22(2));
+    sh::print(solution.longestValidParentheses_32(")))"));
+    
 }

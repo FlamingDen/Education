@@ -30,6 +30,43 @@ public:
     }
 };
 
+    //--------------------------#1261-------------------------------------------// 
+class FindElements {
+    TreeNode* root;
+    std::unordered_set<int> values;
+
+    // --Sample
+    //         0
+    //       /  \
+    //      1    2
+    //     / \    \
+    //    3   4    6
+    //   / \   \
+    //  7   8   10 
+    void Restore(TreeNode* node, int parent, bool left){
+        if(!node)
+            return;
+        
+        node->val = parent * 2  + (left ? 1 : 2);
+        values.insert(node->val);
+        Restore(node->left, node->val, true);
+        Restore(node->right, node->val, false);
+    }
+public:
+    FindElements(TreeNode* root) {
+        root->val = 0;
+        this->root = root;
+        values.insert(0);
+
+        Restore(root->left, root->val, true);
+        Restore(root->right, root->val, false);
+    }
+    
+    bool find(int target) {
+        return values.contains(target);
+    }
+};
+
 class Solution {
     std::vector<std::pair<int , int>> SHIFTS{
         {-1, 0}, // top
@@ -615,12 +652,28 @@ public:
         }
         return res;
     }
+
+
 };
 
 int main(){
     Solution solution;   
     Timer timer("DailyTasksLeetcode.cpp");
 
-    
+    TreeNode* root = new TreeNode(-1,
+        new TreeNode(-1,
+            new TreeNode(-1,
+                new TreeNode(-1),
+                new TreeNode(-1)),
+            new TreeNode(-1,
+                nullptr,
+                new TreeNode(-1))
+        ),
+        new TreeNode(-1,
+            nullptr, 
+            new TreeNode(-1))
+    );
+    FindElements* obj = new FindElements(root);
+    //bool param_1 = obj->find(target);
     
 }
