@@ -2534,26 +2534,26 @@ public:
     }
     
     //--------------------------#32---------------------------------------------//
+    // sh::print(solution.longestValidParentheses_32(")()"));
     int longestValidParentheses_32(std::string s) {
-        std::vector<int> dp(s.size() + 1);
         std::stack<int> st;
+        st.push(-1);
         int res(0);
         for(size_t i(0); i < s.size(); ++i){
             if(s[i] == '('){
-                dp[i + 1] = 0;
-                st.push(i + 1); 
+                st.push(i);
             } else {
+                st.pop();
                 if(!st.empty()){
-                    dp[i + 1] = dp[st.top() - 1] + dp[i] + 1;
-                    st.pop();
-                    res = std::max(res, dp[i + 1]);
+                    res = std::max(res, (int)i - st.top());
                 } else {
-                    dp[i + 1] = 0;
+                    st.push(i);
                 } 
             }
         }
-        return res*2;
+        return res;
     }
+    
     //================================================================================================================================================
 private:
     bool isPalindrom_5(const std::string &str, int start, int end){
@@ -2963,6 +2963,6 @@ int main(){
     Timer timer("LeetCode_100.cpp");
 
     
-    sh::print(solution.longestValidParentheses_32(")))"));
+    
     
 }

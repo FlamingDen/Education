@@ -25,6 +25,23 @@ public:
     }
 };
 
+    //--------------------------#352--------------------------------------------//
+class SummaryRanges {
+    std::map<int, int> intervals;
+public:
+    SummaryRanges() {
+        
+    }
+    
+    void addNum(int value) {
+        
+    }
+    
+    vector<vector<int>> getIntervals() {
+        
+    }
+};
+
 class Solution {
 public:
     //--------------------------#326--------------------------------------------//
@@ -172,13 +189,143 @@ public:
     bool isPowerOfFour_342(int num) {
         return num > 0 && (num & (num - 1)) == 0 && (num & 0xAAAAAAAA) == 0;
     }
+
+    //--------------------------#324--------------------------------------------//
+    // vector<int> nums{4,5,5,6};
+    // sh::showContainer(nums);
+    // solution.wiggleSort_324(nums);
+    // sh::showContainer(nums);
+    void wiggleSort_324(vector<int>& nums) {
+        if(nums.size() == 1)
+            return;
+        std::sort(nums.begin(), nums.end());
+        int m = std::ceil(nums.size() / 2.);
+        std::vector<int> res;
+        res.reserve(nums.size());
+
+        for(size_t i(m - 1), j(nums.size() - 1); i + 1 > 0 or j >= m; --i, --j){
+            if(i + 1 > 0)
+                res.push_back(nums[i]);
+            if(j >= m)
+                res.push_back(nums[j]);
+        } 
+        nums = std::move(res);
+    }
+
+    //--------------------------#344--------------------------------------------//
+    void reverseString_344(vector<char>& s) {
+        std::reverse(s.begin(), s.end());
+    }
+
+    //--------------------------#345--------------------------------------------//
+    // sh::print(solution.reverseVowels_345("IceCreAm"));
+    string reverseVowels_345(string s) {
+        int l(0), r(s.size() - 1);
+        while (l < r){
+            while (l < r and !IsVowes(s[l])){
+                l++;
+            }
+            while (l < r and !IsVowes(s[r])){
+                r--;
+            }
+            std::swap(s[l++], s[r--]);
+        }
+        return s;
+    }
+    bool IsVowes(char a){
+        switch (a)
+        {
+        case 'a':
+        case 'e':
+        case 'i':
+        case 'o':
+        case 'u':
+        case 'A':
+        case 'E':
+        case 'I':
+        case 'O':
+        case 'U':
+            return true;
+            break;
+        default:
+            return false;
+        }
+        return false;
+    }
+
+    //--------------------------#347--------------------------------------------//
+    // vector<int> nums{1,1,1,2,2,3};
+    // sh::showContainer(solution.topKFrequent_347(nums, 2));
+    vector<int> topKFrequent_347(vector<int>& nums, int k) {
+        std::unordered_map<int,int> m;
+        vector<int> res;
+        for(size_t i(0); i < nums.size(); ++i){
+            m[nums[i]]++;
+        }
+        std::vector<std::pair<int, int>> tmp;
+        tmp.reserve(m.size());
+        for(auto it = std::begin(m); it != std::end(m); ++it){
+            tmp.push_back({it->first, it->second});
+        }
+        std::sort(tmp.begin(), tmp.end(), [](const auto& p1, const auto& p2){
+            return p1.second < p2.second;
+        });
+        for(size_t i(tmp.size() - 1); i + 1 > (tmp.size() - k); --i){
+            res.push_back(tmp[i].first);
+        }
+        return res;
+    }
+
+    //--------------------------#349--------------------------------------------//
+    vector<int> intersection_349(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> res;
+        std::unordered_map<int, int> mp;
+        for(size_t i(0); i < nums1.size(); ++i){
+            mp[nums1[i]] = 0;
+        }
+        std::sort(begin(nums2), end(nums2));
+        for(size_t i(0); i < nums2.size(); ++i){
+            auto el = mp.find(nums2[i]);
+            if(el != mp.end())
+                el->second = 1;
+        }
+        for(auto it = std::begin(mp); it != std::end(mp); ++it){
+            if(it->second == 1)
+                res.push_back(it->first);
+        }
+        return res;
+    }
+
+    //--------------------------#350--------------------------------------------//
+    vector<int> intersect_350(vector<int>& nums1, vector<int>& nums2) {
+        vector<int> res;
+        std::unordered_map<int, int> mp1;
+        std::unordered_map<int, int> mp2;
+        for(size_t i(0); i < nums1.size(); ++i){
+            mp1[nums1[i]]++;
+        }
+        for(size_t i(0); i < nums2.size(); ++i){
+            mp2[nums2[i]]++;
+        }
+        
+        for(auto it = std::begin(mp1); it != std::end(mp1); ++it){
+            auto curr = mp2.find(it->first);
+            if(curr != mp2.end()){
+                int n = std::min(curr->second, it->second);
+                while (n--){
+                    res.push_back(curr->first);
+                }
+            }
+        }
+        return res;
+    }
 };
 
 int main() {
     Solution solution;   
     Timer timer("LeetCode_400.cpp");
 
-
+    
     
     
 }
