@@ -31,6 +31,20 @@ public:
 };
 
     //--------------------------#1261-------------------------------------------// 
+    // TreeNode* root = new TreeNode(-1,
+    //     new TreeNode(-1,
+    //         new TreeNode(-1,
+    //             new TreeNode(-1),
+    //             new TreeNode(-1)),
+    //         new TreeNode(-1,
+    //             nullptr,
+    //             new TreeNode(-1))
+    //     ),
+    //     new TreeNode(-1,
+    //         nullptr, 
+    //         new TreeNode(-1))
+    // );
+    // FindElements* obj = new FindElements(root);
 class FindElements {
     TreeNode* root;
     std::unordered_set<int> values;
@@ -653,27 +667,34 @@ public:
         return res;
     }
 
+    //--------------------------#1524-------------------------------------------//
+    // vector<int> arr{1,3,5};
+    // sh::print(solution.numOfSubarrays(arr));
+    int numOfSubarrays(vector<int>& arr) {
+        const int MOD = 1000000007;
+        int odd = 0, even = 1; 
+        int result = 0;
+        int sum = 0;
 
+        for (int i = 0; i < arr.size(); i++) {
+            sum += arr[i];
+            if (sum % 2 == 1) {
+                result = (result + even) % MOD;
+                odd++;
+            } else {
+                result = (result + odd) % MOD;
+                even++;
+            }
+        }
+
+        return result;
+    }
 };
 
 int main(){
     Solution solution;   
     Timer timer("DailyTasksLeetcode.cpp");
 
-    TreeNode* root = new TreeNode(-1,
-        new TreeNode(-1,
-            new TreeNode(-1,
-                new TreeNode(-1),
-                new TreeNode(-1)),
-            new TreeNode(-1,
-                nullptr,
-                new TreeNode(-1))
-        ),
-        new TreeNode(-1,
-            nullptr, 
-            new TreeNode(-1))
-    );
-    FindElements* obj = new FindElements(root);
-    //bool param_1 = obj->find(target);
+    
     
 }
