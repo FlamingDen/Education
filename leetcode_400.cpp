@@ -38,7 +38,7 @@ public:
     }
     
     vector<vector<int>> getIntervals() {
-        
+        return {};
     }
 };
 
@@ -319,6 +319,48 @@ public:
         }
         return res;
     }
+
+    //--------------------------#371--------------------------------------------//
+    int getSum_371(int a, int b) {
+        int sum = a;
+        while (b != 0)
+        {   
+            sum = a ^ b;
+            b = (a & b) << 1;
+            a = sum;
+        }
+        return sum;
+    }
+
+    //--------------------------#373--------------------------------------------//
+    // vector<int> nums1{1,1,11}; 
+    // vector<int> nums2{1,4,6};
+    // sh::showVecVec(solution.kSmallestPairs_373(nums1, nums2, 7));
+    vector<vector<int>> kSmallestPairs_373(vector<int>& nums1, vector<int>& nums2, int k) {
+        vector<vector<int>> res;
+        std::priority_queue<pair<int, pair<int, int>>> pq;
+        for(size_t i(0); i < nums1.size(); ++i){
+            for(size_t j(0); j < nums2.size(); ++j){
+                int sum = nums1[i] + nums2[j];
+
+                if(pq.size() < k){
+                    pq.push({sum, {nums1[i], nums2[j]}});
+                } else if (pq.top().first > sum){
+                    pq.pop();
+                    pq.push({sum, {nums1[i], nums2[j]}});
+                } else {
+                    break;
+                }
+            }
+        }
+        while (!pq.empty())
+        {
+            res.push_back({pq.top().second.first, pq.top().second.second});
+            pq.pop();
+        }
+        return res;
+    }
+    
 };
 
 int main() {
