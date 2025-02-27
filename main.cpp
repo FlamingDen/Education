@@ -14,9 +14,6 @@
 #include "show.h"
 
 #include "point.h"
-#include "DSU.hpp"
-#include "Trie.hpp"
-#include "Sorting.hpp"
 
 class B;
 class D1;
