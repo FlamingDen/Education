@@ -103,19 +103,27 @@ public:
     }
 
     //--------------------------#406--------------------------------------------//
+    // vector<vector<int>> people{
+    //     {7,0},
+    //     {4,4},
+    //     {7,1},
+    //     {5,0},
+    //     {6,1},
+    //     {5,2}
+    // };
+    // sh::showVecVec(solution.reconstructQueue_406(people));
     vector<vector<int>> reconstructQueue_406(vector<vector<int>>& people) {
-        vector<vector<int>> res(people.size());
-        vector<vector<int>> tmp(people.begin(), people.end());
+        vector<vector<int>> res;
+        res.reserve(people.size());
         std::sort(
-            tmp.begin(), 
-            tmp.end(),
+            people.begin(), 
+            people.end(),
             [](const vector<int>& v1, const vector<int>& v2){
                 return std::tie(v2[0],v1[1]) < std::tie(v1[0], v2[1]);
             }
         );
-        std::forward_list<pair<int, int>> list;
-        for(size_t i(0); i < tmp.size(); ++i){
-            
+        for (auto& man : people){
+            res.insert(res.begin() + man[1], man);
         }
         return res;
     }
@@ -125,15 +133,7 @@ int main() {
     Solution solution;   
     Timer timer("LeetCode_500.cpp");
 
-    vector<vector<int>> people{
-        {7,0},
-        {4,4},
-        {7,1},
-        {5,0},
-        {6,1},
-        {5,2}
-    };
-    solution.reconstructQueue_406(people);
+    
     
     
 }

@@ -3,11 +3,28 @@ cmake_minimum_required(VERSION 3.25)
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-#==================================================
-project(Main 
+set(LeetCodeCommonHeaders
+    utils/ForLeetcode.h
+    utils/timer.h
+    utils/show.h
+    utils/Tree.h
+    utils/ListNode.h
+)
+
+set(LeetCodeCommonSources
+    utils/ForLeetcode.cpp
+    utils/timer.cpp
+    utils/Tree.cpp
+    utils/ListNode.cpp
+)
+
+project(Education  
     LANGUAGES CXX
 )
 
+set(This Education)
+
+#==================================================
 add_executable(Main 
     main.cpp
     point.cpp
@@ -34,21 +51,10 @@ target_include_directories(Main PRIVATE
 )
 
 #==================================================
-project(LeetCode_100
-    LANGUAGES CXX
-)
-
 add_executable(LeetCode_100
     leetcode_/leetcode_100.cpp
-    utils/ForLeetcode.h
-    utils/ForLeetcode.cpp
-    utils/timer.cpp
-    utils/timer.h
-    utils/show.h
-    utils/Tree.h
-    utils/Tree.cpp
-    utils/ListNode.h
-    utils/ListNode.cpp
+    ${LeetCodeCommonHeaders}
+    ${LeetCodeCommonSources}
 )
 
 target_include_directories(LeetCode_100 INTERFACE
@@ -62,21 +68,10 @@ target_include_directories(LeetCode_100 PRIVATE
 )
 
 #==================================================
-project(LeetCode_200
-    LANGUAGES CXX
-)
-
 add_executable(LeetCode_200
     leetcode_/leetcode_200.cpp
-    utils/ForLeetcode.h
-    utils/ForLeetcode.cpp
-    utils/timer.cpp
-    utils/timer.h
-    utils/show.h
-    utils/Tree.h
-    utils/Tree.cpp
-    utils/ListNode.h
-    utils/ListNode.cpp
+    ${LeetCodeCommonHeaders}
+    ${LeetCodeCommonSources}
 )
 
 target_include_directories(LeetCode_200 INTERFACE
@@ -90,21 +85,10 @@ target_include_directories(LeetCode_200 PRIVATE
 )
 
 #==================================================
-project(LeetCode_300
-    LANGUAGES CXX
-)
-
 add_executable(LeetCode_300
     leetcode_/leetcode_300.cpp
-    utils/ForLeetcode.h
-    utils/ForLeetcode.cpp
-    utils/timer.cpp
-    utils/timer.h
-    utils/show.h
-    utils/Tree.h
-    utils/Tree.cpp
-    utils/ListNode.h
-    utils/ListNode.cpp
+    ${LeetCodeCommonHeaders}
+    ${LeetCodeCommonSources}
 )
 
 target_include_directories(LeetCode_300 INTERFACE
@@ -118,21 +102,10 @@ target_include_directories(LeetCode_300 PRIVATE
 )
 
 #==================================================
-project(LeetCode_400
-    LANGUAGES CXX
-)
-
 add_executable(LeetCode_400
     leetcode_/leetcode_400.cpp
-    utils/ForLeetcode.h
-    utils/ForLeetcode.cpp
-    utils/timer.cpp
-    utils/timer.h
-    utils/show.h
-    utils/Tree.h
-    utils/Tree.cpp
-    utils/ListNode.h
-    utils/ListNode.cpp
+    ${LeetCodeCommonHeaders}
+    ${LeetCodeCommonSources}
 )
 
 target_include_directories(LeetCode_400 INTERFACE
@@ -146,21 +119,10 @@ target_include_directories(LeetCode_400 PRIVATE
 )
 
 #==================================================
-project(DailyTasksLeetcode
-    LANGUAGES CXX
-)
-
 add_executable(DailyTasksLeetcode
     leetcode_/dailytasks.cpp
-    utils/ForLeetcode.h
-    utils/ForLeetcode.cpp
-    utils/timer.cpp
-    utils/timer.h
-    utils/show.h
-    utils/Tree.h
-    utils/Tree.cpp
-    utils/ListNode.h
-    utils/ListNode.cpp
+    ${LeetCodeCommonHeaders}
+    ${LeetCodeCommonSources}
 )
 
 target_include_directories(DailyTasksLeetcode INTERFACE
@@ -174,21 +136,10 @@ target_include_directories(DailyTasksLeetcode PRIVATE
 )
 
 #==================================================
-project(LeetCode_500
-    LANGUAGES CXX
-)
-
 add_executable(LeetCode_500
     leetcode_/leetcode_500.cpp
-    utils/ForLeetcode.h
-    utils/ForLeetcode.cpp
-    utils/timer.cpp
-    utils/timer.h
-    utils/show.h
-    utils/Tree.h
-    utils/Tree.cpp
-    utils/ListNode.h
-    utils/ListNode.cpp
+    ${LeetCodeCommonHeaders}
+    ${LeetCodeCommonSources}
 )
 
 target_include_directories(LeetCode_500 INTERFACE
