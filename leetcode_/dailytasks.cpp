@@ -860,11 +860,22 @@ public:
         return maxLen > 2 ? maxLen : 0;
     }
 
-    //--------------------------#1092-------------------------------------------//
-    string shortestCommonSupersequence(string str1, string str2)
+    //--------------------------#2161-------------------------------------------//
+    // std::vector<int> nums{9,12,5,10,14,3,10};
+    // sh::showContainer(solution.pivotArray(nums, 10));
+    vector<int> pivotArray(vector<int> &nums, int pivot)
     {
-        string res;
-        return res;
+        for (int dist{2}; dist < 2 * size(nums); dist <<= 1){
+            for (auto b{begin(nums)}, m{b}, e{b}; b < end(nums); b = e)
+            {
+                m = min(b + dist / 2, end(nums)),
+                e = min(b + dist, end(nums));
+                auto l = lower_bound(b, m, pivot);
+                auto h = upper_bound(m, e, pivot);
+                std::rotate(l, m, h);
+            }
+        }
+        return nums;
     }
 };
 
@@ -872,4 +883,6 @@ int main()
 {
     Solution solution;
     Timer timer("DailyTasksLeetcode.cpp");
+
+    
 }

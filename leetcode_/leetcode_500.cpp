@@ -87,7 +87,7 @@ public:
     }
 
     //--------------------------#404--------------------------------------------//
-    int sumOfLeftLeaves(TreeNode* root) {
+    int sumOfLeftLeaves_404(TreeNode* root) {
         return GetSumOfLeftLeaves(root, false);
     }
     int GetSumOfLeftLeaves(TreeNode* root, bool left){
@@ -127,13 +127,32 @@ public:
         }
         return res;
     }
+
+    //--------------------------#409--------------------------------------------//
+    // sh::print(solution.longestPalindrome_409("nadetheearth"));
+    int longestPalindrome_409(string s) {
+        map<char, int> m;
+        for(size_t i(0); i < s.size(); ++i){
+            m[s[i]]++;
+        }
+        int full_part(0), additional(0);
+        bool odd(false);
+        for(auto it = std::begin(m); it != std::end(m); ++it){
+            if(it->second % 2 == 0){
+                full_part += it->second;
+            } else {
+                full_part += it->second - 1;
+                odd = true;
+            }
+        }
+        return full_part + odd;
+    }
 };
 
 int main() {
     Solution solution;   
     Timer timer("LeetCode_500.cpp");
 
-    
-    
+   
     
 }

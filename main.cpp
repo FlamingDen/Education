@@ -15,6 +15,8 @@
 
 #include "point.h"
 
+#include <thread>
+
 class B;
 class D1;
 class D2;
@@ -142,7 +144,7 @@ public:
     ~Child(){
         std::cout << "~Child()" << std::endl;
     }
-    void show() override {
+    virtual void show() override {
         std::cout << getB() * getA()  << std::endl;
     }
 };
@@ -294,7 +296,8 @@ T&& custom_forward(std::remove_reference_t<T>&& value)
 //==============================================================================//
 int main()
 {
-
+    
+    
     
 }
 
