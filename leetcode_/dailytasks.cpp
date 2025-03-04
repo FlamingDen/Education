@@ -17,8 +17,7 @@ class ProductOfNumbers
 public:
     ProductOfNumbers() {}
 
-    void add(int num)
-    {
+    void add(int num) {
         if (num == 0)
         {
             nums.clear();
@@ -29,8 +28,7 @@ public:
         }
     }
 
-    int getProduct(int k)
-    {
+    int getProduct(int k) {
         if (k > nums.size())
             return 0;
         if (k == nums.size())
@@ -56,7 +54,7 @@ public:
 // FindElements* obj = new FindElements(root);
 class FindElements
 {
-    TreeNode *root;
+    TreeNode* root;
     std::unordered_set<int> values;
 
     // --Sample
@@ -67,8 +65,7 @@ class FindElements
     //    3   4    6
     //   / \   \
     //  7   8   10
-    void Restore(TreeNode *node, int parent, bool left)
-    {
+    void Restore(TreeNode* node, int parent, bool left) {
         if (!node)
             return;
 
@@ -79,8 +76,7 @@ class FindElements
     }
 
 public:
-    FindElements(TreeNode *root)
-    {
+    FindElements(TreeNode* root) {
         root->val = 0;
         this->root = root;
         values.insert(0);
@@ -89,8 +85,7 @@ public:
         Restore(root->right, root->val, false);
     }
 
-    bool find(int target)
-    {
+    bool find(int target) {
         return values.contains(target);
     }
 };
@@ -109,8 +104,7 @@ public:
     // std::vector<int> A{2,3,1};
     // std::vector<int> B{3,1,2};
     // sh::showContainer(solution.findThePrefixCommonArray(A, B));
-    std::vector<int> findThePrefixCommonArray(std::vector<int> &A, std::vector<int> &B)
-    {
+    std::vector<int> findThePrefixCommonArray(std::vector<int>& A, std::vector<int>& B) {
         std::vector<int> ans;
         std::unordered_map<int, int> check;
 
@@ -130,8 +124,7 @@ public:
 
     //--------------------------#2429-------------------------------------------//
     // sh::print(solution.minimizeXor(1, 12));
-    int minimizeXor(int num1, int num2)
-    {
+    int minimizeXor(int num1, int num2) {
         int ans = num1;
         int k = __builtin_popcount(num2);
         // for(size_t i(0); i != 32; ++i){
@@ -163,8 +156,7 @@ public:
 
         return ans;
     }
-    void SetBit(int &num, int shifts, int value)
-    {
+    void SetBit(int& num, int shifts, int value) {
         if (value == 1)
         {
             num |= (value << shifts);
@@ -177,8 +169,7 @@ public:
     }
 
     //--------------------------#2425-------------------------------------------//
-    int xorAllNums(std::vector<int> &nums1, std::vector<int> &nums2)
-    {
+    int xorAllNums(std::vector<int>& nums1, std::vector<int>& nums2) {
         int res(0);
         int bitwise2(0);
         for (size_t i(0); i != nums2.size(); ++i)
@@ -200,8 +191,7 @@ public:
     //--------------------------#2683-------------------------------------------//
     // std::vector<int> dev{0,1};
     // sh::print(solution.doesValidArrayExist(dev));
-    bool doesValidArrayExist(std::vector<int> &derived)
-    {
+    bool doesValidArrayExist(std::vector<int>& derived) {
         std::pair<int, int> start, curr;
         for (size_t i(0); i != derived.size(); ++i)
         {
@@ -224,8 +214,7 @@ public:
     //     {1,7,6,3,5}
     // };
     // sh::print(solution.firstCompleteIndex(arr, mat));
-    int firstCompleteIndex(vector<int> &arr, vector<vector<int>> &mat)
-    {
+    int firstCompleteIndex(vector<int>& arr, vector<vector<int>>& mat) {
         int n = mat.size();
         int m = mat[0].size();
         std::unordered_map<int, int> check(n * m);
@@ -238,7 +227,7 @@ public:
         {
             for (size_t j(0); j != m; ++j)
             {
-                matrix[mat[i][j]] = {i, j};
+                matrix[mat[i][j]] = { i, j };
             }
         }
 
@@ -257,8 +246,7 @@ public:
     //     {1, 5, 1}
     // };
     // sh::print(solution.gridGame(grid));
-    long long gridGame(std::vector<std::vector<int>> &grid)
-    {
+    long long gridGame(std::vector<std::vector<int>>& grid) {
         long long top = std::accumulate(begin(grid[0]), end(grid[0]), 0);
         long long bottom(0), res(LLONG_MAX);
         for (size_t i(0); i != grid[0].size(); ++i)
@@ -276,8 +264,7 @@ public:
     //     {0,0}
     // };
     // sh::showVecVec(solution.highestPeak(isWater));
-    vector<vector<int>> highestPeak(vector<vector<int>> &isWater)
-    {
+    vector<vector<int>> highestPeak(vector<vector<int>>& isWater) {
         vector<vector<int>> res(isWater.size(), std::vector<int>(isWater[0].size(), INT_MAX));
         std::queue<std::pair<int, int>> q;
         for (size_t i(0); i != isWater.size(); ++i)
@@ -286,7 +273,7 @@ public:
             {
                 if (isWater[i][j] == 1)
                 {
-                    q.push({i, j});
+                    q.push({ i, j });
                     res[i][j] = 0;
                 }
             }
@@ -305,7 +292,7 @@ public:
                 if (!(x < 0 or x >= res.size() or y < 0 or y >= res[0].size()) and res[x][y] > 1 + res[curr.first][curr.second])
                 {
                     res[x][y] = 1 + res[curr.first][curr.second];
-                    q.push({x, y});
+                    q.push({ x, y });
                 }
             }
         }
@@ -318,8 +305,7 @@ public:
     //     {1,1}
     // };
     // sh::print(solution.countServers(grid));
-    int countServers(vector<vector<int>> &grid)
-    {
+    int countServers(vector<vector<int>>& grid) {
         std::unordered_map<int, int> check_row(grid.size());
         std::unordered_map<int, int> check_col(grid.size());
         std::vector<std::pair<int, int>> servs;
@@ -332,7 +318,7 @@ public:
                 {
                     check_row[i]++;
                     check_col[j]++;
-                    servs.push_back({i, j});
+                    servs.push_back({ i, j });
                 }
             }
         }
@@ -357,8 +343,7 @@ public:
     //     {}
     // };
     // sh::showContainer(solution.eventualSafeNodes(graph));
-    std::vector<int> eventualSafeNodes(std::vector<std::vector<int>> &graph)
-    {
+    std::vector<int> eventualSafeNodes(std::vector<std::vector<int>>& graph) {
         std::vector<int> res;
         std::queue<int> q;
         std::vector<std::vector<int>> gr(graph.size());
@@ -379,7 +364,7 @@ public:
             int curr = q.front();
             q.pop();
             safe[curr] = 1;
-            for (const auto &v : gr[curr])
+            for (const auto& v : gr[curr])
             {
                 if (--sizes[v] == 0)
                     q.push(v);
@@ -394,13 +379,12 @@ public:
     }
 
     //--------------------------#1462-------------------------------------------//
-    vector<bool> checkIfPrerequisite(int n, vector<vector<int>> &prerequisites, vector<vector<int>> &queries)
-    {
-        bitset<100> rpath[100] = {0};
+    vector<bool> checkIfPrerequisite(int n, vector<vector<int>>& prerequisites, vector<vector<int>>& queries) {
+        bitset<100> rpath[100] = { 0 };
         vector<char> adj[100];
 
-        char deg[100] = {0}; // indegree
-        for (auto &e : prerequisites)
+        char deg[100] = { 0 }; // indegree
+        for (auto& e : prerequisites)
         {
             char a = e[0], b = e[1];
             adj[a].push_back(b);
@@ -436,8 +420,7 @@ public:
     //     {0, 6, 0}
     // };
     // sh::print(solution.findMaxFish(grid));
-    int findMaxFish(vector<vector<int>> &grid)
-    {
+    int findMaxFish(vector<vector<int>>& grid) {
         std::vector<std::vector<bool>> visited(grid.size(), std::vector<bool>(grid[0].size(), false));
         int fish(0);
         for (size_t i(0); i != grid.size(); ++i)
@@ -446,14 +429,13 @@ public:
             {
                 if (!visited[i][j] and grid[i][j] > 0)
                 {
-                    fish = std::max(fish, ToFish(grid, visited, {i, j}));
+                    fish = std::max(fish, ToFish(grid, visited, { i, j }));
                 }
             }
         }
         return fish;
     }
-    int ToFish(vector<vector<int>> &grid, std::vector<std::vector<bool>> &visited, std::pair<int, int> start)
-    {
+    int ToFish(vector<vector<int>>& grid, std::vector<std::vector<bool>>& visited, std::pair<int, int> start) {
         queue<std::pair<int, int>> q;
         q.push(start);
         int fish(0);
@@ -471,7 +453,7 @@ public:
                 int y_ = y + SHIFTS[i].second;
                 if (x_ >= 0 and x_ < grid.size() and y_ >= 0 and y_ < grid[0].size() and grid[x_][y_] > 0 and !visited[x_][y_])
                 {
-                    q.push({x_, y_});
+                    q.push({ x_, y_ });
                     visited[x_][y_] = true;
                 }
             }
@@ -486,8 +468,7 @@ public:
     //     {2,3}
     // };
     // sh::showContainer(solution.findRedundantConnection(v));
-    vector<int> findRedundantConnection(vector<vector<int>> &edges)
-    {
+    vector<int> findRedundantConnection(vector<vector<int>>& edges) {
         int N = edges.size();
 
         vector<bool> visited(N, false);
@@ -525,8 +506,7 @@ public:
         return {};
     }
     int cycleStart = -1;
-    void DFS(int src, vector<bool> &visited, vector<int> adjList[], vector<int> &parent)
-    {
+    void DFS(int src, vector<bool>& visited, vector<int> adjList[], vector<int>& parent) {
         visited[src] = true;
 
         for (int adj : adjList[src])
@@ -548,8 +528,7 @@ public:
 
     //--------------------------#3174-------------------------------------------//
     // sh::print(solution.clearDigits("asabc123"));
-    std::string clearDigits(std::string s)
-    {
+    std::string clearDigits(std::string s) {
         std::string res;
         int tmp(0);
 
@@ -574,8 +553,7 @@ public:
 
     //--------------------------#1910-------------------------------------------//
     // sh::print(solution.removeOccurrences("daabcbaabcbc", "abc"));
-    string removeOccurrences(string s, string part)
-    {
+    string removeOccurrences(string s, string part) {
         string x = s;
         int n = s.size(), m = part.size(), i, j;
         for (i = 0, j = 0; i < n; i++)
@@ -590,8 +568,7 @@ public:
     //--------------------------#2342-------------------------------------------//
     // std::vector<int> nums{18,43,36,13,7};
     // sh::print(solution.maximumSum(nums));
-    int maximumSum(vector<int> &nums)
-    {
+    int maximumSum(vector<int>& nums) {
         std::map<int, int> m;
         int res(-1);
         for (size_t i(0); i != nums.size(); ++i)
@@ -603,7 +580,7 @@ public:
                 digits_sum += x % 10;
                 x /= 10;
             }
-            auto [exist_el, inserted] = m.insert({digits_sum, nums[i]});
+            auto [exist_el, inserted] = m.insert({ digits_sum, nums[i] });
             if (!inserted)
             {
                 if (exist_el->second + nums[i] > res)
@@ -622,8 +599,7 @@ public:
     //--------------------------#2208-------------------------------------------//
     // std::vector<int> nums{1,1,1};
     // sh::print(solution.halveArray(nums));
-    int halveArray(vector<int> &nums)
-    {
+    int halveArray(vector<int>& nums) {
         std::priority_queue<double> pq;
         double sum(0);
         for (size_t i(0); i != nums.size(); ++i)
@@ -647,8 +623,7 @@ public:
     //--------------------------#3066-------------------------------------------//
     // std::vector<int> nums{999999999,999999999,999999999};
     // sh::print(solution.minOperations(nums, 1000000000));
-    int minOperations(vector<int> &nums, int k)
-    {
+    int minOperations(vector<int>& nums, int k) {
         std::priority_queue<long long, std::vector<long long>, std::greater<long long>> pq(std::begin(nums), std::end(nums));
         int n(0);
         while (pq.top() < k)
@@ -667,8 +642,7 @@ public:
     //--------------------------#1079-------------------------------------------//
     // std::string s("AAB");
     // sh::print(solution.numTilePossibilities(s));
-    int numTilePossibilities(string tiles)
-    {
+    int numTilePossibilities(string tiles) {
         std::vector<int> charCount(26, 0);
         int sz(0);
         for (char ch : tiles)
@@ -680,8 +654,7 @@ public:
         charCount.resize(sz);
         return buildChar(charCount);
     }
-    int buildChar(std::vector<int> charCount)
-    {
+    int buildChar(std::vector<int> charCount) {
         int totalCount = 0;
         for (int i = 0; i < charCount.size(); i++)
         {
@@ -698,8 +671,7 @@ public:
 
     //--------------------------#2375-------------------------------------------//
     // sh::print(solution.smallestNumber("IIIDIDDD"));
-    string smallestNumber(string pattern)
-    {
+    string smallestNumber(string pattern) {
         std::vector<int> st(pattern.size() + 1);
         string res;
         int ind(0);
@@ -720,9 +692,8 @@ public:
 
     //--------------------------#1415-------------------------------------------//
     // sh::print(solution.getHappyString(3, 9));
-    string getHappyString(int n, int k)
-    {
-        std::vector<char> chars{'a', 'b', 'c'};
+    string getHappyString(int n, int k) {
+        std::vector<char> chars{ 'a', 'b', 'c' };
         string curr;
         int res(0);
         GenerateABC(n, k, res, curr, chars, -1);
@@ -744,8 +715,7 @@ public:
         // }
         // return q.back();
     }
-    void GenerateABC(const int n, const int k, int &res, string &curr, const std::vector<char> &chars, int j)
-    {
+    void GenerateABC(const int n, const int k, int& res, string& curr, const std::vector<char>& chars, int j) {
         if (curr.size() == n)
         {
             ++res;
@@ -768,8 +738,7 @@ public:
     }
 
     //--------------------------#1980-------------------------------------------//
-    string findDifferentBinaryString(vector<string> &nums)
-    {
+    string findDifferentBinaryString(vector<string>& nums) {
         string res;
         res.reserve(nums[0].size());
 
@@ -783,8 +752,7 @@ public:
     //--------------------------#1524-------------------------------------------//
     // vector<int> arr{1,3,5};
     // sh::print(solution.numOfSubarrays(arr));
-    int numOfSubarrays(vector<int> &arr)
-    {
+    int numOfSubarrays(vector<int>& arr) {
         const int MOD = 1000000007;
         int odd = 0, even = 1;
         int result = 0;
@@ -811,8 +779,7 @@ public:
     //--------------------------#1749-------------------------------------------//
     // vector<int> nums{1,-3,2,3,-4};
     // sh::print(solution.maxAbsoluteSum(nums));
-    int maxAbsoluteSum(vector<int> &nums)
-    {
+    int maxAbsoluteSum(vector<int>& nums) {
         int sum = 0, minSum = 0, maxSum = 0;
         for (int num : nums)
         {
@@ -828,8 +795,7 @@ public:
     //--------------------------#873--------------------------------------------//
     // vector<int> arr{1,2,3,4,5,6,7};
     // sh::print(solution.lenLongestFibSubseq(arr));
-    int lenLongestFibSubseq(vector<int> &arr)
-    {
+    int lenLongestFibSubseq(vector<int>& arr) {
         int maxLen = 0;
         vector<vector<int>> dp(arr.size(), vector<int>(arr.size(), 0));
         unordered_map<int, int> valToIdx;
@@ -841,8 +807,8 @@ public:
             {
                 int diff = arr[curr] - arr[prev];
                 int prevIdx = (valToIdx.find(diff) != valToIdx.end())
-                                  ? valToIdx[diff]
-                                  : -1;
+                    ? valToIdx[diff]
+                    : -1;
 
                 if (diff < arr[prev] && prevIdx >= 0)
                 {
@@ -863,13 +829,13 @@ public:
     //--------------------------#2161-------------------------------------------//
     // std::vector<int> nums{9,12,5,10,14,3,10};
     // sh::showContainer(solution.pivotArray(nums, 10));
-    vector<int> pivotArray(vector<int> &nums, int pivot)
-    {
-        for (int dist{2}; dist < 2 * size(nums); dist <<= 1){
-            for (auto b{begin(nums)}, m{b}, e{b}; b < end(nums); b = e)
+    vector<int> pivotArray(vector<int>& nums, int pivot) {
+        for (int dist{ 2 }; dist < 2 * size(nums); dist <<= 1)
+        {
+            for (auto b{ begin(nums) }, m{ b }, e{ b }; b < end(nums); b = e)
             {
                 m = min(b + dist / 2, end(nums)),
-                e = min(b + dist, end(nums));
+                    e = min(b + dist, end(nums));
                 auto l = lower_bound(b, m, pivot);
                 auto h = upper_bound(m, e, pivot);
                 std::rotate(l, m, h);
@@ -877,12 +843,22 @@ public:
         }
         return nums;
     }
+
+    //--------------------------#1780-------------------------------------------//
+    bool checkPowersOfThree(int n) {
+        while (n > 0)
+        {
+            if (n % 3 == 2)
+            {
+                return false;
+            }
+            n /= 3;
+        }
+        return true;
+    }
 };
 
-int main()
-{
+int main() {
     Solution solution;
     Timer timer("DailyTasksLeetcode.cpp");
-
-    
 }
