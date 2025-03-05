@@ -1,5 +1,7 @@
 ﻿#include "Sorting.hpp"
 
+#include <algorithm>
+#include <iostream>
 
 //=======================Samples================================================//
 // std::vector<int> v{1,7,3,8,4,9};

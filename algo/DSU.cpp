@@ -1,5 +1,6 @@
 ﻿#include <DSU.hpp>
 
+#include <iostream>
 #include "show.h"
 
 DSU::DSU(int n)

@@ -1,4 +1,5 @@
-﻿#include <iostream>
+﻿#pragma once
+
 #include <vector>
 #include <unordered_map>
 

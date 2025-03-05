@@ -225,6 +225,11 @@ public:
         }
         return nums.back();
     }
+
+    //--------------------------#415--------------------------------------------//
+    string addStrings(string num1, string num2) {
+        return {};
+    }
 };
 
 int main() {
