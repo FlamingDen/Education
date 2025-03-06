@@ -861,9 +861,36 @@ public:
     long long coloredCells(int n) {
         return 1 + (4 + 4 * (n - 1)) / 2 * (n - 1);
     }
+
+    //--------------------------#2965-------------------------------------------//
+    // vector<vector<int>> grid{
+    //     {1,3},
+    //     {2,2}
+    // };
+    // sh::showContainer(solution.findMissingAndRepeatedValues(grid));
+    vector<int> findMissingAndRepeatedValues(vector<vector<int>>& grid) {
+        unordered_set<int> st;
+        vector<int> res(2);
+        int n = grid.size();
+        int sum(0);
+        for (auto& row : grid) {
+            for (auto& val: row){
+                if(st.contains(val)){
+                    res[0] = val;
+                } else {
+                    st.insert(val);
+                    sum += val;
+                }
+            }
+        }
+        res[1] = ((1. + n * n) / 2 * n * n) -  sum;
+        return res;
+    }
 };
 
 int main() {
     Solution solution;
     Timer timer("DailyTasksLeetcode.cpp");
+
+    
 }
