@@ -874,23 +874,91 @@ public:
         int n = grid.size();
         int sum(0);
         for (auto& row : grid) {
-            for (auto& val: row){
-                if(st.contains(val)){
+            for (auto& val : row) {
+                if (st.contains(val)) {
                     res[0] = val;
-                } else {
+                }
+                else {
                     st.insert(val);
                     sum += val;
                 }
             }
         }
-        res[1] = ((1. + n * n) / 2 * n * n) -  sum;
+        res[1] = ((1. + n * n) / 2 * n * n) - sum;
         return res;
+    }
+
+    //--------------------------#3306-------------------------------------------//
+    // sh::print(solution.countOfSubstrings("ieaouqqieaouqq", 1));
+    long long countOfSubstrings(string word, int k) {
+        int n = word.size();
+        unordered_map<char, int> vowels;
+        int consonantCount = 0;
+        long long result = 0;
+
+        // Precompute next consonant positions
+        vector<int> nextConsonant(n);
+        int lastConsonant = n;
+        for (int i = n - 1; i >= 0; i--) {
+            nextConsonant[i] = lastConsonant;
+            if (!IsVowel(word[i])) lastConsonant = i;
+        }
+
+        // Sliding window
+        int left = 0, right = 0;
+        while (right < n) {
+            // Expand window
+            if (IsVowel(word[right])) {
+                vowels[word[right]]++;
+            } else {
+                consonantCount++;
+            }
+
+            // Shrink window if too many consonants
+            while (left <= right && consonantCount > k) {
+                if (IsVowel(word[left])) {
+                    if (--vowels[word[left]] == 0) vowels.erase(word[left]);
+                } else {
+                    consonantCount--;
+                }
+                left++;
+            }
+
+            // Count valid substrings
+            while (left < right && vowels.size() == 5 && consonantCount == k) {
+                result += (nextConsonant[right] - right);
+                if (IsVowel(word[left])) {
+                    if (--vowels[word[left]] == 0) vowels.erase(word[left]);
+                } else {
+                    consonantCount--;
+                }
+                left++;
+            }
+
+            right++;
+        }
+
+        return result;
+    }
+    bool IsVowel(char c) {
+        switch (c) {
+        case 'a':
+        case 'e':
+        case 'i':
+        case 'o':
+        case 'u':
+            return true;
+        default:
+            return false;
+        }
+        return false;
     }
 };
 
 int main() {
     Solution solution;
     Timer timer("DailyTasksLeetcode.cpp");
+
 
     
 }

@@ -217,9 +217,9 @@ public:
             return nums.back();
 
         for (size_t i(nums.size() - 2), j(1); i + 1 > 0; --i) {
-            if (nums[i] != nums[i + 1]){
+            if (nums[i] != nums[i + 1]) {
                 ++j;
-                if(j == 3)
+                if (j == 3)
                     return nums[i];
             }
         }
@@ -227,8 +227,76 @@ public:
     }
 
     //--------------------------#415--------------------------------------------//
-    string addStrings(string num1, string num2) {
-        return {};
+    // sh::print(solution.addStrings_415("11", "123"));
+    string addStrings_415(string num1, string num2) {
+        string res;
+        int p1(num1.size() - 1), p2(num2.size() - 1);
+        int remn(0);
+        while (p1 >= 0 or p2 >= 0 or remn) {
+            if (p1 >= 0 and p2 >= 0) {
+                int a = num1[p1] - '0';
+                int b = num2[p2] - '0';
+                int curr = (a + b + remn) % 10;
+                remn = (a + b + remn) / 10;
+                res.push_back(curr + '0');
+            }
+            else if (p1 >= 0) {
+                int a = num1[p1] - '0';
+                int curr = (a + remn) % 10;
+                remn = (a + remn) / 10;
+                res.push_back(curr + '0');
+            }
+            else if (p2 >= 0) {
+                int a = num2[p2] - '0';
+                int curr = (a + remn) % 10;
+                remn = (a + remn) / 10;
+                res.push_back(curr + '0');
+            }
+            else {
+                res.push_back(remn + '0');
+                remn = 0;
+            }
+            p1--;
+            p2--;
+        }
+        std::reverse(res.begin(), res.end());
+        return res;
+    }
+
+    //--------------------------#416--------------------------------------------//
+    bool canPartition(vector<int>& nums) {
+        int sum = std::accumulate(begin(nums), end(nums), 0);
+        if (sum & 1 == 1) {
+            return false;
+        }
+        int goal = sum / 2;
+        std::vector<int> dp(goal + 1);
+        dp[0] = true;
+        for (size_t i(0); i < nums.size(); ++i) {
+            for (size_t j(goal); j + 1 > nums[i]; j--) {
+                dp[j] = (dp[j] or dp[j - nums[i]]);
+            }
+            if(dp[goal])
+                break;
+        }
+        return dp[goal];
+    }
+
+    //--------------------------#417--------------------------------------------//
+    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+        vector<vector<int>> res;
+        for(int i(0); i < heights.size(); ++i){
+            for(int j(0); j < heights[i].size(); ++j){
+                if(IsPacificAtlanticCell({i, j})){
+                    res.push_back({i, j});
+                }
+            }
+        }
+        return res;
+    }
+    bool IsPacificAtlanticCell(std::pair<int, int> coord){
+        
+
     }
 };
 
@@ -236,5 +304,5 @@ int main() {
     Solution solution;
     Timer timer("LeetCode_500.cpp");
 
-    
+
 }
