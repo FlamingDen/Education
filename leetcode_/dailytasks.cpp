@@ -953,6 +953,27 @@ public:
         }
         return false;
     }
+
+    //--------------------------#1358-------------------------------------------//
+    // sh::print(solution.numberOfSubstrings("aabbbabbaabc"));
+    int numberOfSubstrings(string s) {
+        int res(0);
+        int l(0), r(0);
+        unordered_map<char, int> check;
+        while (r < s.size()){
+            while (check.size() != 3 and r < s.size()) {
+                check[s[r++]]++;
+            }
+            while (check.size() == 3 and l < r){
+                res += s.size() - r + 1;
+                if(--check[s[l]] == 0){
+                    check.erase(s[l]);
+                }
+                l++;
+            }
+        }
+        return res;
+    }
 };
 
 int main() {

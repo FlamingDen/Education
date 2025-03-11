@@ -276,27 +276,62 @@ public:
             for (size_t j(goal); j + 1 > nums[i]; j--) {
                 dp[j] = (dp[j] or dp[j - nums[i]]);
             }
-            if(dp[goal])
+            if (dp[goal])
                 break;
         }
         return dp[goal];
     }
 
     //--------------------------#417--------------------------------------------//
-    vector<vector<int>> pacificAtlantic(vector<vector<int>>& heights) {
+    // vector<vector<int>> heights{
+    //     {1,2,2,3,5},
+    //     {3,2,3,4,4},
+    //     {2,4,5,3,1},
+    //     {6,7,1,4,5},
+    //     {5,1,1,2,4}
+    // };
+    // sh::showVecVec(solution.pacificAtlantic_417(heights));
+    vector<vector<int>> pacificAtlantic_417(vector<vector<int>>& heights) {
         vector<vector<int>> res;
-        for(int i(0); i < heights.size(); ++i){
-            for(int j(0); j < heights[i].size(); ++j){
-                if(IsPacificAtlanticCell({i, j})){
-                    res.push_back({i, j});
-                }
+        int n = heights.size();
+        int m = heights[0].size();
+        vector<vector<bool>> pac(n, std::vector<bool>(m));
+        vector<vector<bool>> atl(n, std::vector<bool>(m));
+
+
+        for (int i = 0; i < n; i++) {
+
+            dfs(heights, pac, i, 0, -1, -1); // first col
+            dfs(heights, atl, i, m-1, -1, -1); // last col
+        }
+
+        for (int j = 0; j < m; j++) {
+
+            dfs(heights, pac, 0, j, -1, -1); // first row 
+            dfs(heights, atl, n - 1, j, -1, -1); // last row
+        }
+
+        for (int i(0); i < n; i++) {
+            for (int j(0); j < m; j++) {
+                if (pac[i][j] and atl[i][j])
+                    res.push_back({ i, j });
             }
         }
+
         return res;
     }
-    bool IsPacificAtlanticCell(std::pair<int, int> coord){
-        
+    void dfs(vector<vector<int>>& h, vector<vector<bool>>& vis, int i, int j, int oi, int oj) {
 
+        if (i < 0 || i >= h.size() || j < 0 || j >= h[0].size() || vis[i][j])
+            return;
+        if (oi >= 0 && oj >= 0 && h[i][j] < h[oi][oj]) 
+            return; 
+
+        vis[i][j] = true;
+        dfs(h, vis, i - 1, j, i, j);
+        dfs(h, vis, i + 1, j, i, j);
+        dfs(h, vis, i, j - 1, i, j);
+        dfs(h, vis, i, j + 1, i, j);
     }
 };
 
@@ -305,4 +340,5 @@ int main() {
     Timer timer("LeetCode_500.cpp");
 
 
+    
 }
