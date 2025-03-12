@@ -12,8 +12,7 @@ public:
     // sh::showList(&l1);
     // sh::showList(&l2);
     // solution.addTwoNumbers_2(&l1, &l2);
-    ListNode *addTwoNumbers_2(ListNode *l1, ListNode *l2)
-    {
+    ListNode* addTwoNumbers_2(ListNode* l1, ListNode* l2) {
         /*ListNode* ans = new ListNode();
         ListNode* head = ans;
         ListNode* prev;
@@ -49,8 +48,8 @@ public:
         ans  = nullptr;
         return head;*/
         int sum = 0;
-        ListNode *l3 = nullptr;
-        ListNode **node = &l3;
+        ListNode* l3 = nullptr;
+        ListNode** node = &l3;
         while (l1 != NULL || l2 != NULL || sum > 0)
         {
             if (l1 != NULL)
@@ -73,8 +72,7 @@ public:
     //--------------------------#3----------------------------------------------//
     // --3
     // std::cout << solution.lengthOfLongestSubstring_3("pwwkew") << std::endl;
-    int lengthOfLongestSubstring_3(std::string s)
-    {
+    int lengthOfLongestSubstring_3(std::string s) {
         // std::map<char, int> chars;
         // int len(0), i(0);
         // int curr_len(0);
@@ -121,8 +119,7 @@ public:
     // // --5
     // std::string str = "gccghj";
     // std::cout << solution.longestPalindrome_5(str) << std::endl;
-    std::string longestPalindrome_5(std::string s)
-    {
+    std::string longestPalindrome_5(std::string s) {
         /*int n = s.size();
         std::vector<std::vector<bool>> m(n,std::vector<bool>(n));
         int l(0), r(0);
@@ -172,8 +169,7 @@ public:
     //--------------------------#7----------------------------------------------//
     // // --7
     // std::cout << solution.reverse_7(96463243) << std::endl;
-    int reverse_7(int x)
-    {
+    int reverse_7(int x) {
         int ans(0), i(0);
         while (x != 0)
         {
@@ -190,8 +186,7 @@ public:
     //--------------------------#9----------------------------------------------//
     // // --9
     // std::cout << std::boolalpha << solution.isPalindrome_9(12321) << std::endl;
-    bool isPalindrome_9(int x)
-    {
+    bool isPalindrome_9(int x) {
         std::string str = std::to_string(x);
         int l(0), r(str.size() - 1);
         while (l < r)
@@ -211,15 +206,14 @@ public:
     // // --11
     // std::vector<int> vec{1,1,1,1,8,1,1,1,1,1,1,1,1,1};
     // std::cout << solution.maxArea_11(vec) << std::endl;
-    int maxArea_11(std::vector<int> &h)
-    {
+    int maxArea_11(std::vector<int>& h) {
         int l(0), r(h.size() - 1), maxArea(0), curr_h;
         while (l < r)
         {
             curr_h = std::min(h[l], h[r]);
             maxArea = std::max(maxArea, curr_h * (r - l));
             h[l] > h[r] ? r-- : h[l] < h[r] ? l++
-                                            : r--,
+                : r--,
                 l++;
         }
         return maxArea;
@@ -228,8 +222,7 @@ public:
     //--------------------------#8----------------------------------------------//
     // // --8
     // std::cout << solution.myAtoi_8("1337c0d3") << std::endl;
-    int myAtoi_8(std::string s)
-    {
+    int myAtoi_8(std::string s) {
         int ans(0);
 
         std::string number;
@@ -273,8 +266,7 @@ public:
     //--------------------------#6----------------------------------------------//
     // // --6
     // std::cout << solution.convert_6("PAYPALISHIRING", 4) << std::endl;
-    std::string convert_6(std::string s, int numRows)
-    {
+    std::string convert_6(std::string s, int numRows) {
         std::string ans;
         ans.reserve(s.size() - 1);
         if (numRows == 1)
@@ -299,8 +291,7 @@ public:
     //--------------------------#15---------------------------------------------//
     // std::vector<int> vec{-3,4,8,1,-4,7,5,3};
     // solution.threeSum_15(vec);
-    std::vector<std::vector<int>> threeSum_15(std::vector<int> &nums)
-    {
+    std::vector<std::vector<int>> threeSum_15(std::vector<int>& nums) {
         std::vector<std::vector<int>> ans;
         std::sort(nums.begin(), nums.end());
 
@@ -318,7 +309,7 @@ public:
                 int sum = nums[i] + nums[l] + nums[r];
                 if (sum == 0)
                 {
-                    ans.push_back({nums[i], nums[l], nums[r]});
+                    ans.push_back({ nums[i], nums[l], nums[r] });
                     l++;
                     r--;
                     while (nums[l] == nums[l - 1] && l < r)
@@ -341,8 +332,7 @@ public:
     // std::vector<int> a{};
     // std::vector<int> b{1};
     // std::cout << solution.findMedianSortedArrays_4(a, b) << std::endl;
-    double findMedianSortedArrays_4(std::vector<int> &nums1, std::vector<int> &nums2)
-    {
+    double findMedianSortedArrays_4(std::vector<int>& nums1, std::vector<int>& nums2) {
         int l(0), r(0);
         int curr = INT_MIN, prev;
         int len = (nums1.size() + nums2.size()) / 2 + 1;
@@ -387,8 +377,7 @@ public:
     // std::vector<std::string> str = solution.letterCombinations_17("23");
     // for (auto &i : str)
     //     std::cout << i << ", ";
-    std::vector<std::string> letterCombinations_17(std::string digits)
-    {
+    std::vector<std::string> letterCombinations_17(std::string digits) {
         std::vector<std::string> ans;
         std::vector<std::string> vec_str;
         int start;
@@ -396,7 +385,7 @@ public:
         if (digits.size() == 0)
             return {};
 
-        for (const auto &d : digits)
+        for (const auto& d : digits)
         {
             start = 'a' + (d - '2') * 3;
             if (d == '8' || d == '9')
@@ -412,8 +401,8 @@ public:
         }
         if (digits.size() == 1)
         {
-            for (const auto &t : vec_str[0])
-                ans.push_back({t});
+            for (const auto& t : vec_str[0])
+                ans.push_back({ t });
             return ans;
         }
 
@@ -429,12 +418,11 @@ public:
     // l1 = solution.removeNthFromEnd_19(l1, 8);
     // l1 = solution.removeNthFromEnd_19(l1, 6);
     // sh::showList(l1);
-    ListNode *removeNthFromEnd_19(ListNode *head, int n)
-    {
-        ListNode *h = head;
-        ListNode *prev = h;
-        ListNode *next_node = h;
-        ListNode *to_del;
+    ListNode* removeNthFromEnd_19(ListNode* head, int n) {
+        ListNode* h = head;
+        ListNode* prev = h;
+        ListNode* next_node = h;
+        ListNode* to_del;
 
         int i(0);
         while (h != nullptr)
@@ -479,14 +467,13 @@ public:
     // sh::showList(l1);
     // l1 = solution.swapPairs_24(l1);
     // sh::showList(l1);
-    ListNode *swapPairs_24(ListNode *head)
-    {
+    ListNode* swapPairs_24(ListNode* head) {
         if (head == nullptr || head->next == nullptr)
             return head;
 
-        ListNode *next_pair;
-        ListNode *first = head;
-        ListNode *second = head->next;
+        ListNode* next_pair;
+        ListNode* first = head;
+        ListNode* second = head->next;
         head = second;
 
         while (second != nullptr)
@@ -495,7 +482,7 @@ public:
 
             second->next = first;
             first->next = (next_pair == nullptr ? nullptr : next_pair->next == nullptr ? next_pair
-                                                                                       : next_pair->next);
+                : next_pair->next);
 
             first = next_pair;
             second = next_pair != nullptr ? next_pair->next : nullptr;
@@ -514,22 +501,21 @@ public:
     // std::vector<ListNode*> list = {l1, l2, l3};
     // ListNode* l4 = solution.mergeKLists_23(list);
     // sh::showList(l4);
-    ListNode *mergeKLists_23(std::vector<ListNode *> &lists)
-    {
+    ListNode* mergeKLists_23(std::vector<ListNode*>& lists) {
         if (lists.size() == 0)
             return {};
         if (lists.size() == 1)
             return lists[0];
 
-        ListNode *ans = new ListNode(-999);
-        ListNode *curr_el = ans;
+        ListNode* ans = new ListNode(-999);
+        ListNode* curr_el = ans;
         int j(0);
 
         while (true)
         {
-            ListNode *next_el = lists[0];
+            ListNode* next_el = lists[0];
             j = 0;
-            for (const auto &t : lists)
+            for (const auto& t : lists)
             {
                 if (t != nullptr)
                 {
@@ -564,8 +550,7 @@ public:
     // sh::showContainer(vec);
     // solution.nextPermutation_31(vec);
     // sh::showContainer(vec);
-    void nextPermutation_31(std::vector<int> &nums)
-    {
+    void nextPermutation_31(std::vector<int>& nums) {
         int l = nums.size() - 2, r = nums.size() - 1;
         int i(0);
         for (; i < nums.size() - 1; i++)
@@ -607,9 +592,8 @@ public:
     // std::vector<int> vec{1,2};
     // sh::showContainer(vec);
     // sh::showContainer(solution.searchRange_34(vec,2));
-    std::vector<int> searchRange_34(std::vector<int> &nums, int target)
-    {
-        return {binarySearch_l(nums, target), binarySearch_r(nums, target)};
+    std::vector<int> searchRange_34(std::vector<int>& nums, int target) {
+        return { binarySearch_l(nums, target), binarySearch_r(nums, target) };
     }
 
     //--------------------------#33---------------------------------------------//
@@ -617,8 +601,7 @@ public:
     // std::vector<int> vec{4,5,6,7,0,1,2};
     // sh::showContainer(vec);
     // std::cout << solution.search_33(vec,0);
-    int search_33(std::vector<int> &nums, int target)
-    {
+    int search_33(std::vector<int>& nums, int target) {
         int gap = binarySearchGap(nums);
         if (gap == -1)
             return binarySearch(nums, target);
@@ -641,8 +624,7 @@ public:
     // {'.','.','.', '.','.','.', '.','.','.'},
     // {'.','.','.', '.','.','.', '.','.','.'}};
     // std::cout <<  std::boolalpha << solution.isValidSudoku_36(board);
-    bool isValidSudoku_36(std::vector<std::vector<char>> &board)
-    {
+    bool isValidSudoku_36(std::vector<std::vector<char>>& board) {
         bool row = rowValid(board);
         bool col = collValid(board);
         bool sq = squareValid(board);
@@ -654,12 +636,10 @@ public:
     //--------------------------#38---------------------------------------------//
     // --38
     // std::cout << solution.countAndSay_38(5) << std::endl;
-    std::string countAndSay_38(int n)
-    {
+    std::string countAndSay_38(int n) {
         return RLE(n);
     }
-    std::string RLE(int n)
-    {
+    std::string RLE(int n) {
         if (n == 1)
             return "1";
         if (n == 2)
@@ -695,8 +675,7 @@ public:
     // std::vector<int> vec{1,1};
     // sh::showContainer(vec);
     // std::cout << solution.firstMissingPositive_41(vec) << std::endl;
-    int firstMissingPositive_41(std::vector<int> &nums)
-    {
+    int firstMissingPositive_41(std::vector<int>& nums) {
         int index;
         for (int i(0); i < nums.size(); i++)
         {
@@ -720,8 +699,7 @@ public:
     //--------------------------#45---------------------------------------------//
     // std::vector<int> nums{1,1,1,1};
     // std::cout << solution.jump_45(nums) << std::endl;
-    int jump_45(std::vector<int> &nums)
-    {
+    int jump_45(std::vector<int>& nums) {
         if (nums.size() == 1)
             return 0;
 
@@ -756,8 +734,7 @@ public:
     //--------------------------#14---------------------------------------------//
     // std::vector<std::string> vec{"abab","aba",""};
     // std::cout << solution.longestCommonPrefix_14(vec) << std::endl;
-    std::string longestCommonPrefix_14(std::vector<std::string> &strs)
-    {
+    std::string longestCommonPrefix_14(std::vector<std::string>& strs) {
         if (strs.size() == 0)
             return {};
 
@@ -789,8 +766,7 @@ public:
     // std::vector<int> vec{9,8,9,5,8,8,8,0,4};
     // sh::showContainer(vec);
     // std::cout << solution.trap_42(vec) << std::endl;
-    int trap_42(std::vector<int> &height)
-    {
+    int trap_42(std::vector<int>& height) {
         if (height.size() < 3)
             return {};
 
@@ -920,10 +896,9 @@ public:
     // sh::showList(l2);
     // solution.mergeTwoLists(l1, l2);
     // sh::showList(l1);
-    ListNode *mergeTwoLists(ListNode *list1, ListNode *list2)
-    {
-        ListNode *dummy = new ListNode();
-        ListNode *head = dummy;
+    ListNode* mergeTwoLists(ListNode* list1, ListNode* list2) {
+        ListNode* dummy = new ListNode();
+        ListNode* head = dummy;
         while (list1 != nullptr or list2 != nullptr)
         {
             if (list1 == nullptr)
@@ -957,8 +932,7 @@ public:
     //--------------------------#27---------------------------------------------//
     // std::vector<int> vec{3,2,2,3};
     // solution.removeElement(vec, 3);
-    int removeElement(std::vector<int> &nums, int val)
-    {
+    int removeElement(std::vector<int>& nums, int val) {
         int count(0);
         for (int i(0); i < nums.size() - count; i++)
         {
@@ -977,12 +951,11 @@ public:
     // std::vector<std::string> strs{"eat","tea","tan","ate","nat","bat"};
     // sh::showContainer(strs);
     // sh::showVecVec(solution.groupAnagrams(strs));
-    std::vector<std::vector<std::string>> groupAnagrams(std::vector<std::string> &strs)
-    {
+    std::vector<std::vector<std::string>> groupAnagrams(std::vector<std::string>& strs) {
         if (strs.size() == 0)
             return {};
         if (strs.size() == 1)
-            return {{strs[0]}};
+            return { {strs[0]} };
 
         std::unordered_map<std::string, std::vector<std::string>> mp;
         for (auto x : strs)
@@ -1005,22 +978,20 @@ public:
     // sh::showContainer(vec);
     // std::cout << solution.removeDuplicates_26(vec) << std::endl;
     // sh::showContainer(vec);
-    int removeDuplicates_26(std::vector<int> &nums)
-    {
+    int removeDuplicates_26(std::vector<int>& nums) {
         int prev(nums[0]);
         auto end = std::remove_if(nums.begin() + 1, nums.end(), [&prev](int a)
-                                  {
-            if(a == prev)
-                return true;
-            prev = a;
-            return false; });
+            {
+                if (a == prev)
+                    return true;
+                prev = a;
+                return false; });
         nums.erase(end, nums.end());
         return nums.size();
     }
 
     //--------------------------#28---------------------------------------------//
-    int strStr_28(std::string haystack, std::string needle)
-    {
+    int strStr_28(std::string haystack, std::string needle) {
         int i = haystack.find(needle);
         return (i == std::string::npos ? -1 : i);
     }
@@ -1029,8 +1000,7 @@ public:
     // std::vector<int> vec{1,3,4,5,6};
     // sh::showContainer(vec);
     // std::cout << solution.searchInsert_35(vec, -1);
-    int searchInsert_35(std::vector<int> &nums, int target)
-    {
+    int searchInsert_35(std::vector<int>& nums, int target) {
         int l(0), r(nums.size() - 1), mid;
         while (l <= r)
         {
@@ -1059,8 +1029,7 @@ public:
     // sh::showVecVec(matrix);
     // solution.rotate_48(matrix);
     // sh::showVecVec(matrix);
-    void rotate_48(std::vector<std::vector<int>> &matrix)
-    {
+    void rotate_48(std::vector<std::vector<int>>& matrix) {
         if (matrix.size() == 1)
             return;
 
@@ -1078,14 +1047,12 @@ public:
     // std::vector<int> vec{1,2,3};
     // sh::showContainer(vec);
     // sh::showVecVec(solution.permute_46(vec));
-    std::vector<std::vector<int>> permute_46(std::vector<int> &nums)
-    {
+    std::vector<std::vector<int>> permute_46(std::vector<int>& nums) {
         std::vector<std::vector<int>> res;
         backtrack(nums, 0, res);
         return res;
     }
-    void backtrack(std::vector<int> &nums, int start, std::vector<std::vector<int>> &res)
-    {
+    void backtrack(std::vector<int>& nums, int start, std::vector<std::vector<int>>& res) {
         if (start == nums.size())
         {
             res.push_back(nums);
@@ -1103,8 +1070,7 @@ public:
     //--------------------------#53---------------------------------------------//
     // std::vector<int> vec{-2,1,-3,4,-1,2,1,-5,4}; //1-> 3->
     // std::cout << solution.maxSubArray(vec) << std::endl;
-    int maxSubArray(std::vector<int> &nums)
-    {
+    int maxSubArray(std::vector<int>& nums) {
         int res = nums[0];
         int total = 0;
 
@@ -1125,8 +1091,7 @@ public:
     //--------------------------#54---------------------------------------------//
     // std::vector<std::vector<int>> matrix{{1,2,3},{4,5,6},{7,8,9}};
     // sh::showContainer(solution.spiralOrder(matrix));
-    std::vector<int> spiralOrder(std::vector<std::vector<int>> &matrix)
-    {
+    std::vector<int> spiralOrder(std::vector<std::vector<int>>& matrix) {
         std::vector<int> res;
         res.resize(matrix.size() * matrix[0].size());
         for (int i = 0; i < matrix.size(); i++)
@@ -1142,8 +1107,7 @@ public:
     //--------------------------#55---------------------------------------------//
     // std::vector<int> vec{3,2,1,0,4};
     // std::cout<< std::boolalpha << solution.canJump(vec) << std::endl;
-    bool canJump(std::vector<int> &nums)
-    {
+    bool canJump(std::vector<int>& nums) {
         // --1
         int minjump(0);
         for (int i(nums.size() - 2); i >= 0; i--)
@@ -1156,8 +1120,7 @@ public:
         // // --2
         // return checkJump(nums, 0);
     }
-    bool checkJump(std::vector<int> &nums, int start)
-    {
+    bool checkJump(std::vector<int>& nums, int start) {
         if (start == nums.size() - 1)
             return true;
 
@@ -1173,8 +1136,7 @@ public:
     // std::vector<std::vector<int>> matrix{{1,3},{2,6},{8,10}, {15,18}}; // {1,3},{2,6},{8,10}, {15,18} {4,5},{1,4},{0,1}
     // sh::showVecVec(matrix);
     // sh::showVecVec(solution.merge_56(matrix));
-    std::vector<std::vector<int>> merge_56(std::vector<std::vector<int>> &intervals)
-    {
+    std::vector<std::vector<int>> merge_56(std::vector<std::vector<int>>& intervals) {
         sort(intervals.begin(), intervals.end());
 
         std::vector<std::vector<int>> merged;
@@ -1187,8 +1149,7 @@ public:
         }
         return merged;
     }
-    bool isMerge(int l1, int r1, int l2, int r2)
-    {
+    bool isMerge(int l1, int r1, int l2, int r2) {
         if (l1 <= l2 and r1 >= r2)
             return true;
         if (l2 <= l1 and r2 >= r1)
@@ -1202,11 +1163,10 @@ public:
     // std::vector<std::vector<int>> intervals{{1, 5}};
     // std::vector<int> a{2,3};
     // sh::showVecVec(solution.insert_57(intervals , a));
-    std::vector<std::vector<int>> insert_57(std::vector<std::vector<int>> &intervals, std::vector<int> &newInterval)
-    {
+    std::vector<std::vector<int>> insert_57(std::vector<std::vector<int>>& intervals, std::vector<int>& newInterval) {
         std::vector<std::vector<int>> res;
         if (intervals.size() == 0)
-            return {newInterval};
+            return { newInterval };
 
         int l = newInterval[0], r = newInterval[1], f(1);
         for (int i = 0; i < intervals.size(); i++)
@@ -1219,7 +1179,7 @@ public:
             if (intervals[i][0] > newInterval[1])
             {
                 if (f-- == 1)
-                    res.push_back({l, r});
+                    res.push_back({ l, r });
                 res.push_back(intervals[i]);
                 continue;
             }
@@ -1227,29 +1187,27 @@ public:
             r = std::max(r, intervals[i][1]);
             if (i == intervals.size() - 1)
             {
-                res.push_back({l, r});
+                res.push_back({ l, r });
                 f--;
             }
         }
         if (f == 1)
-            res.push_back({l, r});
+            res.push_back({ l, r });
         return res;
     }
 
     //--------------------------#58---------------------------------------------//
     // std::string s("   fly me   to   the moon  ");
     // std::cout << solution.lengthOfLastWord_58(s);
-    int lengthOfLastWord_58(std::string s)
-    {
+    int lengthOfLastWord_58(std::string s) {
         std::smatch res;
-        std::regex_search(s, res, std::regex{R"((\w*)\s*$)"});
+        std::regex_search(s, res, std::regex{ R"((\w*)\s*$)" });
         return res[1].length();
     }
 
     //--------------------------#59---------------------------------------------//
     // sh::showVecVec(solution.generateMatrix_59(4));
-    std::vector<std::vector<int>> generateMatrix_59(int n)
-    {
+    std::vector<std::vector<int>> generateMatrix_59(int n) {
         std::vector<std::vector<int>> res;
         res.reserve(n);
         for (int i(0); i < n; i++)
@@ -1270,15 +1228,14 @@ public:
     // sh::showList(l1);
     // l1 = solution.rotateRight_61(l1, 2);
     // sh::showList(l1);
-    ListNode *rotateRight_61(ListNode *head, int k)
-    {
+    ListNode* rotateRight_61(ListNode* head, int k) {
         if (head == nullptr)
             return head;
 
         int n = getListLength(head);
         k = k % n;
-        ListNode *h = head;
-        ListNode *new_end;
+        ListNode* h = head;
+        ListNode* new_end;
         while (h->next != nullptr)
         {
             if (k == 0)
@@ -1301,8 +1258,7 @@ public:
         new_end->next = nullptr;
         return head;
     }
-    int getListLength(ListNode *head)
-    {
+    int getListLength(ListNode* head) {
         int i(0);
         while (head != nullptr)
         {
@@ -1316,8 +1272,7 @@ public:
     // std::vector<int> vec{4,3,2,1};
     // sh::showContainer(vec);
     // sh::showContainer(solution.plusOne(vec));
-    std::vector<int> plusOne(std::vector<int> &digits)
-    {
+    std::vector<int> plusOne(std::vector<int>& digits) {
         std::vector<int> res;
         res.reserve(digits.size());
         int j = 1;
@@ -1339,8 +1294,7 @@ public:
 
     //--------------------------#62---------------------------------------------//
     // sh::print(solution.uniquePaths(3,7));
-    int uniquePaths(int m, int n)
-    {
+    int uniquePaths(int m, int n) {
         // --easy
         std::vector<std::vector<int>> dp(m, std::vector<int>(n, 1));
         for (int i = 1; i < m; i++)
@@ -1374,8 +1328,7 @@ public:
 
     //--------------------------#10---------------------------------------------//
     // std::cout << std::boolalpha << solution.isMatch("aaa","ab*a*c*a") << std::endl;
-    bool isMatch(std::string s, std::string p)
-    {
+    bool isMatch(std::string s, std::string p) {
         int n = s.length(), m = p.length();
         bool dp[n + 1][m + 1];
         memset(dp, false, sizeof(dp));
@@ -1446,8 +1399,7 @@ public:
         //     return true;
         // return false;
     }
-    bool isValid(std::string &s, int &j, char r_char, int count, bool flag)
-    {
+    bool isValid(std::string& s, int& j, char r_char, int count, bool flag) {
         int steps;
         if (flag)
         {
@@ -1490,8 +1442,7 @@ public:
 
     //--------------------------#67---------------------------------------------//
     // sh::print(solution.addBinary_67("1010","1011"));
-    std::string addBinary_67(std::string a, std::string b)
-    {
+    std::string addBinary_67(std::string a, std::string b) {
         std::string res;
         int size = std::max(a.size(), b.size());
         res.reserve(size + 1);
@@ -1558,8 +1509,7 @@ public:
     // std::string str4 = "/.../a/../b/c/../d/./";
     // sh::print(solution.simplifyPath_71(str2));
     // sh::print(solution.simplifyPath_71(str1));
-    std::string simplifyPath_71(std::string path)
-    {
+    std::string simplifyPath_71(std::string path) {
         if (path.length() == 1)
             return path;
 
@@ -1639,8 +1589,7 @@ public:
 
     //--------------------------#70---------------------------------------------//
     // solution.climbStairs_70(4);
-    int climbStairs_70(int n)
-    {
+    int climbStairs_70(int n) {
         if (n == 1)
             return 1;
         if (n == 2)
@@ -1658,8 +1607,7 @@ public:
     }
 
     //--------------------------#20---------------------------------------------//
-    bool isValid_20(std::string s)
-    {
+    bool isValid_20(std::string s) {
         std::stack<char> br;
         size_t i(0);
         for (; i < s.size(); i++)
@@ -1687,8 +1635,7 @@ public:
 
     //--------------------------#50---------------------------------------------//
     // sh::print(solution.myPow(2, -6));
-    double myPow(double x, int n)
-    {
+    double myPow(double x, int n) {
         double res = 1;
         while (n)
         {
@@ -1707,14 +1654,13 @@ public:
     // sh::showList(l1);
     // l1 = solution.deleteDuplicates_82(l1);
     // sh::showList(l1);
-    ListNode *deleteDuplicates_82(ListNode *head)
-    {
+    ListNode* deleteDuplicates_82(ListNode* head) {
         if (head == nullptr)
             return head;
 
-        ListNode *prev = new ListNode(0, head);
-        ListNode *curr = head;
-        ListNode *res = prev;
+        ListNode* prev = new ListNode(0, head);
+        ListNode* curr = head;
+        ListNode* res = prev;
 
         while (curr != nullptr)
         {
@@ -1740,11 +1686,10 @@ public:
     // sh::showList(l1);
     // l1 = solution.deleteDuplicates_83(l1);
     // sh::showList(l1);
-    ListNode *deleteDuplicates_83(ListNode *head)
-    {
-        ListNode *curr = head;
+    ListNode* deleteDuplicates_83(ListNode* head) {
+        ListNode* curr = head;
 
-        ListNode *duplicate;
+        ListNode* duplicate;
         while (curr != nullptr)
         {
             if (curr->next != nullptr and curr->val == curr->next->val)
@@ -1763,8 +1708,7 @@ public:
     // std::vector<int> vec{1,1};
     // sh::showContainer(vec);
     // std::cout << std::boolalpha << solution.search_81(vec,0);
-    bool search_81(std::vector<int> &nums, int target)
-    {
+    bool search_81(std::vector<int>& nums, int target) {
         int second = binarySearchDeepGap(nums, 0, nums.size() - 1);
         int ans;
         if (second == -1)
@@ -1787,8 +1731,7 @@ public:
     // sh::showContainer(vec);
     // solution.sortColors_75(vec);
     // sh::showContainer(vec);
-    void sortColors_75(std::vector<int> &nums)
-    {
+    void sortColors_75(std::vector<int>& nums) {
         std::vector<int> ans(nums.size(), 1);
 
         int l(0), r(nums.size() - 1);
@@ -1829,22 +1772,22 @@ public:
     // sh::showContainer(vec);
     // solution.removeDuplicates_80(vec);
     // sh::showContainer(vec);
-    int removeDuplicates_80(std::vector<int> &nums)
-    {
+    int removeDuplicates_80(std::vector<int>& nums) {
         int prev(nums[0]), k(1);
         auto end = std::remove_if(nums.begin() + 1, nums.end(), [&prev, &k](int a)
-                                  {
-            if(a == prev){
-                k++;
-                if(k > 2){
-                    return true;
-                } else {
-                    return false;
+            {
+                if (a == prev) {
+                    k++;
+                    if (k > 2) {
+                        return true;
+                    }
+                    else {
+                        return false;
+                    }
                 }
-            }
-            prev = a; 
-            k = 1;    
-            return false; });
+                prev = a;
+                k = 1;
+                return false; });
         nums.erase(end, nums.end());
         return nums.size();
 
@@ -1856,8 +1799,7 @@ public:
     }
 
     //--------------------------#73---------------------------------------------//
-    void setZeroes(std::vector<std::vector<int>> &matrix)
-    {
+    void setZeroes(std::vector<std::vector<int>>& matrix) {
         std::unordered_set<int> r;
         std::unordered_set<int> c;
 
@@ -1884,8 +1826,7 @@ public:
     }
 
     //--------------------------#3042-------------------------------------------//
-    int countPrefixSuffixPairs(std::vector<std::string> &words)
-    {
+    int countPrefixSuffixPairs(std::vector<std::string>& words) {
         int res(0);
         for (size_t i(0); i < words.size() - 1; ++i)
         {
@@ -1903,12 +1844,11 @@ public:
     // sh::showList(l1);
     // l1 = solution.partition_86(l1,3);
     // sh::showList(l1);
-    ListNode *partition_86(ListNode *head, int x)
-    {
-        ListNode *l_st = new ListNode;
-        ListNode *l = l_st;
-        ListNode *r_st = new ListNode;
-        ListNode *r = r_st;
+    ListNode* partition_86(ListNode* head, int x) {
+        ListNode* l_st = new ListNode;
+        ListNode* l = l_st;
+        ListNode* r_st = new ListNode;
+        ListNode* r = r_st;
         while (head != nullptr)
         {
             if (head->val < x)
@@ -1929,14 +1869,12 @@ public:
     }
 
     //--------------------------#94---------------------------------------------//
-    std::vector<int> inorderTraversal_94(TreeNode *root)
-    {
+    std::vector<int> inorderTraversal_94(TreeNode* root) {
         std::vector<int> res;
         inorderTree_94(root, res);
         return res;
     }
-    void inorderTree_94(TreeNode *root, std::vector<int> &res)
-    {
+    void inorderTree_94(TreeNode* root, std::vector<int>& res) {
         if (root == nullptr)
         {
             res.push_back(INT_MIN);
@@ -1949,8 +1887,7 @@ public:
     }
 
     //--------------------------#100--------------------------------------------//
-    bool isSameTree(TreeNode *p, TreeNode *q)
-    {
+    bool isSameTree(TreeNode* p, TreeNode* q) {
         std::vector<int> res_p, res_q;
         inorderTree_94(p, res_p);
         inorderTree_94(q, res_q);
@@ -1965,22 +1902,20 @@ public:
     }
 
     //--------------------------#98---------------------------------------------//
-    bool isValidBST_98(TreeNode *root)
-    {
+    bool isValidBST_98(TreeNode* root) {
         if (root == nullptr)
             return true;
-        std::pair<int, int> p{root->val, root->val};
+        std::pair<int, int> p{ root->val, root->val };
         return isValid_98(root, p);
     }
-    bool isValid_98(TreeNode *root, std::pair<int, int> &interval)
-    {
+    bool isValid_98(TreeNode* root, std::pair<int, int>& interval) {
         if (root == nullptr)
         {
         }
         return true;
         if (root->left == nullptr and root->right == nullptr)
         {
-            interval = {root->val, root->val};
+            interval = { root->val, root->val };
             return true;
         }
         bool res;
@@ -2013,8 +1948,7 @@ public:
     }
 
     //--------------------------#2185-------------------------------------------//
-    int prefixCount(std::vector<std::string> &words, std::string pref)
-    {
+    int prefixCount(std::vector<std::string>& words, std::string pref) {
         int k(0);
         for (size_t i(0); i != words.size(); ++i)
         {
@@ -2025,8 +1959,7 @@ public:
     }
 
     //--------------------------#97---------------------------------------------//
-    bool isInterleave(std::string s1, std::string s2, std::string s3)
-    {
+    bool isInterleave(std::string s1, std::string s2, std::string s3) {
         if (s3.length() != s1.length() + s2.length())
             return false;
 
@@ -2054,8 +1987,7 @@ public:
     // sh::print(solution.numTrees(4));
     // sh::print(solution.numTrees(5));
     // sh::print(solution.numTrees(6));
-    int numTrees(int n)
-    {
+    int numTrees(int n) {
         std::vector<int> res;
         res.resize(n + 1, 0);
         res[0] = 1;
@@ -2072,14 +2004,13 @@ public:
     // sh::showList(l1);
     // l1 = solution.reverseBetween_92(l1, 2, 2);
     // sh::showList(l1);
-    ListNode *reverseBetween_92(ListNode *head, int left, int right)
-    {
+    ListNode* reverseBetween_92(ListNode* head, int left, int right) {
         int count(1);
-        ListNode *prev_st = new ListNode;
-        ListNode *st;
-        ListNode *end;
-        ListNode *after_end = nullptr;
-        ListNode *curr = head;
+        ListNode* prev_st = new ListNode;
+        ListNode* st;
+        ListNode* end;
+        ListNode* after_end = nullptr;
+        ListNode* curr = head;
         prev_st->next = curr;
         bool f(true);
 
@@ -2108,8 +2039,8 @@ public:
         if (right != left)
         {
             prev_st->next = end;
-            ListNode *next_el;
-            ListNode *next_node = after_end;
+            ListNode* next_el;
+            ListNode* next_node = after_end;
             curr = st;
             count = right - left + 1;
             while (count--)
@@ -2131,8 +2062,7 @@ public:
     // std::vector<std::string> words{"leetcode","et","code"};
     // sh::showContainer(words);
     // sh::showContainer(solution.stringMatching_1408(words));
-    std::vector<std::string> stringMatching_1408(std::vector<std::string> &words)
-    {
+    std::vector<std::string> stringMatching_1408(std::vector<std::string>& words) {
         std::vector<std::string> ans;
         bool add(false);
         for (size_t i(0); i != words.size(); ++i)
@@ -2167,9 +2097,8 @@ public:
     // sh::showContainer(nums2);
     // solution.merge_88(nums1,1,nums2,1);
     // sh::showContainer(nums1);
-    void merge_88(std::vector<int> &nums1, int m, std::vector<int> &nums2, int n)
-    {
-        int i{m + n - 1};
+    void merge_88(std::vector<int>& nums1, int m, std::vector<int>& nums2, int n) {
+        int i{ m + n - 1 };
         --m;
         --n;
         while (n >= 0)
@@ -2186,8 +2115,7 @@ public:
     }
 
     //--------------------------#84---------------------------------------------//
-    int largestRectangleArea_84(std::vector<int> &heights)
-    {
+    int largestRectangleArea_84(std::vector<int>& heights) {
         // int ans(0);
         // for(size_t i(0); i != heights.size(); ++i){
         //     int l(i - 1), r(i + 1);
@@ -2254,8 +2182,7 @@ public:
     // std::vector<std::string> words1{"amazon","apple","facebook","google","leetcode"};
     // std::vector<std::string> words2{"e","oo"};
     // sh::showContainer(solution.wordSubsets_916(words1, words2));
-    std::vector<std::string> wordSubsets_916(std::vector<std::string> &words1, std::vector<std::string> &words2)
-    {
+    std::vector<std::string> wordSubsets_916(std::vector<std::string>& words1, std::vector<std::string>& words2) {
         std::unordered_map<char, int> key;
         std::unordered_map<char, int> tmp;
         std::vector<std::string> ans;
@@ -2306,8 +2233,7 @@ public:
     //--------------------------#1769-------------------------------------------//
     // std::string s("001011");
     // sh::showContainer(solution.minOperations_1769(s));
-    std::vector<int> minOperations_1769(std::string boxes)
-    {
+    std::vector<int> minOperations_1769(std::string boxes) {
         // std::vector<int> balls;
         // for(size_t i(0); i != boxes.size(); ++i){
         //     if(boxes[i] == '1'){
@@ -2347,8 +2273,7 @@ public:
     //--------------------------#13---------------------------------------------//
     // sh::print(solution.romanToInt_13("MCMXCIV"));
     // sh::print(solution.romanToInt_13("LVIII"));
-    int romanToInt_13(std::string s)
-    {
+    int romanToInt_13(std::string s) {
         int ans(0);
         for (size_t i(0); i != s.size(); ++i)
         {
@@ -2419,8 +2344,7 @@ public:
     //--------------------------#90---------------------------------------------//
     // std::vector<int> nums{1, 2, 2, 3};
     // sh::showVecVec(solution.subsetsWithDup_90(nums));
-    std::vector<std::vector<int>> subsetsWithDup_90(std::vector<int> &nums)
-    {
+    std::vector<std::vector<int>> subsetsWithDup_90(std::vector<int>& nums) {
         // std::vector<std::vector<int>> ans;
         // std::set<int> check;
         // std::vector<int> tmp;
@@ -2446,8 +2370,7 @@ public:
     // std::string word("SE");
     // sh::showVecVec(board);
     // std::cout << std::boolalpha << solution.exist_79(board, word) << std::endl;
-    bool exist_79(std::vector<std::vector<char>> &board, std::string word)
-    {
+    bool exist_79(std::vector<std::vector<char>>& board, std::string word) {
         int n = board.size();    // Number of rows in the board
         int m = board[0].size(); // Number of columns in the board
 
@@ -2509,16 +2432,14 @@ public:
     //--------------------------#78---------------------------------------------//
     // std::vector<int> nums{1, 2, 3};
     // sh::showVecVec(solution.subsets_78(nums));
-    std::vector<std::vector<int>> subsets_78(std::vector<int> &nums)
-    {
+    std::vector<std::vector<int>> subsets_78(std::vector<int>& nums) {
         std::vector<std::vector<int>> ans;
         std::vector<int> curr;
         curr.reserve(nums.size());
         helper_78(ans, nums, curr, 0);
         return ans;
     }
-    void helper_78(std::vector<std::vector<int>> &ans, std::vector<int> &nums, std::vector<int> curr, int ind)
-    {
+    void helper_78(std::vector<std::vector<int>>& ans, std::vector<int>& nums, std::vector<int> curr, int ind) {
         ans.push_back(curr);
         for (size_t i(ind); i != nums.size(); ++i)
         {
@@ -2530,8 +2451,7 @@ public:
 
     //--------------------------#77---------------------------------------------//
     // sh::showVecVec(solution.combine_77(4,3));
-    std::vector<std::vector<int>> combine_77(int n, int k)
-    {
+    std::vector<std::vector<int>> combine_77(int n, int k) {
         std::vector<std::vector<int>> ans;
         std::vector<int> curr;
 
@@ -2542,15 +2462,13 @@ public:
     //--------------------------#39---------------------------------------------//
     // std::vector<int> candidates{2,3,5};
     // sh::showVecVec(solution.combinationSum_39(candidates, 8));
-    std::vector<std::vector<int>> combinationSum_39(std::vector<int> &candidates, int target)
-    {
+    std::vector<std::vector<int>> combinationSum_39(std::vector<int>& candidates, int target) {
         std::vector<std::vector<int>> ans;
         std::vector<int> curr;
         help__39(candidates, curr, target, ans, 0);
         return ans;
     }
-    void help__39(std::vector<int> &candidates, std::vector<int> &curr, int target, std::vector<std::vector<int>> &ans, int ind)
-    {
+    void help__39(std::vector<int>& candidates, std::vector<int>& curr, int target, std::vector<std::vector<int>>& ans, int ind) {
         if (target == 0)
         {
             ans.push_back(curr);
@@ -2572,16 +2490,14 @@ public:
     //--------------------------#40---------------------------------------------//
     // std::vector<int> candidates{1,1,1,2,5,6,7};
     // sh::showVecVec(solution.combinationSum2_40(candidates, 8));
-    std::vector<std::vector<int>> combinationSum2_40(std::vector<int> &candidates, int target)
-    {
+    std::vector<std::vector<int>> combinationSum2_40(std::vector<int>& candidates, int target) {
         std::vector<std::vector<int>> ans;
         std::vector<int> curr;
         std::sort(std::begin(candidates), std::end(candidates));
         help__40(candidates, curr, target, ans, 0);
         return ans;
     }
-    void help__40(std::vector<int> &candidates, std::vector<int> &curr, int target, std::vector<std::vector<int>> &ans, int ind)
-    {
+    void help__40(std::vector<int>& candidates, std::vector<int>& curr, int target, std::vector<std::vector<int>>& ans, int ind) {
         if (target == 0)
         {
             ans.push_back(curr);
@@ -2605,8 +2521,7 @@ public:
 
     //--------------------------#216---------------------------------------------//
     // sh::showVecVec(solution.combinationSum3_216(3, 9));
-    std::vector<std::vector<int>> combinationSum3_216(int k, int n)
-    {
+    std::vector<std::vector<int>> combinationSum3_216(int k, int n) {
         std::vector<int> nums(9);
         for (size_t i(0); i != 9; ++i)
         {
@@ -2617,8 +2532,7 @@ public:
         help__216(nums, curr, k, n, ans, 0);
         return ans;
     }
-    void help__216(std::vector<int> &candidates, std::vector<int> &curr, int k, int target, std::vector<std::vector<int>> &ans, int ind)
-    {
+    void help__216(std::vector<int>& candidates, std::vector<int>& curr, int k, int target, std::vector<std::vector<int>>& ans, int ind) {
         if (target == 0 and curr.size() == k)
         {
             ans.push_back(curr);
@@ -2641,8 +2555,7 @@ public:
     //--------------------------#16---------------------------------------------//
     // std::vector<int> nums{-1,2,1,-4};
     // sh::print(solution.threeSumClosest(nums, 1));
-    int threeSumClosest(std::vector<int> &nums, int target)
-    {
+    int threeSumClosest(std::vector<int>& nums, int target) {
         sort(nums.begin(), nums.end());
         int closest_sum = INT_MAX / 2; // A large value but not overflow
 
@@ -2696,13 +2609,11 @@ public:
     //         new TreeNode(11))
     // );
     // sh::print(solution.pathSum_437(root, 8));
-    int pathSum_437(TreeNode *root, int targetSum)
-    {
+    int pathSum_437(TreeNode* root, int targetSum) {
         std::vector<long> partial_sum;
         return help_437(root, targetSum, partial_sum);
     }
-    int help_437(TreeNode *root, int targetSum, std::vector<long> &partial_sum)
-    {
+    int help_437(TreeNode* root, int targetSum, std::vector<long>& partial_sum) {
         if (root == nullptr)
             return 0;
 
@@ -2730,8 +2641,7 @@ public:
     //--------------------------#18---------------------------------------------//
     // std::vector<int> nums{2,2,2,2,2};
     // sh::showVecVec(solution.fourSum_18(nums, 8));
-    std::vector<std::vector<int>> fourSum_18(std::vector<int> &nums, int target)
-    {
+    std::vector<std::vector<int>> fourSum_18(std::vector<int>& nums, int target) {
         if (nums.size() < 4)
             return {};
 
@@ -2742,8 +2652,7 @@ public:
         GenerateRes_18(nums, target, res, curr, 0);
         return res;
     }
-    void GenerateRes_18(std::vector<int> &nums, int target, std::vector<std::vector<int>> &res, std::vector<int> &curr, int ind)
-    {
+    void GenerateRes_18(std::vector<int>& nums, int target, std::vector<std::vector<int>>& res, std::vector<int>& curr, int ind) {
         if (curr.size() == 2)
         {
             int l(ind), r(nums.size() - 1);
@@ -2786,10 +2695,9 @@ public:
     }
 
     //--------------------------#12---------------------------------------------//
-    std::string intToRoman_12(int num)
-    {
+    std::string intToRoman_12(int num) {
         std::string res;
-        std::vector<std::pair<int, std::string>> nums{{1000, "M"}, {900, "CM"}, {500, "D"}, {400, "CD"}, {100, "C"}, {90, "XC"}, {50, "L"}, {40, "XL"}, {10, "X"}, {9, "IX"}, {5, "V"}, {4, "IV"}, {1, "I"}};
+        std::vector<std::pair<int, std::string>> nums{ {1000, "M"}, {900, "CM"}, {500, "D"}, {400, "CD"}, {100, "C"}, {90, "XC"}, {50, "L"}, {40, "XL"}, {10, "X"}, {9, "IX"}, {5, "V"}, {4, "IV"}, {1, "I"} };
         for (int i(0); i < nums.size(); i++)
         {
             while (num >= nums[i].first)
@@ -2803,16 +2711,14 @@ public:
 
     //--------------------------#22---------------------------------------------//
     // sh::showContainer(solution.generateParenthesis_22(2));
-    std::vector<std::string> generateParenthesis_22(int n)
-    {
-        char brackets[2]{'(', ')'};
+    std::vector<std::string> generateParenthesis_22(int n) {
+        char brackets[2]{ '(', ')' };
         std::vector<std::string> res;
         std::string curr;
         GenerateParenthesisHelp(n * 2, res, curr, 0, brackets);
         return res;
     }
-    void GenerateParenthesisHelp(int n, std::vector<std::string> &res, std::string &curr, int opened, char brackets[])
-    {
+    void GenerateParenthesisHelp(int n, std::vector<std::string>& res, std::string& curr, int opened, char brackets[]) {
         if (n == 0 and opened == 0)
         {
             res.push_back(curr);
@@ -2840,23 +2746,22 @@ public:
     // sh::showList(l1);
     // l1 = solution.reverseKGroup_25(l1, 3);
     // sh::showList(l1);
-    ListNode *reverseKGroup_25(ListNode *head, int k)
-    {
+    ListNode* reverseKGroup_25(ListNode* head, int k) {
         int n(1);
         ListNode dummy;
-        ListNode *dum_ptr = &dummy;
+        ListNode* dum_ptr = &dummy;
 
-        ListNode *startKGroup = head;
-        ListNode *curr = head;
-        ListNode *prev_end = dum_ptr;
+        ListNode* startKGroup = head;
+        ListNode* curr = head;
+        ListNode* prev_end = dum_ptr;
         while (curr)
         {
             if (n == k)
             {
-                ListNode *next = curr->next;
+                ListNode* next = curr->next;
                 curr->next = nullptr;
 
-                ListNode *endKGroup = startKGroup;
+                ListNode* endKGroup = startKGroup;
                 startKGroup = ReverseListNode_25(startKGroup);
 
                 prev_end->next = startKGroup;
@@ -2876,14 +2781,13 @@ public:
         }
         return dum_ptr->next;
     }
-    ListNode *ReverseListNode_25(ListNode *node)
-    {
+    ListNode* ReverseListNode_25(ListNode* node) {
         if (!node and !node->next)
             return node;
 
-        ListNode *curr = node;
-        ListNode *next = curr->next;
-        ListNode *prev = nullptr;
+        ListNode* curr = node;
+        ListNode* next = curr->next;
+        ListNode* prev = nullptr;
         while (curr)
         {
             curr->next = prev;
@@ -2897,8 +2801,7 @@ public:
 
     //--------------------------#32---------------------------------------------//
     // sh::print(solution.longestValidParentheses_32(")()"));
-    int longestValidParentheses_32(std::string s)
-    {
+    int longestValidParentheses_32(std::string s) {
         std::stack<int> st;
         st.push(-1);
         int res(0);
@@ -2925,9 +2828,14 @@ public:
     }
 
     //--------------------------#99---------------------------------------------//
-    void recoverTree_99(TreeNode *root)
-    {
-        std::vector<TreeNode *> nodes;
+    // TreeNode* root = new TreeNode(1,
+    //     new TreeNode(3,
+    //         nullptr,
+    //         new TreeNode(2)),
+    //     nullptr);
+    // solution.recoverTree_99(root);
+    void recoverTree_99(TreeNode* root) {
+        std::vector<TreeNode*> nodes;
         InOrderDFS(root, nodes);
         int l(0), r(nodes.size() - 1);
         while (nodes[l]->val < nodes[l + 1]->val)
@@ -2936,8 +2844,7 @@ public:
             r--;
         std::swap(nodes[l]->val, nodes[r]->val);
     }
-    void InOrderDFS(TreeNode *root, std::vector<TreeNode *> &nodes)
-    {
+    void InOrderDFS(TreeNode* root, std::vector<TreeNode*>& nodes) {
         if (!root)
             return;
 
@@ -2946,10 +2853,48 @@ public:
         InOrderDFS(root->right, nodes);
     }
 
+    //--------------------------#64---------------------------------------------//
+    // std::vector<std::vector<int>> grid{
+    //     {1,2,3},
+    //     {4,5,6}
+    // };
+    // sh::print(solution.minPathSum_64(grid));
+    int minPathSum_64(std::vector<std::vector<int>>& grid) {
+        int n = grid[0].size();
+        std::vector<int> cur(n, grid[0][0]);
+        for (int i = 1; i < n; i++)
+            cur[i] = cur[i - 1] + grid[0][i];
+
+        for (int i = 1; i < grid.size(); i++) {
+            cur[0] += grid[i][0];
+            for (int j = 1; j < n; j++)
+                cur[j] = std::min(cur[j - 1], cur[j]) + grid[i][j];
+        }
+        return cur[n - 1];
+    }
+
+    //--------------------------#63---------------------------------------------//
+    // std::vector<std::vector<int>> grid{
+    //     {0,0,0},
+    //     {0,1,0},
+    //     {0,0,0}
+    // };
+    // sh::print(solution.uniquePathsWithObstacles_63(grid));
+    int uniquePathsWithObstacles_63(std::vector<std::vector<int>>& obstacleGrid) {
+        std::vector<std::vector<int>> paths(obstacleGrid.size() + 1, std::vector<int>(obstacleGrid[0].size() + 1));
+        paths[0][1] = 1;
+        for (size_t i(1); i < paths.size(); i++) {
+            for (size_t j(1); j < paths[i].size(); j++) {
+                if (obstacleGrid[i - 1][j - 1] == 0) {
+                    paths[i][j] = paths[i - 1][j] + paths[i][j - 1];
+                }
+            }
+        }
+        return paths.back().back();
+    }
     //================================================================================================================================================
 private:
-    bool isPalindrom_5(const std::string &str, int start, int end)
-    {
+    bool isPalindrom_5(const std::string& str, int start, int end) {
         int l = start, r = end;
         while (l <= r)
         {
@@ -2960,8 +2905,7 @@ private:
         }
         return true;
     }
-    std::string expand_5(int i, int j, std::string s)
-    {
+    std::string expand_5(int i, int j, std::string s) {
         int left = i;
         int right = j;
 
@@ -2973,8 +2917,7 @@ private:
 
         return s.substr(left + 1, right - left - 1);
     }
-    void solve_17(std::vector<std::string> &ans, std::vector<std::string> &vec_str, std::string temp, int j)
-    {
+    void solve_17(std::vector<std::string>& ans, std::vector<std::string>& vec_str, std::string temp, int j) {
         if (j >= vec_str.size())
         {
             ans.push_back(temp);
@@ -2988,8 +2931,7 @@ private:
             temp.pop_back();
         }
     }
-    void swap(std::vector<int> &nums, int i, int j)
-    {
+    void swap(std::vector<int>& nums, int i, int j) {
         if (i == j)
             return;
         nums[i] += nums[j];
@@ -2998,8 +2940,7 @@ private:
     }
 
     // --34 --81
-    int binarySearch(std::vector<int> &nums, int target)
-    {
+    int binarySearch(std::vector<int>& nums, int target) {
         int l = 0, r = nums.size() - 1, mid;
         while (l <= r)
         {
@@ -3019,8 +2960,7 @@ private:
         }
         return -1;
     }
-    int binarySearch_r(std::vector<int> &nums, int target)
-    {
+    int binarySearch_r(std::vector<int>& nums, int target) {
         int l = 0, r = nums.size() - 1, mid, i = -1;
         while (l <= r)
         {
@@ -3046,8 +2986,7 @@ private:
         }
         return i;
     }
-    int binarySearch_l(std::vector<int> &nums, int target)
-    {
+    int binarySearch_l(std::vector<int>& nums, int target) {
         int l = 0, r = nums.size() - 1, mid, i;
         while (l <= r)
         {
@@ -3076,8 +3015,7 @@ private:
 
     // --33 --81
     // return start index of second array
-    int binarySearchGap(std::vector<int> &nums)
-    {
+    int binarySearchGap(std::vector<int>& nums) {
         if (nums.size() == (0 || 1))
             return -1;
 
@@ -3100,8 +3038,7 @@ private:
         }
         return -1;
     }
-    int binarySearchRange(std::vector<int> &nums, int target, int left, int rigth)
-    {
+    int binarySearchRange(std::vector<int>& nums, int target, int left, int rigth) {
         int l = left, r = rigth, mid;
         while (l <= r)
         {
@@ -3121,8 +3058,7 @@ private:
         }
         return -1;
     }
-    int binarySearchDeepGap(std::vector<int> &nums, int left, int rigth)
-    {
+    int binarySearchDeepGap(std::vector<int>& nums, int left, int rigth) {
         if (nums.size() == (0 || 1))
             return -1;
 
@@ -3165,12 +3101,11 @@ private:
     }
 
     // --36
-    bool rowValid(std::vector<std::vector<char>> &board)
-    {
+    bool rowValid(std::vector<std::vector<char>>& board) {
         std::unordered_set<char> check;
-        for (const auto &row : board)
+        for (const auto& row : board)
         {
-            for (const auto &t : row)
+            for (const auto& t : row)
             {
                 if (t == '.')
                     continue;
@@ -3184,8 +3119,7 @@ private:
         }
         return true;
     }
-    bool collValid(std::vector<std::vector<char>> &board)
-    {
+    bool collValid(std::vector<std::vector<char>>& board) {
         std::unordered_set<char> check;
         for (int i(0); i < board.size(); i++)
         {
@@ -3203,8 +3137,7 @@ private:
         }
         return true;
     }
-    bool squareValid(std::vector<std::vector<char>> &board)
-    {
+    bool squareValid(std::vector<std::vector<char>>& board) {
         std::unordered_set<char> check;
         int size = 3;
         for (int i_gl(0); i_gl < board.size() / size; i_gl++)
@@ -3230,8 +3163,7 @@ private:
         return true;
     }
 
-    int countWater_42(std::vector<int> &h, int l, int r)
-    {
+    int countWater_42(std::vector<int>& h, int l, int r) {
         int peak = std::min(h[l], h[r]);
         int sum{};
         for (int i(l + 1); i < r; i++)
@@ -3240,8 +3172,7 @@ private:
     }
 
     // --49
-    bool isAnagramm(std::string &root, std::string &word)
-    {
+    bool isAnagramm(std::string& root, std::string& word) {
         if (root.size() != word.size())
             return false;
 
@@ -3266,15 +3197,14 @@ private:
                 check[word[i]] = -1;
             }
         }
-        for (const auto &t : check)
+        for (const auto& t : check)
         {
             if (t.second != 0)
                 return false;
         }
         return true;
     }
-    bool isAnagramm(std::unordered_map<char, int> check, std::string &word)
-    {
+    bool isAnagramm(std::unordered_map<char, int> check, std::string& word) {
         if (check.size() != word.size())
             return false;
 
@@ -3289,15 +3219,14 @@ private:
                 return false;
             }
         }
-        for (const auto &t : check)
+        for (const auto& t : check)
         {
             if (t.second != 0)
                 return false;
         }
         return true;
     }
-    void addInCheck(std::vector<std::unordered_map<char, int>> &check, std::string &root)
-    {
+    void addInCheck(std::vector<std::unordered_map<char, int>>& check, std::string& root) {
         std::unordered_map<char, int> ch;
         for (int i = 0; i < root.size(); i++)
         {
@@ -3314,8 +3243,7 @@ private:
     }
 
     // --54 --59
-    int getSpiralPlace(const int &i, const int &j, int n, int m)
-    {
+    int getSpiralPlace(const int& i, const int& j, int n, int m) {
         if (i == 0)
             return j;
         if (j == n - 1)
@@ -3328,15 +3256,13 @@ private:
     }
 
     // --73
-    void resetRow(std::vector<std::vector<int>> &matrix, int row)
-    {
+    void resetRow(std::vector<std::vector<int>>& matrix, int row) {
         for (size_t i(0); i != matrix[row].size(); ++i)
         {
             matrix[row][i] = 0;
         }
     }
-    void resetColumn(std::vector<std::vector<int>> &matrix, int col)
-    {
+    void resetColumn(std::vector<std::vector<int>>& matrix, int col) {
         for (size_t i(0); i != matrix.size(); ++i)
         {
             matrix[i][col] = 0;
@@ -3344,14 +3270,12 @@ private:
     }
 
     // --3042
-    bool isPrefixAndSuffix(const std::string &str1, const std::string &str2)
-    {
+    bool isPrefixAndSuffix(const std::string& str1, const std::string& str2) {
         return (str2.starts_with(str1) && str2.ends_with(str1));
     }
 
     // --96
-    void combinations_96(int k, std::vector<int> &res)
-    {
+    void combinations_96(int k, std::vector<int>& res) {
         if (k == 1)
         {
             res[k] = 1;
@@ -3365,8 +3289,7 @@ private:
     }
 
     // --90 (for 2 diffrent solutions)
-    void GetAllVariants_90(int k, std::vector<int> &nums, std::vector<std::vector<int>> &ans, std::set<int> check, std::vector<int> tmp)
-    {
+    void GetAllVariants_90(int k, std::vector<int>& nums, std::vector<std::vector<int>>& ans, std::set<int> check, std::vector<int> tmp) {
         if (check.contains(nums[k]))
             return;
         tmp.push_back(nums[k]);
@@ -3377,8 +3300,7 @@ private:
             check.insert(nums[k + i]);
         }
     }
-    void helper_90(std::vector<int> &nums, std::vector<std::vector<int>> &ans, std::vector<int> &curr, int idx)
-    {
+    void helper_90(std::vector<int>& nums, std::vector<std::vector<int>>& ans, std::vector<int>& curr, int idx) {
         ans.push_back(curr); // we include current susbet into final ans
         for (int i = idx; i < nums.size(); i++)
         { // check for all possibilites
@@ -3391,9 +3313,8 @@ private:
     }
 
     // --79
-    bool visit_79(std::vector<std::vector<char>> &board, std::vector<char> &word, int start, int x, int y,
-                  int n, int m, std::vector<std::vector<bool>> &visited)
-    {
+    bool visit_79(std::vector<std::vector<char>>& board, std::vector<char>& word, int start, int x, int y,
+        int n, int m, std::vector<std::vector<bool>>& visited) {
         // Base case: If all characters in the word are found, return true
         if (start == word.size())
             return true;
@@ -3415,8 +3336,7 @@ private:
     }
 
     // --77
-    void helper_combine_77(std::vector<std::vector<int>> &ans, std::vector<int> &curr, int &n, int &k, int ind)
-    {
+    void helper_combine_77(std::vector<std::vector<int>>& ans, std::vector<int>& curr, int& n, int& k, int ind) {
         if (!curr.empty() and curr.size() == k)
         {
             ans.push_back(curr);
@@ -3434,15 +3354,10 @@ private:
 
 //==========================================================================//
 
-int main()
-{
+int main() {
     Solution solution;
     Timer timer("LeetCode_100.cpp");
 
-    TreeNode *root = new TreeNode(1,
-                                  new TreeNode(3,
-                                               nullptr,
-                                               new TreeNode(2)),
-                                  nullptr);
-    solution.recoverTree_99(root);
+
 }
+    

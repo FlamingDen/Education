@@ -910,7 +910,8 @@ public:
             // Expand window
             if (IsVowel(word[right])) {
                 vowels[word[right]]++;
-            } else {
+            }
+            else {
                 consonantCount++;
             }
 
@@ -918,7 +919,8 @@ public:
             while (left <= right && consonantCount > k) {
                 if (IsVowel(word[left])) {
                     if (--vowels[word[left]] == 0) vowels.erase(word[left]);
-                } else {
+                }
+                else {
                     consonantCount--;
                 }
                 left++;
@@ -929,7 +931,8 @@ public:
                 result += (nextConsonant[right] - right);
                 if (IsVowel(word[left])) {
                     if (--vowels[word[left]] == 0) vowels.erase(word[left]);
-                } else {
+                }
+                else {
                     consonantCount--;
                 }
                 left++;
@@ -960,13 +963,13 @@ public:
         int res(0);
         int l(0), r(0);
         unordered_map<char, int> check;
-        while (r < s.size()){
+        while (r < s.size()) {
             while (check.size() != 3 and r < s.size()) {
                 check[s[r++]]++;
             }
-            while (check.size() == 3 and l < r){
+            while (check.size() == 3 and l < r) {
                 res += s.size() - r + 1;
-                if(--check[s[l]] == 0){
+                if (--check[s[l]] == 0) {
                     check.erase(s[l]);
                 }
                 l++;
@@ -974,12 +977,37 @@ public:
         }
         return res;
     }
+
+    //--------------------------#2529-------------------------------------------//
+    // vector<int> nums{0,0,0,0,0,0,0,0};
+    // sh::showContainer(nums);
+    // sh::print(solution.maximumCount(nums));
+    int maximumCount(vector<int>& nums) {
+        int neg = BinSearch(nums, 0, true);
+        int pos = nums.size() - BinSearch(nums, 0, false);
+        return max(pos, neg);
+    }
+    int BinSearch(vector<int>& nums, int goal, bool isLb) {
+        int l(0), r(nums.size());
+        while (l < r) {
+            int m = l + (r - l) / 2;
+            if(isLb == false and nums[m] == goal){
+                l = m + 1;
+                continue;
+            } 
+            if (nums[m] < goal)
+                l = m + 1;
+            else 
+                r = m;
+        }
+        return l;
+    }
 };
 
 int main() {
     Solution solution;
     Timer timer("DailyTasksLeetcode.cpp");
 
-
     
+
 }
