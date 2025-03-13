@@ -991,16 +991,36 @@ public:
         int l(0), r(nums.size());
         while (l < r) {
             int m = l + (r - l) / 2;
-            if(isLb == false and nums[m] == goal){
+            if (isLb == false and nums[m] == goal) {
                 l = m + 1;
                 continue;
-            } 
+            }
             if (nums[m] < goal)
                 l = m + 1;
-            else 
+            else
                 r = m;
         }
         return l;
+    }
+
+    //--------------------------#3356-------------------------------------------//
+    int minZeroArray(vector<int>& nums, vector<vector<int>>& queries) {
+        const int n = nums.size(), m = queries.size();
+        vector<int> freq(n + 1);
+        int op = 0, k = 0;
+        for (int i = 0; i < n; i++) {
+            for (; op < nums[i] - freq[i]; k++) {
+                if (k >= m) 
+                    return -1;
+                const int l = queries[k][0], r = queries[k][1], v = queries[k][2];
+                if (r < i) 
+                    continue;
+                freq[max(l, i)] += v;
+                freq[r + 1] -= v;
+            }
+            op += freq[i];
+        }
+        return k;
     }
 };
 
@@ -1008,6 +1028,12 @@ int main() {
     Solution solution;
     Timer timer("DailyTasksLeetcode.cpp");
 
-    
+    vector<int> nums{ 2,0,2 };
+    vector<vector<int>> queries{
+        {0,2,1},
+        {0,2,1},
+        {1,1,3}
+    };
+    sh::print(solution.minZeroArray(nums, queries));
 
 }
