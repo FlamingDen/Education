@@ -375,6 +375,19 @@ public:
         cout<<num;
         return to_string(num)[(n - 1) % d] - '0';
     }
+
+    //--------------------------#382--------------------------------------------//
+    // ListNode* head = nullptr;
+    // std::vector<int> values(100);
+    // while (head) {
+    //     values.push_back(head->val);
+    //     head = head->next;
+    // }
+    // std::random_device rd;
+    // std::default_random_engine eng(rd());
+    // std::uniform_int_distribution<int> distribution(0, values.size() - 1);
+    // std::cout << distribution(eng) << std::endl;
+
 };
 
 int main() {
