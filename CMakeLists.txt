@@ -5,17 +5,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(LeetCodeCommonHeaders
     utils/ForLeetcode.h
-    utils/timer.h
     utils/show.h
     utils/Tree.h
     utils/ListNode.h
+    utils/TimeGuard.hpp
 )
 
 set(LeetCodeCommonSources
     utils/ForLeetcode.cpp
-    utils/timer.cpp
     utils/Tree.cpp
     utils/ListNode.cpp
+    utils/TimeGuard.cpp
 )
 
 project(Education  
@@ -29,8 +29,8 @@ add_executable(Main
     main.cpp
     point.cpp
     point.h
-    utils/timer.cpp
-    utils/timer.h
+    utils/TimeGuard.cpp
+    utils/TimeGuard.hpp
     utils/show.h
     algo/DSU.hpp
     algo/DSU.cpp

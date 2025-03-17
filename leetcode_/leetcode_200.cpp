@@ -1,6 +1,6 @@
 ﻿#include "ForLeetcode.h"
 #include "show.h"
-#include "timer.h"
+#include "TimeGuard.hpp"
 
     //--------------------------#173--------------------------------------------//
 class BSTIterator {
@@ -1598,7 +1598,7 @@ public:
 
 int main(){
     Solution solution;   
-    Timer timer("LeetCode_200.cpp");
+    TimeGuard timer("LeetCode_200.cpp");
     
     
     

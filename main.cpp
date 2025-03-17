@@ -10,7 +10,7 @@
 
 #include <typeinfo>
 
-#include "timer.h"
+#include "TimeGuard.hpp"
 #include "show.h"
 
 #include "point.h"
@@ -324,13 +324,14 @@ void prepare(){
 //==============================================================================//
 int main()
 {
-    
+    TimeGuard timer("Main.cpp");
+
     std::thread t2{processing};
     std::thread t1{prepare};
     
     t1.join();
     t2.join();
     
-
+    sh::Print(91^14);
 }
 

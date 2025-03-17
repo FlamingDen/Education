@@ -9,6 +9,7 @@
 #include <cmath>
 
 #include <list>
+#include <forward_list>
 #include <vector>
 #include <array>
 #include <queue>

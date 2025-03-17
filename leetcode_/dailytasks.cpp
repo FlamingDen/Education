@@ -1,6 +1,6 @@
 ﻿#include "ForLeetcode.h"
 #include "show.h"
-#include "timer.h"
+#include "TimeGuard.hpp"
 
 
 using namespace std;
@@ -1055,13 +1055,33 @@ public:
 
         return result;
     }
+
+    //--------------------------#2206-------------------------------------------//
+    // std::vector<int> nums{9,9,19,10,12,0,20,4};
+    // sh::print(solution.divideArray(nums));
+    bool divideArray(vector<int>& nums) {
+        if (nums.size() % 2 != 0) {
+            return false;
+        }
+        int res(0);
+        int check(0);
+        for(size_t i(0); i < nums.size(); i++){
+            res ^= nums[i];
+            check ^= nums[i] + 1;
+        }
+        return res == 0 and check == 0 ? true : false;
+        
+    }
 };
 
 int main() {
     Solution solution;
-    Timer timer("DailyTasksLeetcode.cpp");
+    TimeGuard timer("DailyTasksLeetcode.cpp");
+
+}
 
 
     
 
-}
+
+    

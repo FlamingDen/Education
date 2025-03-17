@@ -1,6 +1,6 @@
 ﻿#include "ForLeetcode.h"
 #include "show.h"
-#include "timer.h"
+#include "TimeGuard.hpp"
 
     //--------------------------#211--------------------------------------------//
     // WordDictionary* wordDictionary = new WordDictionary();
@@ -829,10 +829,9 @@ public:
 };
 
 
-
 int main(){
     Solution solution;   
-    Timer timer("LeetCode_300.cpp");
+    TimeGuard timer("LeetCode_300.cpp");
 
     
 

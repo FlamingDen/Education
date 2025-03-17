@@ -1,13 +1,17 @@
 ﻿#include "ForLeetcode.h"
 #include "show.h"
-#include "timer.h"
-
-#include <forward_list>
+#include "TimeGuard.hpp"
 
 using namespace std;
 
 class Solution
 {
+    std::vector<std::pair<int, int>> SHIFTS{
+        {-1, 0}, // top
+        {1, 0},  // bottom
+        {0, -1}, // left
+        {0, 1}   // right
+    };
 public:
     //--------------------------#401--------------------------------------------//
     // sh::showContainer(solution.readBinaryWatch_401(4));
@@ -302,7 +306,7 @@ public:
         for (int i = 0; i < n; i++) {
 
             dfs(heights, pac, i, 0, -1, -1); // first col
-            dfs(heights, atl, i, m-1, -1, -1); // last col
+            dfs(heights, atl, i, m - 1, -1, -1); // last col
         }
 
         for (int j = 0; j < m; j++) {
@@ -324,8 +328,8 @@ public:
 
         if (i < 0 || i >= h.size() || j < 0 || j >= h[0].size() || vis[i][j])
             return;
-        if (oi >= 0 && oj >= 0 && h[i][j] < h[oi][oj]) 
-            return; 
+        if (oi >= 0 && oj >= 0 && h[i][j] < h[oi][oj])
+            return;
 
         vis[i][j] = true;
         dfs(h, vis, i - 1, j, i, j);
@@ -333,11 +337,48 @@ public:
         dfs(h, vis, i, j - 1, i, j);
         dfs(h, vis, i, j + 1, i, j);
     }
+
+    //--------------------------#419--------------------------------------------//
+    // vector<vector<char>> board{
+    //     {'X','.','.','X'},
+    //     {'.','X','.','X'},
+    //     {'.','X','.','X'}
+    // };
+    // sh::print(solution.countBattleships(board));
+    int countBattleships(vector<vector<char>>& board) {
+        vector<vector<bool>> vis(board.size(), vector<bool>(board[0].size()));
+        int res(0);
+        for (size_t i(0); i < board.size(); i++) {
+            for (size_t j(0); j < board[0].size(); j++) {
+                if (board[i][j] == 'X' and vis[i][j] == false) {
+                    res++;
+                    ShipDFS(board, vis, { i, j });
+                }
+                vis[i][j] = true;
+            }
+        }
+        return res;
+    }
+    void ShipDFS(vector<vector<char>>& board, vector<vector<bool>>& vis, std::pair<int, int> point) {
+        auto [x, y] = point;
+        vis[x][y] = true;
+        for (size_t i(0); i < SHIFTS.size(); i++) {
+            int xx = x + SHIFTS[i].first;
+            int yy = y + SHIFTS[i].second;
+            if(xx < 0 or xx >= board.size() or yy < 0 or yy >= board[0].size()){
+                continue;
+            }
+            if (vis[xx][yy] == false and board[xx][yy] == 'X') {
+                ShipDFS(board, vis, { xx, yy });
+            }
+            vis[xx][yy] = true;
+        }
+    }
 };
 
 int main() {
     Solution solution;
-    Timer timer("LeetCode_500.cpp");
+    TimeGuard timer("LeetCode_500.cpp");
 
 
     

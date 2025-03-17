@@ -1,6 +1,6 @@
 ﻿#include "ForLeetcode.h"
 #include "show.h"
-#include "timer.h"
+#include "TimeGuard.hpp"
 
 using namespace std;
 
@@ -392,7 +392,7 @@ public:
 
 int main() {
     Solution solution;   
-    Timer timer("LeetCode_400.cpp");
+    TimeGuard timer("LeetCode_400.cpp");
 
     
     

@@ -1,6 +1,6 @@
 #include "ForLeetcode.h"
 #include "show.h"
-#include "timer.h"
+#include "TimeGuard.hpp"
 
 class Solution
 {
@@ -3356,7 +3356,7 @@ private:
 
 int main() {
     Solution solution;
-    Timer timer("LeetCode_100.cpp");
+    TimeGuard timer("LeetCode_100.cpp");
 
 
 }

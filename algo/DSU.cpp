@@ -41,6 +41,6 @@ void DSU::PrintDSU(){
     auto m = GetDSU();
     for(auto it = std::begin(m); it != std::end(m); ++it){
         std::cout << it->first << " : ";
-        sh::showContainer(it->second);
+        sh::ShowContainer(it->second);
     }
 }
