@@ -4,6 +4,8 @@
 
 using namespace std;
 
+
+
 class Solution
 {
     std::vector<std::pair<int, int>> SHIFTS{
@@ -345,7 +347,7 @@ public:
     //     {'.','X','.','X'}
     // };
     // sh::print(solution.countBattleships(board));
-    int countBattleships(vector<vector<char>>& board) {
+    int countBattleships_419(vector<vector<char>>& board) {
         vector<vector<bool>> vis(board.size(), vector<bool>(board[0].size()));
         int res(0);
         for (size_t i(0); i < board.size(); i++) {
@@ -365,7 +367,7 @@ public:
         for (size_t i(0); i < SHIFTS.size(); i++) {
             int xx = x + SHIFTS[i].first;
             int yy = y + SHIFTS[i].second;
-            if(xx < 0 or xx >= board.size() or yy < 0 or yy >= board[0].size()){
+            if (xx < 0 or xx >= board.size() or yy < 0 or yy >= board[0].size()) {
                 continue;
             }
             if (vis[xx][yy] == false and board[xx][yy] == 'X') {
@@ -374,6 +376,63 @@ public:
             vis[xx][yy] = true;
         }
     }
+
+    //--------------------------#430--------------------------------------------//
+    // Node *n = new Node(1, nullptr, new Node(2, nullptr, new Node(3, nullptr, nullptr, nullptr), new Node(99, nullptr, nullptr, nullptr)), nullptr);
+    // flatten_430(n);
+    /*
+    Node* flatten_430(Node* head) {
+        Node *curr = head;
+        while (curr){
+            if(curr->child){
+                Node *st = flatten_430(curr->child);
+                Node *cont = curr->next;
+
+                curr->child = nullptr;
+                curr->next = st;
+                st->prev = curr;
+
+                while (st->next){
+                    st = st->next;
+                }
+
+                if(cont){
+                    st->next = cont;
+                    cont->prev = st;
+                }
+
+
+                curr = cont;
+                continue;
+            }
+            curr = curr->next;
+        }
+        return head;
+    }
+    */
+
+    //--------------------------#441--------------------------------------------//
+    int arrangeCoins(int n) {
+        int res(0);
+        int coins(1);
+        while (n >= coins) {
+            n -= coins++;
+            res++;
+        }
+        return res;
+    }
+
+    //--------------------------#442--------------------------------------------//
+    vector<int> findDuplicates(vector<int>& nums) {
+        vector<int> res;
+        for (size_t i(0); i < nums.size(); i++) {
+            if (nums[i] = i + 1)
+                continue;
+            if (nums[nums[i] - 1] != i + 1)
+                swap(nums[i], nums[nums[i] - 1]);
+        }
+        return res;
+    }
 };
 
 int main() {
@@ -381,5 +440,5 @@ int main() {
     TimeGuard timer("LeetCode_500.cpp");
 
 
-    
+
 }

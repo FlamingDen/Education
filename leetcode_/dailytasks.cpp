@@ -1072,11 +1072,30 @@ public:
         return res == 0 and check == 0 ? true : false;
         
     }
+
+    //--------------------------#2401-------------------------------------------//
+    // vector<int> nums{1,3,8,48,10};
+    // sh::Print(solution.longestNiceSubarray(nums));
+    int longestNiceSubarray(vector<int>& nums) {
+        int res(0), curr_len(0);
+        int check(0);
+        for(size_t i(0); i < nums.size(); i++){
+            while ((check & nums[i]) != 0){
+                check ^= nums[i - curr_len--];
+            }
+            check |= nums[i];
+            res = max(res, ++curr_len);
+        }
+        return res;
+    }
 };
 
 int main() {
     Solution solution;
     TimeGuard timer("DailyTasksLeetcode.cpp");
+
+    
+    
 
 }
 

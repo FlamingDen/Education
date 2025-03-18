@@ -20,7 +20,6 @@
 #include <condition_variable>
 #include <shared_mutex>
 
-
 class B;
 class D1;
 class D2;
@@ -326,12 +325,6 @@ int main()
 {
     TimeGuard timer("Main.cpp");
 
-    std::thread t2{processing};
-    std::thread t1{prepare};
     
-    t1.join();
-    t2.join();
-    
-    sh::Print(91^14);
 }
 
