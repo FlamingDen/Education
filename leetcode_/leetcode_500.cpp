@@ -412,7 +412,7 @@ public:
     */
 
     //--------------------------#441--------------------------------------------//
-    int arrangeCoins(int n) {
+    int arrangeCoins_441(int n) {
         int res(0);
         int coins(1);
         while (n >= coins) {
@@ -423,15 +423,42 @@ public:
     }
 
     //--------------------------#442--------------------------------------------//
-    vector<int> findDuplicates(vector<int>& nums) {
-        vector<int> res;
-        for (size_t i(0); i < nums.size(); i++) {
-            if (nums[i] = i + 1)
-                continue;
-            if (nums[nums[i] - 1] != i + 1)
-                swap(nums[i], nums[nums[i] - 1]);
+    // vector<int> nums{ 2,1 };
+    // sh::ShowContainer(solution.findDuplicates_442(nums));
+    vector<int> findDuplicates_442(vector<int>& nums) {
+        vector<int>ans;
+        for (int i = 0; i < nums.size(); i++) {
+            int x = abs(nums[i]);
+            if (nums[x - 1] < 0)
+                ans.push_back(x);
+            
+            nums[x - 1] *= -1;
         }
-        return res;
+        return ans;
+    }
+
+    //--------------------------#443--------------------------------------------//
+    int compress(vector<char>& chars) {
+        int r(0), len(0);
+        char curr_ch(chars[0]);
+        for(size_t i(0); i < chars.size(); i++){
+            if(i == size(chars) - 1 or chars[i] != curr_ch){
+                chars[r++] = curr_ch;
+                if(len > 1) {
+                    string len_str = std::to_string(len);
+                    for(size_t i(0); i < len_str.size(); i++){
+                        chars[r++] = len_str[i];
+                    } 
+                }
+                    
+                len = 1;
+                curr_ch = chars[i];
+            } else {
+                len++;
+            }
+        }
+        chars.erase(chars.begin() + r, chars.end());
+        return chars.size();
     }
 };
 
@@ -439,6 +466,8 @@ int main() {
     Solution solution;
     TimeGuard timer("LeetCode_500.cpp");
 
-
-
+    vector<char> chars{'a','a','b','b','c','c'};
+    sh::Print(solution.compress(chars));
+    
+    
 }

@@ -1088,6 +1088,25 @@ public:
         }
         return res;
     }
+
+    //--------------------------#3191-------------------------------------------//
+    // vector<int> nums{0,1,1,1,0,0};
+    // sh::Print(solution.minOperations(nums));
+    int minOperations(vector<int>& nums) {
+        int res(0);
+        for(size_t i(0); i < nums.size() - 2; i++){
+            if(nums[i] == 0){
+                FlipBits(nums, i);
+                res++;
+            }
+        }
+        int n = size(nums);
+        return nums[n - 1] and nums[n - 2] and nums[n - 3] ? res : -1;
+    }
+    void FlipBits(vector<int>& nums, int l){
+        for(size_t i(l); i < l + 3; i++)
+            nums[i] = 1 - nums[i];
+    }
 };
 
 int main() {
