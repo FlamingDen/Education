@@ -1107,11 +1107,74 @@ public:
         for(size_t i(l); i < l + 3; i++)
             nums[i] = 1 - nums[i];
     }
+
+    //--------------------------#3108-------------------------------------------//
+    struct _DSU {
+    private:
+        std::vector<int> sets;  // сами множества
+        std::vector<int> w;     // веса для эвристики
+        std::vector<int> p;     // веса пути в графе
+    public:
+        _DSU(int n) {
+            sets.reserve(n);
+            w.reserve(n);
+            p.reserve(n);
+            for(size_t i(0); i < n; i++){
+                sets.push_back(i);
+                w.push_back(1);
+                p.push_back(INT_MAX);
+            }
+        }
+
+        int Find(int v){
+            return sets[v] == v ? v : sets[v] = Find(sets[v]);
+        }
+
+        void Union(int a, int b, int path_w){
+            a = Find(a);
+            b = Find(b);
+            if(w[a] > w[b])
+                swap(a, b);
+            p[b] = p[a] & p[b] & path_w;
+            if(a == b) {
+                return;
+            }
+            w[b] += w[a];
+            sets[a] = b;
+        }
+
+        void Print() {
+            sh::ShowContainer(sets);
+        }
+
+        int GetPath(int a, int b) {
+            if(Find(a) != Find(b))
+                return -1;
+            return p[Find(a)];
+        }
+    };
+    vector<int> minimumCost(int n, vector<vector<int>>& edges, vector<vector<int>>& query) {
+        vector<int> res;
+        res.reserve(query.size());
+
+        Solution::_DSU dsu(n);
+        for (auto &path : edges){
+            dsu.Union(path[0], path[1], path[2]);
+        }
+        
+        for (const auto &q : query) {
+            res.push_back(dsu.GetPath(q[0], q[1]));
+        }
+        
+        return res;
+    }
 };
 
 int main() {
     Solution solution;
     TimeGuard timer("DailyTasksLeetcode.cpp");
+
+
 
     
     

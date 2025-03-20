@@ -6,14 +6,14 @@ using namespace std;
 
 
 
-class Solution
-{
+class Solution {
     std::vector<std::pair<int, int>> SHIFTS{
         {-1, 0}, // top
         {1, 0},  // bottom
         {0, -1}, // left
         {0, 1}   // right
     };
+
 public:
     //--------------------------#401--------------------------------------------//
     // sh::showContainer(solution.readBinaryWatch_401(4));
@@ -431,34 +431,101 @@ public:
             int x = abs(nums[i]);
             if (nums[x - 1] < 0)
                 ans.push_back(x);
-            
+
             nums[x - 1] *= -1;
         }
         return ans;
     }
 
     //--------------------------#443--------------------------------------------//
+    // vector<char> chars{'a','b','c'};
+    // sh::Print(solution.compress(chars));
     int compress(vector<char>& chars) {
         int r(0), len(0);
         char curr_ch(chars[0]);
-        for(size_t i(0); i < chars.size(); i++){
-            if(i == size(chars) - 1 or chars[i] != curr_ch){
+        for (size_t i(0); i < chars.size(); i++) {
+            if (chars[i] == curr_ch)
+                len++;
+            else {
                 chars[r++] = curr_ch;
-                if(len > 1) {
+                if (len > 1) {
                     string len_str = std::to_string(len);
-                    for(size_t i(0); i < len_str.size(); i++){
+                    for (size_t i(0); i < len_str.size(); i++) {
                         chars[r++] = len_str[i];
-                    } 
+                    }
                 }
-                    
+
                 len = 1;
                 curr_ch = chars[i];
-            } else {
-                len++;
+            }
+
+
+            if (i == size(chars) - 1) {
+                chars[r++] = curr_ch;
+                if (len > 1) {
+                    string len_str = std::to_string(len);
+                    for (size_t i(0); i < len_str.size(); i++) {
+                        chars[r++] = len_str[i];
+                    }
+                }
             }
         }
         chars.erase(chars.begin() + r, chars.end());
         return chars.size();
+    }
+
+    //--------------------------#448--------------------------------------------//
+    // vector<int> nums{4,3,2,7,8,2,3,1};
+    // sh::ShowContainer(solution.findDisappearedNumbers_448(nums));
+    vector<int> findDisappearedNumbers_448(vector<int>& nums) {
+        vector<int> res;
+        for (size_t i(0); i < nums.size(); i++) {
+            int ind = std::abs(nums[i]) - 1;
+            if (nums[ind] > 0)
+                nums[ind] *= -1;
+        }
+        for (size_t i(0); i < nums.size(); i++) {
+            if (nums[i] > 0)
+                res.push_back(i + 1);
+        }
+        return res;
+    }
+
+    //--------------------------#450--------------------------------------------//
+    TreeNode* deleteNode_450(TreeNode* root, int key) {
+        auto el = FindNodeToDel(root, key);
+        if(!el)
+            return root;
+        
+        auto lPart = el->left;
+        auto rPart = el->right;
+        if(!rPart and !lPart) {
+            *el = NULL;//!!!!!
+        } else if (!lPart) {
+            *el = *rPart;
+        } else if (!rPart) {
+            *el = *lPart;
+        } else {
+            auto curr = rPart;
+            while (curr->left) 
+                curr = curr->left;
+            
+            curr->left = lPart;
+            *el = *rPart;
+        }
+        return root;
+    }
+    TreeNode* FindNodeToDel(TreeNode* root, int key) {
+        if(!root)
+            return nullptr;
+            
+        auto a = FindNodeToDel(root->left, key);
+        if(root->val == key) {
+            return root;
+        }
+        auto b = FindNodeToDel(root->right, key);
+
+        return a ? a : b ? b: nullptr;
     }
 };
 
@@ -466,8 +533,9 @@ int main() {
     Solution solution;
     TimeGuard timer("LeetCode_500.cpp");
 
-    vector<char> chars{'a','a','b','b','c','c'};
-    sh::Print(solution.compress(chars));
-    
-    
+    //TreeNode* root = new TreeNode(5, new TreeNode(3, new TreeNode(2), new TreeNode(4)), new TreeNode(6, nullptr, new TreeNode(7)));
+    TreeNode* root = new TreeNode(0);
+    sh::showTree(root);
+    sh::showTree(solution.deleteNode_450(root, 0));
+
 }
