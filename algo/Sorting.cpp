@@ -135,3 +135,24 @@ void HeapSort(vector<int> &values){
     for(auto i = values.end(); i != values.begin(); --i)
         std::pop_heap(values.begin(), i);
 }
+
+//==============================================================================//
+void TopologicalSort(const std::vector<vector<int>>& graph) {
+    vector<int> order(graph.size());
+    vector<bool> visited(graph.size());
+    for(size_t i(0); i < graph.size(); i++) {
+        if(!visited[i])
+            DFSTopological(graph, visited, i, order);
+    }
+    std::reverse(begin(order), end(order));
+}
+void DFSTopological(const std::vector<vector<int>>& graph, vector<bool>& visited, int v, vector<int>& order) {
+    visited[v] = true;
+    for (const int u : graph[v]) {
+        if(!visited[u])
+            DFSTopological(graph, visited, u, order);
+    }
+    order.push_back(v);
+}
+
+

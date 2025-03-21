@@ -32,3 +32,8 @@ void MergeSort(vector<int>& values);
 
 // Пирамидальная сортировка
 void HeapSort(vector<int>& values);
+
+//=======Граф===================================================================//
+// Топологическая сортировка
+void TopologicalSort(const std::vector<vector<int>>& graph);
+void DFSTopological(const std::vector<vector<int>>& graph, vector<bool>& visited, int v, vector<int>& order);

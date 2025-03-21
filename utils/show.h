@@ -166,5 +166,6 @@ void sh::ShowContainer(const std::pair<T, K>& value, int width, int nest) {
 template <typename T>
 void sh::Print(T smt) {
     std::cout << smt << std::endl;
-};
+}
+
 

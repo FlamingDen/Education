@@ -278,42 +278,39 @@ void foo(int& v) { std::cout << "int&  " << v << std::endl; }
 void foo(int&& v) { std::cout << "int&& " << v << std::endl; }
 
 template<typename T>
-std::remove_reference_t<T>&& custom_move(T&& value)
-{
+std::remove_reference_t<T>&& custom_move(T&& value) {
     return static_cast<std::remove_reference_t<T>&&>(value);
 }
 
 template<typename T>
-T&& custom_forward(std::remove_reference_t<T>& value)
-{
+T&& custom_forward(std::remove_reference_t<T>& value) {
     return static_cast<T&&>(value);
 }
 
 template<typename T>
-T&& custom_forward(std::remove_reference_t<T>&& value)
-{
+T&& custom_forward(std::remove_reference_t<T>&& value) {
     static_assert(!std::is_lvalue_reference_v<T>);
     return static_cast<T&&>(value);
 }
 
 //==============================================================================//
 std::mutex mt;
-int counter{0};
+int counter{ 0 };
 std::condition_variable cv;
 
-void processing(){
+void processing() {
     int c;
     {
-        std::unique_lock<std::mutex> lk{mt};
+        std::unique_lock<std::mutex> lk{ mt };
         cv.wait(lk, [] { return counter > 0;});
         c = counter;
     }
     std::cout << "-";
 }
 
-void prepare(){
+void prepare() {
     {
-        std::lock_guard<std::mutex> lk{mt};
+        std::lock_guard<std::mutex> lk{ mt };
         ++counter;
         cv.notify_all();
     }
@@ -321,10 +318,9 @@ void prepare(){
 }
 
 //==============================================================================//
-int main()
-{
+int main() {
     TimeGuard timer("Main.cpp");
 
-    
+
 }
 

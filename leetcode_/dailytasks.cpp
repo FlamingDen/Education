@@ -1168,14 +1168,52 @@ public:
         
         return res;
     }
+
+    //--------------------------#2115-------------------------------------------//
+    // vector<string> recipes{"ju","fzjnm","x","e","zpmcz","h","q"};
+    // vector<vector<string>> ingredients{{"d"},{"hveml","f","cpivl"},{"cpivl","zpmcz","h","e","fzjnm","ju"},{"cpivl","hveml","zpmcz","ju","h"},{"h","fzjnm","e","q","x"},{"d","hveml","cpivl","q","zpmcz","ju","e","x"},{"f","hveml","cpivl"}};
+    // vector<string> supplies{"f","hveml","cpivl","d"};
+    // sh::ShowContainer(solution.findAllRecipes(recipes, ingredients, supplies));
+    vector<string> findAllRecipes(vector<string>& recipes, vector<vector<string>>& ingredients, vector<string>& supplies) {
+        vector<string> res;
+        std::vector<pair<bool, bool>> check(recipes.size());
+        std::unordered_set<string> suppl(begin(supplies), end(supplies));
+        std::unordered_map<string, int> rec;
+        res.reserve(recipes.size());
+        for(size_t i(0); i < recipes.size(); i++) {
+            rec[recipes[i]] = i;
+        }
+        for(size_t i(0); i < recipes.size(); i++) {
+            if(CanCooking(rec,ingredients, suppl, check, i))
+                res.push_back(recipes[i]);
+        }
+        return res;
+    }
+    bool CanCooking(std::unordered_map<string, int>& rec, vector<vector<string>>& ingredients, std::unordered_set<string>& suppl, std::vector<pair<bool, bool>>& check, int ind) {
+        const auto& needForRec = ingredients[ind];
+        check[ind].first = true; // пометили, что просмотрели этот рецепт
+
+        for(size_t i(0); i < needForRec.size(); i++) {
+            auto v = rec.find(needForRec[i]); // ищем составной ингредиент в рецептах
+            if(v != rec.end()) {
+                if(!check[v->second].first) 
+                    check[v->second].second = CanCooking(rec,ingredients, suppl, check, v->second);
+                if(!check[v->second].second)
+                    return false;
+            } else if(!suppl.contains(needForRec[i])){
+                return false;
+            } 
+        }
+        return check[ind].second = true;
+    }
 };
 
 int main() {
     Solution solution;
     TimeGuard timer("DailyTasksLeetcode.cpp");
 
-
-
+   
+    
     
     
 

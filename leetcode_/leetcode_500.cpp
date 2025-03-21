@@ -492,15 +492,27 @@ public:
     }
 
     //--------------------------#450--------------------------------------------//
+    // TreeNode* root = new TreeNode(5, new TreeNode(3, new TreeNode(2), new TreeNode(4)), new TreeNode(6, nullptr, new TreeNode(7)));
+    // sh::showTree(root);
+    // sh::showTree(solution.deleteNode_450(root, 3));
     TreeNode* deleteNode_450(TreeNode* root, int key) {
-        auto el = FindNodeToDel(root, key);
-        if(!el)
+        TreeNode dum(0, root, nullptr);
+        TreeNode* dummy = &dum;
+
+        auto parent = FindNodeToDel(dummy, key);
+        if(!parent)
             return root;
+        auto el = parent->left and parent->left->val == key ? parent->left : parent->right;
+
         
         auto lPart = el->left;
         auto rPart = el->right;
         if(!rPart and !lPart) {
-            *el = NULL;//!!!!!
+            if(parent->left == el){
+                parent->left = nullptr;
+            } else {
+                parent->right = nullptr;
+            }
         } else if (!lPart) {
             *el = *rPart;
         } else if (!rPart) {
@@ -513,19 +525,43 @@ public:
             curr->left = lPart;
             *el = *rPart;
         }
-        return root;
+        return dummy->left;
     }
     TreeNode* FindNodeToDel(TreeNode* root, int key) {
-        if(!root)
+        if(!root or (!root->left and !root->right))
             return nullptr;
             
         auto a = FindNodeToDel(root->left, key);
-        if(root->val == key) {
+        if(root->left and root->left->val == key ) 
             return root;
-        }
+        if(root->right and root->right->val == key) 
+            return root;
         auto b = FindNodeToDel(root->right, key);
 
         return a ? a : b ? b: nullptr;
+    }
+
+    //--------------------------#451--------------------------------------------//
+    string frequencySort_451(string s) {
+        string res; 
+        unordered_map<char, int> m;
+        for(size_t i(0); i < s.size(); i++) {
+            m[s[i]]++;
+        }
+        vector<pair<char, int>> chars(begin(m), end(m));
+        sort(begin(chars), end(chars),[](const auto& p1, const auto& p2){
+            return p1.second > p2.second;
+        });
+
+        res.reserve(s.size());
+        for(size_t i(0); i < chars.size(); i++) {
+            auto [el, amt] = chars[i];
+            while (amt--) {
+               res.push_back(el);
+            }
+        }
+        
+        return res;
     }
 };
 
@@ -533,9 +569,5 @@ int main() {
     Solution solution;
     TimeGuard timer("LeetCode_500.cpp");
 
-    //TreeNode* root = new TreeNode(5, new TreeNode(3, new TreeNode(2), new TreeNode(4)), new TreeNode(6, nullptr, new TreeNode(7)));
-    TreeNode* root = new TreeNode(0);
-    sh::showTree(root);
-    sh::showTree(solution.deleteNode_450(root, 0));
-
+    
 }
