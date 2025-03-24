@@ -1206,6 +1206,25 @@ public:
         }
         return check[ind].second = true;
     }
+
+    //--------------------------#3169-------------------------------------------//
+    int countDays(int days, vector<vector<int>>& meetings) {
+        sort(begin(meetings), end(meetings), [](const auto &v1, const auto &v2){
+            return v1[0] < v2[0];
+        });
+        int res(meetings[0][0] - 1);
+        auto prev(meetings[0]);
+        for(size_t i(1); i < meetings.size(); i++) {
+            if(meetings[i][0] > prev[1]) {
+                res += meetings[i][0] - prev[1] - 1;
+                prev = meetings[i]; 
+            } else {
+                prev[1] = std::max(prev[1], meetings[i][1]); 
+            }
+        }
+        res += days - prev[1];
+        return res;
+    }
 };
 
 int main() {
@@ -1213,7 +1232,12 @@ int main() {
     TimeGuard timer("DailyTasksLeetcode.cpp");
 
    
-    
+    vector<vector<int>> meetings{
+        {5,7},
+        {1,3},
+        {9,10},
+    };
+    sh::Print(solution.countDays(10, meetings));
     
     
 

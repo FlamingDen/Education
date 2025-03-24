@@ -563,6 +563,44 @@ public:
         
         return res;
     }
+
+    //--------------------------#452--------------------------------------------//
+    // vector<vector<int>> points{
+    //     {3,9},
+    //     {7,12},
+    //     {3,8},
+    //     {6,8},
+    //     {9,10},
+    //     {0,9},
+    //     {3,9},
+    //     {0,6},
+    //     {2,8}
+    // };
+    // sh::Print(solution.findMinArrowShots_452(points));
+    int findMinArrowShots_452(vector<vector<int>>& points) {
+        std::sort(begin(points), end(points), [](const auto &v1, const auto &v2){
+            return v1[0] < v2[0];
+        });
+        int res(1);
+        auto prev = points[0];
+        for(size_t i(1); i < points.size(); i++) {
+            if(points[i][0] > prev[1]){
+                res++;
+                prev = points[i]; 
+            } else {
+                prev[0] = std::max(prev[0], points[i][0]);
+                prev[1] = std::min(prev[1], points[i][1]);
+            }
+        }
+        return res;
+    }
+
+    //--------------------------#453--------------------------------------------//
+    int minMoves_453(vector<int>& nums) {
+        int min = *std::min_element(begin(nums), end(nums));
+        int sum = std::accumulate(begin(nums), end(nums), 0);
+        return sum - nums.size() * min;
+    }
 };
 
 int main() {
