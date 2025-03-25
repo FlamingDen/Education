@@ -1,6 +1,7 @@
 ﻿#include "ForLeetcode.h"
 #include "show.h"
 #include "TimeGuard.hpp"
+#include <cstdlib>
 
 
 using namespace std;
@@ -1208,6 +1209,12 @@ public:
     }
 
     //--------------------------#3169-------------------------------------------//
+    // vector<vector<int>> meetings{
+    //     {5,7},
+    //     {1,3},
+    //     {9,10},
+    // };
+    // sh::Print(solution.countDays(10, meetings));
     int countDays(int days, vector<vector<int>>& meetings) {
         sort(begin(meetings), end(meetings), [](const auto &v1, const auto &v2){
             return v1[0] < v2[0];
@@ -1225,20 +1232,59 @@ public:
         res += days - prev[1];
         return res;
     }
+
+    //--------------------------#3394-------------------------------------------//
+    bool checkValidCuts(int n, vector<vector<int>>& rectangles) {
+        vector<pair<int, int>> tmp(rectangles.size());
+        std::sort(begin(rectangles), end(rectangles), [](const auto &v1, const auto &v2){
+            return v1[0] < v2[0];
+        });
+        for(size_t i(0); i < rectangles.size(); i++) {
+            tmp[i] = {rectangles[i][0], rectangles[i][2]};
+        }
+        bool vertical = CheckCuts(tmp, n);
+
+        std::sort(begin(rectangles), end(rectangles), [](const auto &v1, const auto &v2){
+            return v1[1] < v2[1];
+        });
+        for(size_t i(0); i < rectangles.size(); i++) {
+            tmp[i] = {rectangles[i][1], rectangles[i][3]};
+        }
+        bool horizontal = CheckCuts(tmp, n);
+        return horizontal || vertical;
+    }
+    bool CheckCuts(vector<pair<int, int>>& rectangles, int n) {
+        auto curr = rectangles[0];
+        int cuts(0);
+        for(size_t i(1); i < rectangles.size(); i++) {
+            if(cuts >= 2)
+                return true;
+
+            if(rectangles[i].first < curr.second) {
+                curr.second = max(curr.second, rectangles[i].second);
+            } else {
+                cuts++;
+                curr = rectangles[i];
+            }
+        }
+        return cuts >= 2 ? true : false;
+    }
 };
 
 int main() {
     Solution solution;
     TimeGuard timer("DailyTasksLeetcode.cpp");
-
+    system("cls");
    
-    vector<vector<int>> meetings{
-        {5,7},
-        {1,3},
-        {9,10},
+    vector<vector<int>> rectangles{
+        {1,0,5,2},
+        {0,2,2,4},
+        {3,2,5,3},
+        {0,4,4,5}
     };
-    sh::Print(solution.countDays(10, meetings));
-    
+    std::cout << std::boolalpha;
+    sh::Print(solution.checkValidCuts(5, rectangles));
+
     
 
 }
