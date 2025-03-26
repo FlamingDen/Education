@@ -500,67 +500,71 @@ public:
         TreeNode* dummy = &dum;
 
         auto parent = FindNodeToDel(dummy, key);
-        if(!parent)
+        if (!parent)
             return root;
         auto el = parent->left and parent->left->val == key ? parent->left : parent->right;
 
-        
+
         auto lPart = el->left;
         auto rPart = el->right;
-        if(!rPart and !lPart) {
-            if(parent->left == el){
+        if (!rPart and !lPart) {
+            if (parent->left == el) {
                 parent->left = nullptr;
-            } else {
+            }
+            else {
                 parent->right = nullptr;
             }
-        } else if (!lPart) {
+        }
+        else if (!lPart) {
             *el = *rPart;
-        } else if (!rPart) {
+        }
+        else if (!rPart) {
             *el = *lPart;
-        } else {
+        }
+        else {
             auto curr = rPart;
-            while (curr->left) 
+            while (curr->left)
                 curr = curr->left;
-            
+
             curr->left = lPart;
             *el = *rPart;
         }
         return dummy->left;
     }
     TreeNode* FindNodeToDel(TreeNode* root, int key) {
-        if(!root or (!root->left and !root->right))
+        if (!root or (!root->left and !root->right))
             return nullptr;
-            
+
         auto a = FindNodeToDel(root->left, key);
-        if(root->left and root->left->val == key ) 
+        if (root->left and root->left->val == key)
             return root;
-        if(root->right and root->right->val == key) 
+        if (root->right and root->right->val == key)
             return root;
         auto b = FindNodeToDel(root->right, key);
 
-        return a ? a : b ? b: nullptr;
+        return a ? a : b ? b : nullptr;
     }
 
     //--------------------------#451--------------------------------------------//
     string frequencySort_451(string s) {
-        string res; 
+        string res;
         unordered_map<char, int> m;
-        for(size_t i(0); i < s.size(); i++) {
+        for (size_t i(0); i < s.size(); i++) {
             m[s[i]]++;
         }
         vector<pair<char, int>> chars(begin(m), end(m));
-        sort(begin(chars), end(chars),[](const auto& p1, const auto& p2){
+        sort(begin(chars), end(chars), [](const auto& p1, const auto& p2) {
             return p1.second > p2.second;
-        });
+            });
 
         res.reserve(s.size());
-        for(size_t i(0); i < chars.size(); i++) {
+        for (size_t i(0); i < chars.size(); i++) {
             auto [el, amt] = chars[i];
             while (amt--) {
-               res.push_back(el);
+                res.push_back(el);
             }
         }
-        
+
         return res;
     }
 
@@ -578,16 +582,17 @@ public:
     // };
     // sh::Print(solution.findMinArrowShots_452(points));
     int findMinArrowShots_452(vector<vector<int>>& points) {
-        std::sort(begin(points), end(points), [](const auto &v1, const auto &v2){
+        std::sort(begin(points), end(points), [](const auto& v1, const auto& v2) {
             return v1[0] < v2[0];
-        });
+            });
         int res(1);
         auto prev = points[0];
-        for(size_t i(1); i < points.size(); i++) {
-            if(points[i][0] > prev[1]){
+        for (size_t i(1); i < points.size(); i++) {
+            if (points[i][0] > prev[1]) {
                 res++;
-                prev = points[i]; 
-            } else {
+                prev = points[i];
+            }
+            else {
                 prev[0] = std::max(prev[0], points[i][0]);
                 prev[1] = std::min(prev[1], points[i][1]);
             }
@@ -601,6 +606,48 @@ public:
         int sum = std::accumulate(begin(nums), end(nums), 0);
         return sum - nums.size() * min;
     }
+
+    //--------------------------#455--------------------------------------------//
+    int findContentChildren_455(vector<int>& g, vector<int>& s) {
+        int pg(0), ps(0);
+        sort(begin(g), end(g));
+        sort(begin(s), end(s));
+        int res(0);
+        while (pg != g.size() and ps != s.size()) {
+            if (s[ps++] >= g[pg]) {
+                res++;
+                pg++;
+            }
+        }
+        return res;
+    }
+
+    //--------------------------#456--------------------------------------------//
+    // vector<int> nums{3,5,0,3,4};
+    // sh::Print(solution.find132pattern(nums));
+    bool find132pattern_456(vector<int>& nums) {
+        vector<int> arr(begin(nums), end(nums));
+        for (size_t i(1); i < nums.size(); i++) {
+            arr[i] = min(nums[i - 1], arr[i - 1]);
+        }
+
+        for(size_t i(nums.size() - 1), top = nums.size(); i + 1 > 0; i--) {
+            if(nums[i] <= arr[i])
+                continue;
+            while (top < nums.size() and arr[top] <= arr[i]) {
+                top++;
+            }
+            if(top < nums.size() && nums[i] > arr[top])
+                return true;
+            arr[--top] = nums[i]; 
+        }
+        return false;
+    }
+
+    //--------------------------#457--------------------------------------------//
+    bool circularArrayLoop_457(vector<int>& nums) {
+        
+    }
 };
 
 int main() {
@@ -608,4 +655,6 @@ int main() {
     TimeGuard timer("LeetCode_500.cpp");
 
     
+
+
 }

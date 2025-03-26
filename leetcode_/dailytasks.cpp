@@ -1234,6 +1234,14 @@ public:
     }
 
     //--------------------------#3394-------------------------------------------//
+    // vector<vector<int>> rectangles{
+    //     {1,0,5,2},
+    //     {0,2,2,4},
+    //     {3,2,5,3},
+    //     {0,4,4,5}
+    // };
+    // std::cout << std::boolalpha;
+    // sh::Print(solution.checkValidCuts(5, rectangles));
     bool checkValidCuts(int n, vector<vector<int>>& rectangles) {
         vector<pair<int, int>> tmp(rectangles.size());
         std::sort(begin(rectangles), end(rectangles), [](const auto &v1, const auto &v2){
@@ -1269,6 +1277,33 @@ public:
         }
         return cuts >= 2 ? true : false;
     }
+
+    //--------------------------#2033-------------------------------------------//
+    int minOperations(vector<vector<int>>& grid, int x) {
+        vector<int> values;
+        for (const auto& row : grid) {
+            for (int val : row) {
+                values.push_back(val);
+            }
+        }
+
+        sort(values.begin(), values.end());
+
+        for (int val : values) {
+            if (abs(val - values[0]) % x != 0) {
+                return -1;
+            }
+        }
+
+        int median = values[values.size() / 2];
+        int operations = 0;
+
+        for (int val : values) {
+            operations += abs(val - median) / x;
+        }
+
+        return operations;
+    }
 };
 
 int main() {
@@ -1276,14 +1311,7 @@ int main() {
     TimeGuard timer("DailyTasksLeetcode.cpp");
     system("cls");
    
-    vector<vector<int>> rectangles{
-        {1,0,5,2},
-        {0,2,2,4},
-        {3,2,5,3},
-        {0,4,4,5}
-    };
-    std::cout << std::boolalpha;
-    sh::Print(solution.checkValidCuts(5, rectangles));
+    
 
     
 
