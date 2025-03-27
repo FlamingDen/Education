@@ -1304,6 +1304,26 @@ public:
 
         return operations;
     }
+
+    //--------------------------#2780-------------------------------------------//
+    int minimumIndex(vector<int>& nums) {
+        unordered_map<int, int> m(nums.size());
+        for(size_t i(0); i < nums.size(); i++) 
+            ++m[nums[i]];
+        auto x = m.begin();
+        for(auto it = std::next(begin(m)); it != std::end(m); it++) {
+            if(it->second > x->second)
+                x = it;
+        }
+        int count(0);
+        for(size_t i(0); i < nums.size(); i++) {
+            if(nums[i] == x->first) count++;
+            if(count * 2 > (i+1) and (x->second - count) * 2 > (nums.size() - i - 1)) {
+                return i;
+            }
+        }
+        return -1;
+    }
 };
 
 int main() {
