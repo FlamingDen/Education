@@ -1363,14 +1363,39 @@ public:
 
         return result;
     }
+
+    //--------------------------#2140-------------------------------------------//
+    // vector<vector<int>> questions{
+    //     {21,5},{92,3},{74,2},{39,4},{58,2},{5,5},{49,4},{65,3}
+    // };
+    // sh::Print(solution.mostPoints(questions));
+    long long mostPoints(vector<vector<int>>& questions) {
+        long long res(questions[0][0]);
+        vector<long long> dp(questions.size());
+        if(questions[0][1] + 1 < dp.size())
+            dp[questions[0][1] + 1] = questions[0][0];
+        for(size_t i(1); i < questions.size(); i++) {
+            int points = questions[i][0];
+            int skip = questions[i][1] + 1;
+            dp[i] = std::max(dp[i - 1], dp[i]);
+            if(i + skip < dp.size()){
+                dp[i + skip] = std::max(dp[i + skip] ,dp[i] + points);
+                res = std::max(res, dp[i + skip]);
+            } else {
+                res = std::max(res, dp[i] + points);
+            }
+            
+        }
+        return res;
+    }
 };
 
 int main() {
     Solution solution;
     TimeGuard timer("DailyTasksLeetcode.cpp");
-    system("cls");
+    //system("cls");
    
-
+    
 
     
 
