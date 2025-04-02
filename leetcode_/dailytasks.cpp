@@ -1388,6 +1388,26 @@ public:
         }
         return res;
     }
+
+    //--------------------------#2873-------------------------------------------//
+    // vector<int> nums {1,2,3};
+    // sh::Print(solution.maximumTripletValue(nums));
+    long long maximumTripletValue(vector<int>& nums) {
+        vector<int> right(nums.size()), left(nums.size());
+        int rmax(nums[0]), lmax(nums.back());
+        right[1] = rmax;
+        left[nums.size() - 2 ] = lmax;
+        for(size_t i(2); i < nums.size(); i++) {
+            int j = nums.size() - 1 - i;
+            right[i] = rmax = std::max(rmax, nums[i - 1]);
+            left[j] = lmax = std::max(lmax, nums[j + 1]);
+        }
+        long long res(0);
+        for(size_t i(1); i < nums.size() - 1; i++) {
+            res = std::max(res, (static_cast<long long>(right[i]) - nums[i]) * left[i]);
+        }
+        return res < 0 ? 0 : res;
+    }
 };
 
 int main() {
@@ -1396,7 +1416,7 @@ int main() {
     //system("cls");
    
     
-
+    
     
 
     

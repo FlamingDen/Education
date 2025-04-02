@@ -631,22 +631,46 @@ public:
             arr[i] = min(nums[i - 1], arr[i - 1]);
         }
 
-        for(size_t i(nums.size() - 1), top = nums.size(); i + 1 > 0; i--) {
-            if(nums[i] <= arr[i])
+        for (size_t i(nums.size() - 1), top = nums.size(); i + 1 > 0; i--) {
+            if (nums[i] <= arr[i])
                 continue;
             while (top < nums.size() and arr[top] <= arr[i]) {
                 top++;
             }
-            if(top < nums.size() && nums[i] > arr[top])
+            if (top < nums.size() && nums[i] > arr[top])
                 return true;
-            arr[--top] = nums[i]; 
+            arr[--top] = nums[i];
         }
         return false;
     }
 
     //--------------------------#457--------------------------------------------//
     bool circularArrayLoop_457(vector<int>& nums) {
-        
+        int n = nums.size();
+        for (int i = 0;i < n;i++) {
+            int slow = i;
+            int fast = next(nums, i);
+            while (nums[slow] * nums[fast] > 0 && nums[slow] * nums[next(nums, fast)] > 0) {
+                if (slow == fast) {
+                    if (slow != next(nums, slow)) 
+                        return true;
+                    break;
+                }
+                slow = next(nums, slow);
+                fast = next(nums, next(nums, fast));
+            }
+        }
+        return false;
+    }
+    int next(vector<int>& nums, int i) {
+        int n = nums.size();
+        return (((i + nums[i]) % n) + n) % n;
+    }
+
+    //--------------------------#459--------------------------------------------//
+    bool repeatedSubstringPattern(string s) {
+        string concatenated = s + s;
+        return concatenated.substr(1, concatenated.length() - 2).find(s) != string::npos;
     }
 };
 
@@ -654,7 +678,7 @@ int main() {
     Solution solution;
     TimeGuard timer("LeetCode_500.cpp");
 
-    
+
 
 
 }
