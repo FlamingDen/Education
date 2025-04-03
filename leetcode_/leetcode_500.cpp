@@ -672,6 +672,19 @@ public:
         string concatenated = s + s;
         return concatenated.substr(1, concatenated.length() - 2).find(s) != string::npos;
     }
+
+    //--------------------------#461--------------------------------------------//
+    int hammingDistance(int x, int y) {
+        // int res(0);
+        // for(size_t i(0); i < 32; i++) {
+        //     if(((x >> i) & 1) == ((y >> i) & 1))
+        //         res++;
+        // }
+        // return res;
+
+        bitset<32> res(x ^ y);
+        return res.count();
+    }
 };
 
 int main() {
