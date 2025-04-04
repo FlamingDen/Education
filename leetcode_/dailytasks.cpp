@@ -1421,6 +1421,26 @@ public:
         }
         return answer;
     }
+
+    //--------------------------#1123-------------------------------------------//
+    TreeNode* lcaDeepestLeaves(TreeNode* root) {
+        return searchDeepestNodes(root).second;
+    }
+    pair<int, TreeNode*> searchDeepestNodes(TreeNode* root) {
+        if(!root)
+            return {0, nullptr};
+        
+        auto l = searchDeepestNodes(root->left);
+        auto r = searchDeepestNodes(root->right);
+
+        if(l.first == r.first) {
+            return {l.first + 1, root};
+        } else if(l.first > r.first) {
+            return {l.first + 1, l.second};
+        } else {
+            return {r.first + 1, r.second};
+        }
+    }
 };
 
 int main() {
