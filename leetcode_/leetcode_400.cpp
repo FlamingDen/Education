@@ -4,39 +4,39 @@
 
 using namespace std;
 
-    //--------------------------#303--------------------------------------------//
-    // std::vector<int> nums{1,2,3,4,5};
-    // NumArray* obj = new NumArray(nums);
-    // int param_1 = obj->sumRange(0,4);
-    // sh::print(param_1);
+//--------------------------#303--------------------------------------------//
+// std::vector<int> nums{1,2,3,4,5};
+// NumArray* obj = new NumArray(nums);
+// int param_1 = obj->sumRange(0,4);
+// sh::print(param_1);
 class NumArray {
     std::vector<int> pref_sum;
 public:
-    NumArray(vector<int>& nums){
+    NumArray(vector<int>& nums) {
         pref_sum.resize(nums.size() + 1);
         pref_sum[0] = 0;
         pref_sum[1] = nums[0];
-        for(size_t i(1); i != nums.size(); ++i)
+        for (size_t i(1); i != nums.size(); ++i)
             pref_sum[i + 1] = pref_sum[i] + nums[i];
     }
-    
+
     int sumRange(int left, int right) {
         return pref_sum[right + 1] - pref_sum[left];
     }
 };
 
-    //--------------------------#352--------------------------------------------//
+//--------------------------#352--------------------------------------------//
 class SummaryRanges {
     std::map<int, int> intervals;
 public:
     SummaryRanges() {
-        
+
     }
-    
+
     void addNum(int value) {
-        
+
     }
-    
+
     vector<vector<int>> getIntervals() {
         return {};
     }
@@ -48,28 +48,28 @@ public:
     // std::cout << std::boolalpha;
     // sh::print(solution.isPowerOfThree(1));
     bool isPowerOfThree_326(int n) {
-        while (n % 3 == 0 and n > 3){
+        while (n % 3 == 0 and n > 3) {
             n /= 3;
-        }  
-        return n == 3 or n == 1? true : false;
+        }
+        return n == 3 or n == 1 ? true : false;
     }
 
     //--------------------------#306--------------------------------------------//
     // std::cout << std::boolalpha;
     // sh::print(solution.isAdditiveNumber("121474836472147483648"));
     bool isAdditiveNumber_306(string num) {
-        for(size_t i(1); i <= num.size() / 2; ++i){
-            for(size_t j(1); j <= (num.size() - i) / 2; ++j){
-                if(CheckAdditional(num.substr(0,i), num.substr(i,j), num, i + j))
+        for (size_t i(1); i <= num.size() / 2; ++i) {
+            for (size_t j(1); j <= (num.size() - i) / 2; ++j) {
+                if (CheckAdditional(num.substr(0, i), num.substr(i, j), num, i + j))
                     return true;
             }
         }
         return false;
     }
-    bool CheckAdditional(string n1, string  n2, string& num, int pos){
-        if(pos >= num.size())
+    bool CheckAdditional(string n1, string  n2, string& num, int pos) {
+        if (pos >= num.size())
             return false;
-        
+
         if (n1.size() > 1 && n1[0] == '0' || n2.size() > 1 && n2[0] == '0')
             return false;
         long num1 = std::stol(n1);
@@ -77,7 +77,7 @@ public:
         while (pos < num.size())
         {
             auto curr = std::to_string(num1 + num2);
-            if(curr != num.substr(pos, curr.size()) )
+            if (curr != num.substr(pos, curr.size()))
                 return false;
 
             pos += curr.size();
@@ -91,27 +91,27 @@ public:
     int maxProduct(vector<string>& words) {
         vector<int> mask(words.size());
         int result = 0;
-        for (int i=0; i<words.size(); ++i) {
+        for (int i = 0; i < words.size(); ++i) {
             for (char c : words[i])
                 mask[i] |= 1 << (c - 'a');
-            for (int j=0; j<i; ++j)
+            for (int j = 0; j < i; ++j)
                 if (!(mask[i] & mask[j]))
                     result = max(result, int(words[i].size() * words[j].size()));
         }
         return result;
     }
- 
+
     //--------------------------#319--------------------------------------------//
     // sh::print(solution.bulbSwitch_319(5));
     int bulbSwitch_319(int n) {
         int res(1);
-        for(size_t i(2); i <= n; ++i){
+        for (size_t i(2); i <= n; ++i) {
             bool lamp(true);
-            for(size_t j(2); j <= i; ++j){
-                if(i % j == 0)
+            for (size_t j(2); j <= i; ++j) {
+                if (i % j == 0)
                     lamp = !lamp;
             }
-            if(lamp)
+            if (lamp)
                 ++res;
         }
         return res;
@@ -126,13 +126,13 @@ public:
         int dp[++n];
         dp[0] = 0;
         sort(begin(coins), end(coins));
-        
+
         for (int i = 1; i < n; i++) {
             dp[i] = INT_MAX;
-            for (const int& c: coins) {
-                if (i - c < 0) 
+            for (const int& c : coins) {
+                if (i - c < 0)
                     break;
-                
+
                 if (dp[i - c] != INT_MAX)
                     dp[i] = min(dp[i], 1 + dp[i - c]);
             }
@@ -146,20 +146,21 @@ public:
     // l1 = solution.oddEvenList_328(l1);
     // sh::showList(l1);
     ListNode* oddEvenList_328(ListNode* head) {
-        if(!head)
+        if (!head)
             return head;
 
-        ListNode *even = new ListNode;
-        ListNode *st_even = even;
-        ListNode *odd = new ListNode;
-        ListNode *st_odd = odd;
-        ListNode *curr = head;
+        ListNode* even = new ListNode;
+        ListNode* st_even = even;
+        ListNode* odd = new ListNode;
+        ListNode* st_odd = odd;
+        ListNode* curr = head;
         int n(0);
-        while (curr){
-            if(n++ % 2 == 0){
+        while (curr) {
+            if (n++ % 2 == 0) {
                 even->next = curr;
                 even = even->next;
-            } else {
+            }
+            else {
                 odd->next = curr;
                 odd = odd->next;
             }
@@ -175,9 +176,9 @@ public:
         vector<int> res(n);
         res.push_back(0);  // for num = 0
         if (n == 0) return res;
-        
+
         for (int i = 1; i <= n; i++) {
-            if (i % 2 == 0) 
+            if (i % 2 == 0)
                 res[i] = res[i / 2];
             else
                 res[i] = res[i - 1] + 1;
@@ -196,19 +197,19 @@ public:
     // solution.wiggleSort_324(nums);
     // sh::showContainer(nums);
     void wiggleSort_324(vector<int>& nums) {
-        if(nums.size() == 1)
+        if (nums.size() == 1)
             return;
         std::sort(nums.begin(), nums.end());
         int m = std::ceil(nums.size() / 2.);
         std::vector<int> res;
         res.reserve(nums.size());
 
-        for(size_t i(m - 1), j(nums.size() - 1); i + 1 > 0 or j >= m; --i, --j){
-            if(i + 1 > 0)
+        for (size_t i(m - 1), j(nums.size() - 1); i + 1 > 0 or j >= m; --i, --j) {
+            if (i + 1 > 0)
                 res.push_back(nums[i]);
-            if(j >= m)
+            if (j >= m)
                 res.push_back(nums[j]);
-        } 
+        }
         nums = std::move(res);
     }
 
@@ -221,18 +222,18 @@ public:
     // sh::print(solution.reverseVowels_345("IceCreAm"));
     string reverseVowels_345(string s) {
         int l(0), r(s.size() - 1);
-        while (l < r){
-            while (l < r and !IsVowes(s[l])){
+        while (l < r) {
+            while (l < r and !IsVowes(s[l])) {
                 l++;
             }
-            while (l < r and !IsVowes(s[r])){
+            while (l < r and !IsVowes(s[r])) {
                 r--;
             }
             std::swap(s[l++], s[r--]);
         }
         return s;
     }
-    bool IsVowes(char a){
+    bool IsVowes(char a) {
         switch (a)
         {
         case 'a':
@@ -257,20 +258,20 @@ public:
     // vector<int> nums{1,1,1,2,2,3};
     // sh::showContainer(solution.topKFrequent_347(nums, 2));
     vector<int> topKFrequent_347(vector<int>& nums, int k) {
-        std::unordered_map<int,int> m;
+        std::unordered_map<int, int> m;
         vector<int> res;
-        for(size_t i(0); i < nums.size(); ++i){
+        for (size_t i(0); i < nums.size(); ++i) {
             m[nums[i]]++;
         }
         std::vector<std::pair<int, int>> tmp;
         tmp.reserve(m.size());
-        for(auto it = std::begin(m); it != std::end(m); ++it){
-            tmp.push_back({it->first, it->second});
+        for (auto it = std::begin(m); it != std::end(m); ++it) {
+            tmp.push_back({ it->first, it->second });
         }
-        std::sort(tmp.begin(), tmp.end(), [](const auto& p1, const auto& p2){
+        std::sort(tmp.begin(), tmp.end(), [](const auto& p1, const auto& p2) {
             return p1.second < p2.second;
-        });
-        for(size_t i(tmp.size() - 1); i + 1 > (tmp.size() - k); --i){
+            });
+        for (size_t i(tmp.size() - 1); i + 1 > (tmp.size() - k); --i) {
             res.push_back(tmp[i].first);
         }
         return res;
@@ -280,17 +281,17 @@ public:
     vector<int> intersection_349(vector<int>& nums1, vector<int>& nums2) {
         vector<int> res;
         std::unordered_map<int, int> mp;
-        for(size_t i(0); i < nums1.size(); ++i){
+        for (size_t i(0); i < nums1.size(); ++i) {
             mp[nums1[i]] = 0;
         }
         std::sort(begin(nums2), end(nums2));
-        for(size_t i(0); i < nums2.size(); ++i){
+        for (size_t i(0); i < nums2.size(); ++i) {
             auto el = mp.find(nums2[i]);
-            if(el != mp.end())
+            if (el != mp.end())
                 el->second = 1;
         }
-        for(auto it = std::begin(mp); it != std::end(mp); ++it){
-            if(it->second == 1)
+        for (auto it = std::begin(mp); it != std::end(mp); ++it) {
+            if (it->second == 1)
                 res.push_back(it->first);
         }
         return res;
@@ -301,18 +302,18 @@ public:
         vector<int> res;
         std::unordered_map<int, int> mp1;
         std::unordered_map<int, int> mp2;
-        for(size_t i(0); i < nums1.size(); ++i){
+        for (size_t i(0); i < nums1.size(); ++i) {
             mp1[nums1[i]]++;
         }
-        for(size_t i(0); i < nums2.size(); ++i){
+        for (size_t i(0); i < nums2.size(); ++i) {
             mp2[nums2[i]]++;
         }
-        
-        for(auto it = std::begin(mp1); it != std::end(mp1); ++it){
+
+        for (auto it = std::begin(mp1); it != std::end(mp1); ++it) {
             auto curr = mp2.find(it->first);
-            if(curr != mp2.end()){
+            if (curr != mp2.end()) {
                 int n = std::min(curr->second, it->second);
-                while (n--){
+                while (n--) {
                     res.push_back(curr->first);
                 }
             }
@@ -324,7 +325,7 @@ public:
     int getSum_371(int a, int b) {
         int sum = a;
         while (b != 0)
-        {   
+        {
             sum = a ^ b;
             b = (a & b) << 1;
             a = sum;
@@ -339,28 +340,30 @@ public:
     vector<vector<int>> kSmallestPairs_373(vector<int>& nums1, vector<int>& nums2, int k) {
         vector<vector<int>> res;
         std::priority_queue<pair<int, pair<int, int>>> pq;
-        for(size_t i(0); i < nums1.size(); ++i){
-            for(size_t j(0); j < nums2.size(); ++j){
+        for (size_t i(0); i < nums1.size(); ++i) {
+            for (size_t j(0); j < nums2.size(); ++j) {
                 int sum = nums1[i] + nums2[j];
 
-                if(pq.size() < k){
-                    pq.push({sum, {nums1[i], nums2[j]}});
-                } else if (pq.top().first > sum){
+                if (pq.size() < k) {
+                    pq.push({ sum, {nums1[i], nums2[j]} });
+                }
+                else if (pq.top().first > sum) {
                     pq.pop();
-                    pq.push({sum, {nums1[i], nums2[j]}});
-                } else {
+                    pq.push({ sum, {nums1[i], nums2[j]} });
+                }
+                else {
                     break;
                 }
             }
         }
         while (!pq.empty())
         {
-            res.push_back({pq.top().second.first, pq.top().second.second});
+            res.push_back({ pq.top().second.first, pq.top().second.second });
             pq.pop();
         }
         return res;
     }
-    
+
     //--------------------------#400--------------------------------------------//
     // sh::print(solution.findNthDigit_400(3000));
     int findNthDigit_400(int n) {
@@ -372,7 +375,7 @@ public:
             d += 1;
         }
         int num = pow(10, d - 1) + (n - 1) / d;
-        cout<<num;
+        cout << num;
         return to_string(num)[(n - 1) % d] - '0';
     }
 
@@ -388,14 +391,37 @@ public:
     // std::uniform_int_distribution<int> distribution(0, values.size() - 1);
     // std::cout << distribution(eng) << std::endl;
 
+    //--------------------------#378--------------------------------------------//
+    // vector<vector<int>> matrix{
+    //     {1,5,9},
+    //     {10,11,13},
+    //     {12,13,15}
+    // };
+    // sh::Print(solution.kthSmallest_378(matrix, 8));
+    int kthSmallest_378(vector<vector<int>>& matrix, int k) {
+        int n = matrix.size();
+        int l(matrix[0][0]), h(matrix[n - 1][n - 1]);
+        int mid, count;
+        while (l < h) {
+            count = 0;
+            mid = l + (h - l) / 2;
+
+            for (int i = 0;i < n;i++) {
+                count += upper_bound(matrix[i].begin(), matrix[i].end(), mid) - matrix[i].begin();
+            }
+
+            count < k ? l = mid + 1 : h = mid;
+        }
+        return l;
+    }
 };
 
 int main() {
-    Solution solution;   
+    Solution solution;
     TimeGuard timer("LeetCode_400.cpp");
 
+
     
-    
-   
-    
+
+
 }

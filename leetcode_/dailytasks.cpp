@@ -1461,6 +1461,28 @@ public:
         }
         return res;
     }
+
+    //--------------------------#2845-------------------------------------------//
+    // vector<int> nums{3,1,9,6};
+    // sh::Print(solution.countInterestingSubarrays(nums, 3, 0));
+    long long countInterestingSubarrays(vector<int>& nums, int modulo, int k) {
+        long long count(0), equals(0);
+        unordered_map<int, long long> mp;
+        mp[0] = 1;
+
+        for(size_t i(0); i < nums.size(); i++) {
+            if(nums[i] % modulo == k) 
+                equals++;
+                
+            int rem = equals % modulo;
+            int needed = (rem - k + modulo) % modulo;
+
+            count += mp[needed];
+            mp[rem]++;
+        }
+        return count;
+    }
+
 };
 
 int main() {
