@@ -1483,6 +1483,16 @@ public:
         return count;
     }
 
+    //--------------------------#1295-------------------------------------------//
+    int findNumbers(vector<int>& nums) {
+        int res(0);
+        for(size_t i(0); i < nums.size(); i++) {
+            if(std::to_string(nums[i]).size() % 2 == 0)
+                res++;   
+        }    
+        return res;
+    }
+
 };
 
 int main() {
