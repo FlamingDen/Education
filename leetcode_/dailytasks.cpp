@@ -1493,6 +1493,50 @@ public:
         return res;
     }
 
+
+    //--------------------------#1353-------------------------------------------//
+    // vector<vector<int>> events{
+    //     {1,5},{1,5},{1,5},{2,3},{2,3}
+    // };
+    // sh::Print(solution.maxEvents(events));
+    int maxEvents(vector<vector<int>>& events) 
+    {
+        sort(events.begin(), events.end());
+        priority_queue<int, vector<int>, greater<int>> minHeap; 
+        int i = 0;
+        int count = 0;
+        int n = events.size();
+
+        // Step 3: Find the last day to simulate
+        int lastDay = 0;
+        for (const auto& e : events) 
+        {
+            lastDay = max(lastDay, e[1]);
+        }
+
+        // Step 4: Simulate each day
+        for (int day = 1; day <= lastDay; day++) 
+        {
+            while (i < n && events[i][0] == day) 
+            {
+                minHeap.push(events[i][1]);
+                i++;
+            }
+
+            while (!minHeap.empty() && minHeap.top() < day) 
+                minHeap.pop();
+            
+            if (!minHeap.empty()) 
+            {
+                minHeap.pop();
+                count++;
+            }
+
+            if (i == n && minHeap.empty())
+                break;
+        }
+        return count;
+    }
 };
 
 int main() {
@@ -1503,7 +1547,6 @@ int main() {
     
     
    
-
     
 
 }
