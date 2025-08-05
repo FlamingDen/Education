@@ -1537,6 +1537,22 @@ public:
         }
         return count;
     }
+
+    //--------------------------#3477-------------------------------------------//
+    int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) 
+    {
+        int miss(baskets.size());
+        for(size_t i(0); i < fruits.size(); i++) {
+            for(size_t j(0); j < baskets.size(); j++) {
+                if(baskets[j] != -1 and fruits[i] <= baskets[j]) {
+                    miss--;
+                    baskets[j] = -1;
+                    break;
+                }
+            }
+        }
+        return miss;
+    }
 };
 
 int main() {
@@ -1544,7 +1560,9 @@ int main() {
     TimeGuard timer("DailyTasksLeetcode.cpp");
     //system("cls");
    
-    
+    vector<int> fruits{4,2,5};
+    vector<int> baskets{3,5,4};
+    sh::Print(solution.numOfUnplacedFruits(fruits, baskets));
     
    
     
