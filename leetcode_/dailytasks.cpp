@@ -1539,6 +1539,9 @@ public:
     }
 
     //--------------------------#3477-------------------------------------------//
+    // vector<int> fruits{4,2,5};
+    // vector<int> baskets{3,5,4};
+    // sh::Print(solution.numOfUnplacedFruits(fruits, baskets));
     int numOfUnplacedFruits(vector<int>& fruits, vector<int>& baskets) 
     {
         int miss(baskets.size());
@@ -1553,6 +1556,35 @@ public:
         }
         return miss;
     }
+
+    //--------------------------#2438-------------------------------------------//
+    vector<int> productQueries(int n, vector<vector<int>>& queries) {
+        bitset<32> bitn(n);
+        vector<int> numbers;
+        numbers.reserve(bitn.count());
+        for(size_t i(0); i < 32; i++) {
+            if(bitn.test(i)) {
+                numbers.push_back(1 << i);
+            }
+        }
+
+        int modulo(1000000007);
+        vector<int> res;
+        res.reserve(queries.size());
+        for(size_t i(0); i < queries.size(); i++) {
+            int start_index = queries[i][0];
+            int end_index = queries[i][1];
+
+            long long tmp(1);
+            while (start_index <= end_index) {
+                int curr = numbers[start_index++] % modulo;
+                tmp *= curr;
+                tmp %= modulo;
+            }
+            res.push_back(tmp);
+        }
+        return res;
+    }
 };
 
 int main() {
@@ -1560,10 +1592,9 @@ int main() {
     TimeGuard timer("DailyTasksLeetcode.cpp");
     //system("cls");
    
-    vector<int> fruits{4,2,5};
-    vector<int> baskets{3,5,4};
-    sh::Print(solution.numOfUnplacedFruits(fruits, baskets));
     
+    vector<vector<int>> queries{{0,1},{2,2},{0,3}};
+    sh::ShowContainer(solution.productQueries(15, queries));
    
     
 
