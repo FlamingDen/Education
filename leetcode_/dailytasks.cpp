@@ -1,8 +1,8 @@
-﻿#include "ForLeetcode.h"
+#include "ForLeetcode.h"
 #include "show.h"
 #include "TimeGuard.hpp"
 #include <cstdlib>
-
+#include "DSU.hpp"
 
 using namespace std;
 
@@ -1585,16 +1585,117 @@ public:
         }
         return res;
     }
+
+    //--------------------------#1488-------------------------------------------//
+    class UnionFind {
+    public:
+        vector<int> parent;
+
+        UnionFind(int size) : parent(size + 1) {
+            iota(parent.begin(), parent.end(), 0);
+        }
+
+        int find(int i) {
+            return parent[i] == i ? i : parent[i] = find(parent[i]);
+        }
+
+        void unite(int i) { parent[i] = find(i + 1); }
+    };
+    vector<int> avoidFlood(vector<int>& rains) {
+        int n = rains.size();
+        UnionFind uf(n + 1);
+        unordered_map<int, int> map;
+        vector<int> res(n, 1);
+
+        for (int i = 0; i < n; i++) {
+            int lake = rains[i];
+            if (lake == 0) continue;
+
+            res[i] = -1;
+            uf.unite(i);
+
+            if (map.find(lake) != map.end()) {
+                int prev = map[lake];
+                int dry = uf.find(prev);
+
+                if (dry >= i) return {};
+
+                res[dry] = lake;
+                uf.unite(dry);
+                map[lake] = i;
+            } else {
+                map[lake] = i;
+            }
+        }
+
+        return res;
+    }
+
+    //--------------------------#2300-------------------------------------------//
+    vector<int> successfulPairs(vector<int>& spells, vector<int>& potions, long long success) {
+        vector<int> res(spells.size(), 0);
+        sort(begin(potions), end(potions));
+
+        for(size_t i(0); i < spells.size(); i++) {
+            long long minNeed = success / spells[i];
+            if( success % spells[i] != 0)
+                minNeed++;
+
+            auto it = lower_bound(begin(potions), end(potions), minNeed);
+            if(it != potions.end()) {
+                res[i] = potions.size() - distance(potions.begin(), it);
+            }
+        }
+        
+        return res;
+    }
+
+    //--------------------------#3494-------------------------------------------//
+    long long minTime(vector<int>& skill, vector<int>& mana) {
+        // int wizards = skill.size();
+        // int potions = mana.size();
+
+        // vector<vector<long long>> res(potions, vector<long long>(wizards + 1, 0));
+        // for(size_t i(0); i < potions; i++) {
+        //     long long maxInterval(0);
+        //     for(size_t j(1); j < res[0].size(); j++) {
+        //         res[i][j] = res[i][j - 1] + mana[i] * skill[j - 1];
+                
+        //         if(i != potions - 1) {
+        //             res[i + 1][j] = res[i + 1][j - 1] + mana[i + 1] * skill[j - 1];
+        //             maxInterval = std::max(maxInterval, res[i][j] - res[i + 1][j - 1]);
+        //         }
+        //     }
+        //     if(i != potions - 1)
+        //         res[i + 1][0] = maxInterval;
+        // }
+        
+        // return res.back().back();
+        int n = skill.size(), m = mana.size();
+        vector<long long> done(n + 1, 0);
+        
+        for (int j = 0; j < m; ++j) {
+            for (int i = 0; i < n; ++i) {
+                done[i + 1] = max(done[i + 1], done[i]) + 1LL * mana[j] * skill[i];
+            }
+            for (int i = n - 1; i > 0; --i) {
+                done[i] = done[i + 1] - 1LL * mana[j] * skill[i];
+            }
+        }
+        
+        return done[n];
+    }
 };
 
 int main() {
     Solution solution;
     TimeGuard timer("DailyTasksLeetcode.cpp");
     //system("cls");
-   
     
-    vector<vector<int>> queries{{0,1},{2,2},{0,3}};
-    sh::ShowContainer(solution.productQueries(15, queries));
+    
+    vector<int> skill{1,5,2,4};
+    vector<int> mana{5,1,4,2};
+    sh::Print(solution.minTime(skill, mana));
    
     
 

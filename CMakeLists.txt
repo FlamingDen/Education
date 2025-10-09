@@ -123,16 +123,21 @@ add_executable(DailyTasksLeetcode
     leetcode_/dailytasks.cpp
     ${LeetCodeCommonHeaders}
     ${LeetCodeCommonSources}
+    algo/DSU.cpp
+    algo/DSU.hpp
+
 )
 
 target_include_directories(DailyTasksLeetcode INTERFACE
     ${CMAKE_CURRENT_SOURCE_DIR}/utils
     ${CMAKE_CURRENT_SOURCE_DIR}/leetcode_
+    ${CMAKE_CURRENT_SOURCE_DIR}/algo
 )
 
 target_include_directories(DailyTasksLeetcode PRIVATE
     utils
     leetcode_
+    algo
 )
 
 #==================================================
