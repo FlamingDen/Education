@@ -20,6 +20,9 @@
 #include <condition_variable>
 #include <shared_mutex>
 
+#include "Sorting.hpp"
+#include "ListNode.h"
+
 class B;
 class D1;
 class D2;
@@ -321,6 +324,12 @@ void prepare() {
 int main() {
     TimeGuard timer("Main.cpp");
 
-
+    ListNode* head = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
+    sh::showList(head);
+    head = util::reverseListRecursive(head);
+    sh::showList(head);
+    head = util::reverseListIterable(head);
+    sh::showList(head);
+    util::deleteList(head);
 }
 

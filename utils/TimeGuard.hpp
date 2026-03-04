@@ -4,6 +4,7 @@
 #include <string>
 #include <chrono>
 
+
 class TimeGuard {
 private:
     std::chrono::time_point<std::chrono::high_resolution_clock> st{ std::chrono::high_resolution_clock::now() };
@@ -24,7 +25,7 @@ inline void TimeGuard::TimingFunc(Func func, Args... args) {
     auto start = std::chrono::high_resolution_clock::now();
     func(args...);
     std::cout << std::endl;
-    std::cout << __FUNCTION__ << "(processing time) = { " << std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - start) << " }\n";
+    std::cout << "processing time = { " << std::chrono::duration<double>(std::chrono::high_resolution_clock::now() - start) << " }\n";
 }
 
 

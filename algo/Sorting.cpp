@@ -17,43 +17,46 @@
 // sh::showContainer(v);
 
 //==============================================================================//
-void BubbleSort(vector<int> &values){
-    for(size_t i(0); i + 1 < values.size(); ++i){
-        for(size_t j(1); j < values.size() - i; ++j){
-            if(values[j - 1] > values[j])
+void BubbleSort(vector<int>& values)
+{
+    for (size_t i(0); i + 1 < values.size(); ++i) {
+        for (size_t j(1); j < values.size() - i; ++j) {
+            if (values[j - 1] > values[j])
                 swap(values[j - 1], values[j]);
         }
     }
 }
 
-void ShakerSort(vector<int> &values){
-    if(values.empty())
+void ShakerSort(vector<int>& values)
+{
+    if (values.empty())
         return;
-    
+
     int l(0), r(values.size() - 1);
     while (l < r)
     {
-        for(size_t i(l); i < r; ++i){
-            if(values[i] > values[i + 1])
+        for (size_t i(l); i < r; ++i) {
+            if (values[i] > values[i + 1])
                 swap(values[i], values[i + 1]);
         }
         --r;
 
-        for(size_t i(r); i > 0; --i){
-            if(values[i] < values[i - 1])
+        for (size_t i(r); i > 0; --i) {
+            if (values[i] < values[i - 1])
                 swap(values[i], values[i - 1]);
         }
         ++l;
     }
 }
 
-void CombSort(vector<int> &values){
+void CombSort(vector<int>& values)
+{
     const double factor = 1.247;
     int step = values.size() - 1;
 
-    while (step >= 1){
-        for(size_t i(0); i + step  < values.size(); ++i){
-            if(values[i] > values[i + step])
+    while (step >= 1) {
+        for (size_t i(0); i + step < values.size(); ++i) {
+            if (values[i] > values[i + step])
                 swap(values[i], values[i + step]);
         }
         step /= factor;
@@ -62,11 +65,12 @@ void CombSort(vector<int> &values){
 
 
 //==============================================================================//
-void InsertionSort(vector<int> &values){
-    for(size_t i(1); i < values.size(); ++i){
+void InsertionSort(vector<int>& values)
+{
+    for (size_t i(1); i < values.size(); ++i) {
         int j(i);
         int val(values[i]);
-        while (j > 0 and val < values[j - 1]){   
+        while (j > 0 and val < values[j - 1]) {
             values[j] = values[j - 1];
             --j;
         }
@@ -75,8 +79,9 @@ void InsertionSort(vector<int> &values){
 
 }
 
-void SelectionSort(vector<int> &values){
-    for(auto it = std::begin(values); it != std::end(values); ++it){
+void SelectionSort(vector<int>& values)
+{
+    for (auto it = std::begin(values); it != std::end(values); ++it) {
         auto j = std::min_element(it, std::end(values));
         swap(*it, *j);
     }
@@ -84,72 +89,80 @@ void SelectionSort(vector<int> &values){
 
 
 //==============================================================================//
-int Partition(vector<int> &values, int l, int r){
+int Partition(vector<int>& values, int l, int r)
+{
     int x = values[r];
     int less = l;
 
-    for(size_t i(l); i < r; ++i){
-        if(values[i] <= x)
+    for (size_t i(l); i < r; ++i) {
+        if (values[i] <= x)
             swap(values[i], values[less++]);
     }
 
     swap(values[less], values[r]);
     return less;
 }
-void QuickSortImpl(vector<int> &values, int l, int r){
-    if(l < r){
+void QuickSortImpl(vector<int>& values, int l, int r)
+{
+    if (l < r) {
         int m = Partition(values, l, r);
         QuickSortImpl(values, l, m - 1);
         QuickSortImpl(values, m + 1, r);
     }
 }
-void QuickSort(vector<int> &values){
+void QuickSort(vector<int>& values)
+{
     QuickSortImpl(values, 0, values.size() - 1);
 }
 
-void MergeSortImpl(vector<int> &values, vector<int> &buffer, int l, int r){
-    if(l < r ){
+void MergeSortImpl(vector<int>& values, vector<int>& buffer, int l, int r)
+{
+    if (l < r) {
         int m = (l + r) / 2;
-        MergeSortImpl(values, buffer, l , m);
+        MergeSortImpl(values, buffer, l, m);
         MergeSortImpl(values, buffer, m + 1, r);
 
         int k = l;
-        for(size_t i(l), j(m + 1); i <= m || j <= r ;){
-            if(j > r or (i <= m and values[i] < values[j]))
+        for (size_t i(l), j(m + 1); i <= m || j <= r;) {
+            if (j > r or (i <= m and values[i] < values[j]))
                 buffer[k++] = values[i++];
-            else 
+            else
                 buffer[k++] = values[j++];
         }
         copy(std::begin(buffer) + l, std::begin(buffer) + r + 1, std::begin(values) + l);
     }
 }
-void MergeSort(vector<int> &values){
-    if(!values.empty()){
+void MergeSort(vector<int>& values)
+{
+    if (!values.empty()) {
         vector<int> buffer(values.size());
-        MergeSortImpl(values, buffer, 0 , values.size() - 1);
+        MergeSortImpl(values, buffer, 0, values.size() - 1);
     }
 }
 
-void HeapSort(vector<int> &values){
+void HeapSort(vector<int>& values)
+{
     std::make_heap(values.begin(), values.end());
-    for(auto i = values.end(); i != values.begin(); --i)
+    for (auto i = values.end(); i != values.begin(); --i)
         std::pop_heap(values.begin(), i);
 }
 
 //==============================================================================//
-void TopologicalSort(const std::vector<vector<int>>& graph) {
+void TopologicalSort(const std::vector<vector<int>>& graph)
+{
     vector<int> order(graph.size());
     vector<bool> visited(graph.size());
-    for(size_t i(0); i < graph.size(); i++) {
-        if(!visited[i])
+    for (size_t i(0); i < graph.size(); i++) {
+        if (!visited[i])
             DFSTopological(graph, visited, i, order);
     }
     std::reverse(begin(order), end(order));
 }
-void DFSTopological(const std::vector<vector<int>>& graph, vector<bool>& visited, int v, vector<int>& order) {
+void DFSTopological(const std::vector<vector<int>>& graph, vector<bool>& visited, int v, vector<int>& order)
+{
     visited[v] = true;
     for (const int u : graph[v]) {
-        if(!visited[u])
+        if (!visited[u])
             DFSTopological(graph, visited, u, order);
     }
     order.push_back(v);

@@ -2,6 +2,7 @@
 #include "show.h"
 #include "TimeGuard.hpp"
 #include <cstdlib>
+#include "Sorting.hpp"
 #include "DSU.hpp"
 
 using namespace std;
@@ -1685,20 +1686,234 @@ public:
         
         return done[n];
     }
+
+    //--------------------------#2654-------------------------------------------//
+    int minOperations2654(vector<int>& nums) {
+        const int n = nums.size();
+        int res = INT_MAX, cnt1 = 0;
+        for (int i = 0; i < n; ++i)
+            cnt1 += (nums[i] == 1);
+
+        if (cnt1)
+            return n - cnt1;
+
+        for (int i = 0; i < n; ++i) {
+            int g = nums[i];
+            for (int j = i + 1; j < n; ++j) {
+                g = __gcd(g, nums[j]);
+                if (g == 1) {
+                    res = min(res, j - i + n - 1);
+                    break;
+                }
+            }
+        }
+        return res == INT_MAX ? -1 : res;
+    }
+
+    //--------------------------#3228-------------------------------------------//
+    int maxOperations(string s) {
+        int count(s[0] == '1');
+        int res(0);
+        for(size_t i(1); i < s.size(); i++) {
+            if (s[i] == '1' or i == s.size() - 1){
+                if(s[i - 1] != '1' or (i == s.size() - 1 and s[i] != '1')){
+                    res += count;
+                }
+                count++;
+            }
+        }
+        return res;
+    }
+
+    //--------------------------#2536-------------------------------------------//
+    vector<vector<int>> rangeAddQueries(int n, vector<vector<int>>& queries) {
+        vector<vector<int>> diff(n, vector<int>(n, 0));
+
+        // diff array updates
+        for (auto &q : queries) {
+            int row1 = q[0];
+            int col1 = q[1];
+            int row2 = q[2];
+            int col2 = q[3];
+
+            for (int i = row1; i <= row2; i++) {
+                diff[i][col1] += 1;
+                if (col2 + 1 < n) diff[i][col2 + 1] -= 1;
+            }
+        }
+
+        // prefix sum row-wise
+        for (int i = 0; i < n; i++) {
+            for (int j = 1; j < n; j++) {
+                diff[i][j] += diff[i][j - 1];
+            }
+        }
+
+        return diff;
+    }
+
+    //--------------------------#1437-------------------------------------------//
+    bool kLengthApart(vector<int>& nums, int k) {
+        size_t i(0);
+        while (nums[i++] == 0 and i < nums.size()){}
+        for(size_t j(0); i < nums.size(); i++) {
+            if(nums[i] == 0) {
+                j++;
+            } else {
+                if(j < k)
+                    return false;
+                j = 0;
+            }
+        }
+        return true;
+    }
+
+    //--------------------------#717-------------------------------------------//
+    bool isOneBitCharacter(vector<int>& bits) {
+        int n = bits.size();
+        for(size_t i(0); i < n; i++) {
+            if(bits[i] == 0) {
+                if(i == n - 1)
+                    return true;
+            } else {
+                ++i;
+            }
+        }
+        return false;
+    }
+
+    //--------------------------#2154-------------------------------------------//
+    int findFinalValue(vector<int>& nums, int original) {
+        std::sort(nums.begin(), nums.end());
+        auto pointer = std::lower_bound(nums.begin(), nums.end(), original);
+        while (original >= *pointer and pointer != nums.end()) {
+            if(original == *pointer)
+                original *= 2;
+            pointer++;
+        }
+        return original;
+    }
+
+    //--------------------------#1018-------------------------------------------//
+    vector<bool> prefixesDivBy5(vector<int>& nums) {
+        // 1010 -> 10
+        // 101  -> 5
+
+        vector<bool> res;
+        res.reserve(nums.size());
+        int curr = nums[0];
+        res.push_back(curr % 5 == 0);
+
+        for(size_t i(1); i < nums.size(); i++) {
+            curr *= 2;
+            curr += nums[i];
+            res.push_back(curr % 5 == 0);
+            if( curr > 100) {
+                curr %= 10;
+            }
+        }
+        return res;
+    }
+
+    #if 0
+    //--------------------------#3381-------------------------------------------//
+    long long maxSubarraySum(vector<int>& nums, int k) {
+        vector<long> prefixSum;
+        prefixSum.reserve(nums.size() + 1);
+        for(size_t i(0); i < nums.size(); i++) {
+            prefixSum[i + 1] = prefixSum[i] + nums[i];
+        }
+
+        vector<long> minPrefixSum(k, LLONG_MAX);
+        long maxSum = LLONG_MIN;
+
+        for (int i = 0; i <= nums.size(); ++i) 
+        {
+            int remainder = i % k;
+            if (i >= k)  {
+                maxSum = max(maxSum, prefixSum[i] - minPrefixSum[remainder]);
+            }
+            minPrefixSum[remainder] = min(minPrefixSum[remainder], prefixSum[i]);
+        }
+
+        return maxSum == LLONG_MIN ? 0 : maxSum;
+    }
+    #endif
+
+    //--------------------------#696-------------------------------------------//
+    int countBinarySubstrings(string s) {
+        int res(0);
+        vector<int> freq;
+        freq.reserve(s.size());
+        int count(1);
+        char prev = s[0];
+
+        for(size_t i(1); i < s.size(); i++) {
+            char curr = s[i];
+            if (curr != prev) {
+                freq.push_back(count);
+                count = 1;
+                prev = curr;
+            } else 
+                count++;
+            if (i == s.size() - 1) 
+                freq.push_back(count);
+        }
+
+        for(size_t i(1); i < freq.size(); i++) {
+            res += min(freq[i - 1], freq[i]);
+        }
+
+        return res;
+    }
+
+    //--------------------------#1582-------------------------------------------//
+    int numSpecial(vector<vector<int>>& mat) {
+        std::unordered_set<int> row, col;
+        row.reserve(mat.size());
+        col.reserve(mat.size());
+        int count(0);
+        for(size_t i(0); i < mat.size(); i++) {
+            for(size_t j(0); j < mat[0].size(); j++) {
+                if(row.contains(i) or col.contains(j)) 
+                    continue;
+                
+                if(mat[i][j] == 1) {
+                    bool checkR = checkRow(mat, i, j);
+                    bool checkC = checkCol(mat, i, j);
+                    if (checkR and checkC)
+                        count++;
+                    row.insert(i);
+                    col.insert(j);
+                }
+            }
+        }
+        return count;
+    }
+    static bool checkRow(const vector<vector<int>>& mat, const int row, const int col) {
+        for(size_t i(0); i < mat[0].size(); i++) {
+            if(i != col and mat[row][i] != 0 )
+                return false;
+        }
+        return true;
+    }
+    static bool checkCol(const vector<vector<int>>& mat, const int row, const int col) {
+        for(size_t i(0); i < mat.size(); i++) {
+            if(i != row and mat[i][col] != 0 )
+                return false;
+        }
+        return true;
+    }
 };
+
 
 int main() {
     Solution solution;
     TimeGuard timer("DailyTasksLeetcode.cpp");
     //system("cls");
     
-    
-    vector<int> skill{1,5,2,4};
-    vector<int> mana{5,1,4,2};
-    sh::Print(solution.minTime(skill, mana));
-   
-    
-
+    std::vector<std::vector<int>> vec{{0,1,0},{0,0,1},{1,0,0}};
+    sh::Print(solution.numSpecial(vec));
 }
 
 

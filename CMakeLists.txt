@@ -27,11 +27,13 @@ set(This Education)
 #==================================================
 add_executable(Main 
     main.cpp
-    point.cpp
-    point.h
+    common/point.cpp
+    common/point.h
     utils/TimeGuard.cpp
     utils/TimeGuard.hpp
     utils/show.h
+    utils/ListNode.h
+    utils/ListNode.cpp
     algo/DSU.hpp
     algo/DSU.cpp
     algo/Trie.hpp
@@ -40,14 +42,10 @@ add_executable(Main
     algo/Sorting.cpp
 )
 
-target_include_directories(Main INTERFACE
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils
-    ${CMAKE_CURRENT_SOURCE_DIR}/algo
-)
-
 target_include_directories(Main PRIVATE
     utils
     algo
+    common
 )
 
 #==================================================
@@ -55,11 +53,6 @@ add_executable(LeetCode_100
     leetcode_/leetcode_100.cpp
     ${LeetCodeCommonHeaders}
     ${LeetCodeCommonSources}
-)
-
-target_include_directories(LeetCode_100 INTERFACE
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils
-    ${CMAKE_CURRENT_SOURCE_DIR}/leetcode_
 )
 
 target_include_directories(LeetCode_100 PRIVATE
@@ -74,11 +67,6 @@ add_executable(LeetCode_200
     ${LeetCodeCommonSources}
 )
 
-target_include_directories(LeetCode_200 INTERFACE
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils
-    ${CMAKE_CURRENT_SOURCE_DIR}/leetcode_
-)
-
 target_include_directories(LeetCode_200 PRIVATE
     utils
     leetcode_
@@ -89,11 +77,6 @@ add_executable(LeetCode_300
     leetcode_/leetcode_300.cpp
     ${LeetCodeCommonHeaders}
     ${LeetCodeCommonSources}
-)
-
-target_include_directories(LeetCode_300 INTERFACE
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils
-    ${CMAKE_CURRENT_SOURCE_DIR}/leetcode_
 )
 
 target_include_directories(LeetCode_300 PRIVATE
@@ -108,10 +91,6 @@ add_executable(LeetCode_400
     ${LeetCodeCommonSources}
 )
 
-target_include_directories(LeetCode_400 INTERFACE
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils
-    ${CMAKE_CURRENT_SOURCE_DIR}/leetcode_
-)
 
 target_include_directories(LeetCode_400 PRIVATE
     utils
@@ -128,12 +107,6 @@ add_executable(DailyTasksLeetcode
 
 )
 
-target_include_directories(DailyTasksLeetcode INTERFACE
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils
-    ${CMAKE_CURRENT_SOURCE_DIR}/leetcode_
-    ${CMAKE_CURRENT_SOURCE_DIR}/algo
-)
-
 target_include_directories(DailyTasksLeetcode PRIVATE
     utils
     leetcode_
@@ -145,11 +118,6 @@ add_executable(LeetCode_500
     leetcode_/leetcode_500.cpp
     ${LeetCodeCommonHeaders}
     ${LeetCodeCommonSources}
-)
-
-target_include_directories(LeetCode_500 INTERFACE
-    ${CMAKE_CURRENT_SOURCE_DIR}/utils
-    ${CMAKE_CURRENT_SOURCE_DIR}/leetcode_
 )
 
 target_include_directories(LeetCode_500 PRIVATE

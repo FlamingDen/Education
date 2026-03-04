@@ -2892,7 +2892,34 @@ public:
         }
         return paths.back().back();
     }
-    //================================================================================================================================================
+    
+    //--------------------------#29---------------------------------------------//
+    int divide(int dividend, int divisor) {
+        if (dividend == divisor) return 1;
+        if (dividend == INT_MIN && divisor == -1) return INT_MAX;
+        if (divisor == 1) return dividend;
+
+        unsigned int ans = 0;
+        int sign = (dividend > 0 and divisor < 0) or (dividend < 0 and divisor > 0) ? -1 : 1;
+        
+        long long n = abs((long long)dividend);
+        long long d = abs((long long)divisor);
+
+        while (n >= d) {
+            int count = 0;
+            while (n > (d << (count + 1)))
+                count++;
+            n -= d << count;
+            ans += 1 << count;
+        }
+
+        if (ans == (1 << 31) && sign == 1) return INT_MAX;
+
+        return ans * sign;
+    }
+
+//================================================================================================================================================
+
 private:
     bool isPalindrom_5(const std::string& str, int start, int end) {
         int l = start, r = end;
