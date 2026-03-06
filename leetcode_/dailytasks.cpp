@@ -1904,6 +1904,47 @@ public:
         }
         return true;
     }
+
+    //--------------------------#1784-------------------------------------------//
+    bool checkOnesSegment(string s) {
+        int segments(1);
+        char prev = s[0];
+        for(size_t i(1); i < s.size() and segments < 2; i++) {
+            char curr = s[i];
+            if(prev == '0' and curr == '1'){
+                segments++;
+            }
+            prev = curr;
+        }
+        return segments == 1 ? true : false;
+    }
+
+    //--------------------------#1869-------------------------------------------//
+    bool checkZeroOnes(string s) {
+        short max_zeros(0), max_ones(0);
+        char curr_el(s[0]);
+        short count(0);
+        for(size_t i(0); i < s.size(); i++) {
+            char curr = s[i];
+            if(curr == curr_el){
+                count++;
+            } else {
+                if(curr_el == '1')
+                    max_ones = max(max_ones, count);
+                else
+                    max_zeros= max(max_zeros, count);
+                
+                curr_el = curr;
+                count = 1;
+            }
+        }
+        if(curr_el == '1')
+            max_ones = max(max_ones, count);
+        else
+            max_zeros= max(max_zeros, count);
+
+        return max_ones > max_zeros ? true : false;
+    }
 };
 
 
@@ -1912,8 +1953,7 @@ int main() {
     TimeGuard timer("DailyTasksLeetcode.cpp");
     //system("cls");
     
-    std::vector<std::vector<int>> vec{{0,1,0},{0,0,1},{1,0,0}};
-    sh::Print(solution.numSpecial(vec));
+    sh::Print(solution.checkZeroOnes("111000"));
 }
 
 

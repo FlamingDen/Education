@@ -32,25 +32,31 @@ class D3;
 class B {
     int b;
 public:
-    B() : b(0) {
+    B() : b(0)
+    {
         std::cout << "Конструктор B()" << std::endl;
     }
-    B(const B& other) {
+    B(const B& other)
+    {
         if (this == &other)
             return;
         this->b = other.b;
         std::cout << "Вызывался конструктор копирования B(B &other)" << std::endl;
     }
-    B(int b) : b(b) {
+    B(int b) : b(b)
+    {
         std::cout << "Конструктор B()" << std::endl;
     }
-    virtual ~B() {
+    virtual ~B()
+    {
         std::cout << "Деструктор ~B()" << std::endl;
     }
-    int get_b() const {
+    int get_b() const
+    {
         return b;
     };
-    virtual void show() {
+    virtual void show()
+    {
         std::cout << "B : " << get_b() << std::endl;
     }
 };
@@ -58,22 +64,28 @@ public:
 class D1 : virtual public B {
     int d1;
 public:
-    D1() : B(), d1(0) {
+    D1() : B(), d1(0)
+    {
         std::cout << "Конструктор D1()" << std::endl;
     }
-    D1(int b, int d) : B(b), d1(d) {
+    D1(int b, int d) : B(b), d1(d)
+    {
         std::cout << "Конструктор D1()" << std::endl;
     }
-    ~D1() {
+    ~D1()
+    {
         std::cout << "Декструткор ~D1()" << std::endl;
     }
-    int get_d1() const {
+    int get_d1() const
+    {
         return this->d1;
     };
-    void show() override {
+    void show() override
+    {
         std::cout << "D : " << this->get_b() << "\t" << d1 << std::endl;
     }
-    int mul() const {
+    int mul() const
+    {
         return d1 * get_b();
     };
 };
@@ -81,23 +93,29 @@ public:
 class D2 : virtual public B {
     int d2;
 public:
-    D2() : B(), d2(0) {
+    D2() : B(), d2(0)
+    {
         std::cout << "Конструктор D2()" << std::endl;
     }
-    D2(int b, int d) : B(b), d2(d) {
+    D2(int b, int d) : B(b), d2(d)
+    {
         std::cout << "Конструктор D2()" << std::endl;
     }
-    ~D2() {
+    ~D2()
+    {
         std::cout << "Декструткор ~D2()" << std::endl;
     }
-    int get_d2() const {
+    int get_d2() const
+    {
         return this->d2;
     };
-    void show() override {
+    void show() override
+    {
         std::cout << "D : " << this->get_b() << "\t" << d2 << std::endl;
     }
 
-    int mul() const {
+    int mul() const
+    {
         return d2 * get_b();
     };
 };
@@ -105,19 +123,24 @@ public:
 class D3 : public D1, public D2 {
     int d3;
 public:
-    D3() : d3(0) {
+    D3() : d3(0)
+    {
         std::cout << "Конструктор D3()" << std::endl;
     }
-    D3(int b, int d) : d3(d) {
+    D3(int b, int d) : d3(d)
+    {
         std::cout << "Конструктор D3()" << std::endl;
     }
-    ~D3() {
+    ~D3()
+    {
         std::cout << "Декструткор ~D3()" << std::endl;
     }
-    int get_d3() const {
+    int get_d3() const
+    {
         return this->d3;
     };
-    void show() override {
+    void show() override
+    {
         std::cout << "D3 : " << "\t" << this->get_b() << "\t" << this->get_d1() << "\t" << this->get_d2() << "\t" << d3 << std::endl;
     }
 };
@@ -126,13 +149,16 @@ public:
 class Base {
     int a, b;
 public:
-    Base() : a(0), b(0) {
+    Base() : a(0), b(0)
+    {
         std::cout << "Base()" << std::endl;
     }
-    Base(int a) : a(a), b(0) {
+    Base(int a) : a(a), b(0)
+    {
         std::cout << "Base()" << std::endl;
     }
-    virtual ~Base() {
+    virtual ~Base()
+    {
         std::cout << "~Base()" << std::endl;
     }
     int getA() { return a; }
@@ -144,26 +170,31 @@ class Child final : public  Base
 {
     //Timer t{"Field in Child"};
 public:
-    Child() {
+    Child()
+    {
         std::cout << "Child()" << std::endl;
     }
-    ~Child() {
+    ~Child()
+    {
         std::cout << "~Child()" << std::endl;
     }
-    virtual void show() override {
+    virtual void show() override
+    {
         std::cout << getB() * getA() << std::endl;
     }
 };
 
 //==============================================================================//
-std::istream& manip(std::istream& out) {
+std::istream& manip(std::istream& out)
+{
     out.width(20);
     out.precision(5);
     out.fill('-');
     return out;
 }
 
-void check_status(std::ostream& in) {
+void check_status(std::ostream& in)
+{
     std::iostream::iostate i = in.rdstate();
     bool a = i & std::_S_goodbit;
     a = i & std::iostream::badbit;
@@ -184,11 +215,13 @@ void check_status(std::ostream& in) {
 }
 
 template<typename T>
-T sum(T a, T b) {
+T sum(T a, T b)
+{
     return a + b;
 }
 
-double divide(double a, double b) {
+double divide(double a, double b)
+{
     try
     {
         if (!b) throw b;
@@ -225,10 +258,12 @@ class G {
 class N {
     int b;
 public:
-    N() : b(0) {
+    N() : b(0)
+    {
         std::cout << "N()" << std::endl;
     }
-    ~N() {
+    ~N()
+    {
         std::cout << "~N()" << std::endl;
     }
 };
@@ -248,24 +283,29 @@ public:
 // test(a);
 // std::cout << "  int 2 : " << std::endl;
 // test(b);
-void func(float&& a) {
+void func(float&& a)
+{
     std::cout << "f&& " << a << std::endl;
 }
 
-void func(int&& a) {
+void func(int&& a)
+{
     std::cout << "i&& " << a << std::endl;
 }
 
-void func(float& a) {
+void func(float& a)
+{
     std::cout << "f& " << a << std::endl;
 }
 
-void func(int& a) {
+void func(int& a)
+{
     std::cout << "i& " << a << std::endl;
 }
 
 template <typename T>
-void test(T&& v) {
+void test(T&& v)
+{
     std::cout << "Common -> ";
     func(v);
     std::cout << "std::move -> ";
@@ -281,17 +321,20 @@ void foo(int& v) { std::cout << "int&  " << v << std::endl; }
 void foo(int&& v) { std::cout << "int&& " << v << std::endl; }
 
 template<typename T>
-std::remove_reference_t<T>&& custom_move(T&& value) {
+std::remove_reference_t<T>&& custom_move(T&& value)
+{
     return static_cast<std::remove_reference_t<T>&&>(value);
 }
 
 template<typename T>
-T&& custom_forward(std::remove_reference_t<T>& value) {
+T&& custom_forward(std::remove_reference_t<T>& value)
+{
     return static_cast<T&&>(value);
 }
 
 template<typename T>
-T&& custom_forward(std::remove_reference_t<T>&& value) {
+T&& custom_forward(std::remove_reference_t<T>&& value)
+{
     static_assert(!std::is_lvalue_reference_v<T>);
     return static_cast<T&&>(value);
 }
@@ -301,7 +344,8 @@ std::mutex mt;
 int counter{ 0 };
 std::condition_variable cv;
 
-void processing() {
+void processing()
+{
     int c;
     {
         std::unique_lock<std::mutex> lk{ mt };
@@ -311,7 +355,8 @@ void processing() {
     std::cout << "-";
 }
 
-void prepare() {
+void prepare()
+{
     {
         std::lock_guard<std::mutex> lk{ mt };
         ++counter;
@@ -320,16 +365,31 @@ void prepare() {
     std::cout << "+";
 }
 
+
+std::vector<int> failure_func(const std::string& str)
+{
+    std::vector<int> res(str.size());
+    for(size_t i(1), j(0); i < str.size(); i++) {
+        j = res[i - 1];
+        while (j > 0 and str[j] != str[i]) {
+            j = res[j - 1];
+        }
+        
+        if (str[j] == str[i]) {
+            res[i] = j + 1;
+        } 
+    }
+    return res;
+}
+
+
 //==============================================================================//
-int main() {
+int main()
+{
     TimeGuard timer("Main.cpp");
 
-    ListNode* head = new ListNode(1, new ListNode(2, new ListNode(3, new ListNode(4, new ListNode(5)))));
-    sh::showList(head);
-    head = util::reverseListRecursive(head);
-    sh::showList(head);
-    head = util::reverseListIterable(head);
-    sh::showList(head);
-    util::deleteList(head);
+    std::string str = "ABABAA";
+    sh::ShowContainer(failure_func(str));
+
 }
 
