@@ -124,3 +124,5 @@ target_include_directories(LeetCode_500 PRIVATE
     utils
     leetcode_
 )
+#==================================================
+add_subdirectory(leetcode_/500-700)

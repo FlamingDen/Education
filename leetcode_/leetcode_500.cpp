@@ -17,7 +17,8 @@ class Solution {
 public:
     //--------------------------#401--------------------------------------------//
     // sh::showContainer(solution.readBinaryWatch_401(4));
-    vector<string> readBinaryWatch_401(int n) {
+    vector<string> readBinaryWatch_401(int n)
+    {
         if (n > 8)
             return {};
 
@@ -58,7 +59,8 @@ public:
         //             rs.emplace_back(to_string(h) + (m < 10 ? ":0" : ":") + to_string(m));
         // return rs;
     }
-    vector<int> GetHours(int n) {
+    vector<int> GetHours(int n)
+    {
         if (n == 0)
             return { 0 };
         std::vector<int> nums{ 8, 4, 2, 1 };
@@ -66,7 +68,8 @@ public:
         GetHoursHelp(nums, res, n, 0, 0);
         return res;
     }
-    void GetHoursHelp(const std::vector<int>& nums, vector<int>& res, int n, int curr, int ind) {
+    void GetHoursHelp(const std::vector<int>& nums, vector<int>& res, int n, int curr, int ind)
+    {
         if (n == 0 and curr < 12)
         {
             res.push_back(curr);
@@ -78,7 +81,8 @@ public:
             GetHoursHelp(nums, res, n - 1, curr + nums[i], i + 1);
         }
     }
-    vector<int> GetMinutes(int n) {
+    vector<int> GetMinutes(int n)
+    {
         if (n == 0)
         {
             return {};
@@ -89,7 +93,8 @@ public:
         GetMinutesHelp(nums, res, n, 0, 0);
         return res;
     }
-    void GetMinutesHelp(const std::vector<int>& nums, vector<int>& res, int n, int curr, int ind) {
+    void GetMinutesHelp(const std::vector<int>& nums, vector<int>& res, int n, int curr, int ind)
+    {
         if (n == 0 and curr <= 59)
         {
             res.push_back(curr);
@@ -103,10 +108,12 @@ public:
     }
 
     //--------------------------#404--------------------------------------------//
-    int sumOfLeftLeaves_404(TreeNode* root) {
+    int sumOfLeftLeaves_404(TreeNode* root)
+    {
         return GetSumOfLeftLeaves(root, false);
     }
-    int GetSumOfLeftLeaves(TreeNode* root, bool left) {
+    int GetSumOfLeftLeaves(TreeNode* root, bool left)
+    {
         if (!root)
             return 0;
 
@@ -129,7 +136,8 @@ public:
     //     {5,2}
     // };
     // sh::showVecVec(solution.reconstructQueue_406(people));
-    vector<vector<int>> reconstructQueue_406(vector<vector<int>>& people) {
+    vector<vector<int>> reconstructQueue_406(vector<vector<int>>& people)
+    {
         vector<vector<int>> res;
         res.reserve(people.size());
         std::sort(
@@ -148,7 +156,8 @@ public:
 
     //--------------------------#409--------------------------------------------//
     // sh::print(solution.longestPalindrome_409("nadetheearth"));
-    int longestPalindrome_409(string s) {
+    int longestPalindrome_409(string s)
+    {
         map<char, int> m;
         for (size_t i(0); i < s.size(); ++i)
         {
@@ -173,7 +182,8 @@ public:
 
     //--------------------------#412--------------------------------------------//
     // sh::showContainer(solution.fizzBuzz_412(3));
-    vector<string> fizzBuzz_412(int n) {
+    vector<string> fizzBuzz_412(int n)
+    {
         vector<string> res(n);
         for (size_t i(1); i <= n; ++i)
         {
@@ -181,7 +191,8 @@ public:
         }
         return res;
     }
-    string SetFizzBuzz(int i) {
+    string SetFizzBuzz(int i)
+    {
         if (i % 15 == 0)
             return "FizzBuzz";
         if (i % 3 == 0)
@@ -194,7 +205,8 @@ public:
     //--------------------------#413--------------------------------------------//
     // std::vector<int> nums{ 1,2,3,8,9,10 };
     // sh::print(solution.numberOfArithmeticSlices_413(nums));
-    int numberOfArithmeticSlices_413(vector<int>& nums) {
+    int numberOfArithmeticSlices_413(vector<int>& nums)
+    {
         if (nums.size() < 3)
             return 0;
         int res(0), k(2), start(0);
@@ -217,7 +229,8 @@ public:
     //--------------------------#414--------------------------------------------//
     // vector<int> nums{2,2,3,2};
     // sh::print(solution.thirdMax_414(nums));
-    int thirdMax_414(vector<int>& nums) {
+    int thirdMax_414(vector<int>& nums)
+    {
         sort(begin(nums), end(nums));
         if (nums.size() < 3)
             return nums.back();
@@ -234,7 +247,8 @@ public:
 
     //--------------------------#415--------------------------------------------//
     // sh::print(solution.addStrings_415("11", "123"));
-    string addStrings_415(string num1, string num2) {
+    string addStrings_415(string num1, string num2)
+    {
         string res;
         int p1(num1.size() - 1), p2(num2.size() - 1);
         int remn(0);
@@ -270,7 +284,8 @@ public:
     }
 
     //--------------------------#416--------------------------------------------//
-    bool canPartition(vector<int>& nums) {
+    bool canPartition(vector<int>& nums)
+    {
         int sum = std::accumulate(begin(nums), end(nums), 0);
         if (sum & 1 == 1) {
             return false;
@@ -297,7 +312,8 @@ public:
     //     {5,1,1,2,4}
     // };
     // sh::showVecVec(solution.pacificAtlantic_417(heights));
-    vector<vector<int>> pacificAtlantic_417(vector<vector<int>>& heights) {
+    vector<vector<int>> pacificAtlantic_417(vector<vector<int>>& heights)
+    {
         vector<vector<int>> res;
         int n = heights.size();
         int m = heights[0].size();
@@ -326,7 +342,8 @@ public:
 
         return res;
     }
-    void dfs(vector<vector<int>>& h, vector<vector<bool>>& vis, int i, int j, int oi, int oj) {
+    void dfs(vector<vector<int>>& h, vector<vector<bool>>& vis, int i, int j, int oi, int oj)
+    {
 
         if (i < 0 || i >= h.size() || j < 0 || j >= h[0].size() || vis[i][j])
             return;
@@ -347,7 +364,8 @@ public:
     //     {'.','X','.','X'}
     // };
     // sh::print(solution.countBattleships(board));
-    int countBattleships_419(vector<vector<char>>& board) {
+    int countBattleships_419(vector<vector<char>>& board)
+    {
         vector<vector<bool>> vis(board.size(), vector<bool>(board[0].size()));
         int res(0);
         for (size_t i(0); i < board.size(); i++) {
@@ -361,7 +379,8 @@ public:
         }
         return res;
     }
-    void ShipDFS(vector<vector<char>>& board, vector<vector<bool>>& vis, std::pair<int, int> point) {
+    void ShipDFS(vector<vector<char>>& board, vector<vector<bool>>& vis, std::pair<int, int> point)
+    {
         auto [x, y] = point;
         vis[x][y] = true;
         for (size_t i(0); i < SHIFTS.size(); i++) {
@@ -412,7 +431,8 @@ public:
     */
 
     //--------------------------#441--------------------------------------------//
-    int arrangeCoins_441(int n) {
+    int arrangeCoins_441(int n)
+    {
         int res(0);
         int coins(1);
         while (n >= coins) {
@@ -425,7 +445,8 @@ public:
     //--------------------------#442--------------------------------------------//
     // vector<int> nums{ 2,1 };
     // sh::ShowContainer(solution.findDuplicates_442(nums));
-    vector<int> findDuplicates_442(vector<int>& nums) {
+    vector<int> findDuplicates_442(vector<int>& nums)
+    {
         vector<int>ans;
         for (int i = 0; i < nums.size(); i++) {
             int x = abs(nums[i]);
@@ -440,7 +461,8 @@ public:
     //--------------------------#443--------------------------------------------//
     // vector<char> chars{'a','b','c'};
     // sh::Print(solution.compress(chars));
-    int compress(vector<char>& chars) {
+    int compress(vector<char>& chars)
+    {
         int r(0), len(0);
         char curr_ch(chars[0]);
         for (size_t i(0); i < chars.size(); i++) {
@@ -477,7 +499,8 @@ public:
     //--------------------------#448--------------------------------------------//
     // vector<int> nums{4,3,2,7,8,2,3,1};
     // sh::ShowContainer(solution.findDisappearedNumbers_448(nums));
-    vector<int> findDisappearedNumbers_448(vector<int>& nums) {
+    vector<int> findDisappearedNumbers_448(vector<int>& nums)
+    {
         vector<int> res;
         for (size_t i(0); i < nums.size(); i++) {
             int ind = std::abs(nums[i]) - 1;
@@ -495,7 +518,8 @@ public:
     // TreeNode* root = new TreeNode(5, new TreeNode(3, new TreeNode(2), new TreeNode(4)), new TreeNode(6, nullptr, new TreeNode(7)));
     // sh::showTree(root);
     // sh::showTree(solution.deleteNode_450(root, 3));
-    TreeNode* deleteNode_450(TreeNode* root, int key) {
+    TreeNode* deleteNode_450(TreeNode* root, int key)
+    {
         TreeNode dum(0, root, nullptr);
         TreeNode* dummy = &dum;
 
@@ -531,7 +555,8 @@ public:
         }
         return dummy->left;
     }
-    TreeNode* FindNodeToDel(TreeNode* root, int key) {
+    TreeNode* FindNodeToDel(TreeNode* root, int key)
+    {
         if (!root or (!root->left and !root->right))
             return nullptr;
 
@@ -546,7 +571,8 @@ public:
     }
 
     //--------------------------#451--------------------------------------------//
-    string frequencySort_451(string s) {
+    string frequencySort_451(string s)
+    {
         string res;
         unordered_map<char, int> m;
         for (size_t i(0); i < s.size(); i++) {
@@ -581,7 +607,8 @@ public:
     //     {2,8}
     // };
     // sh::Print(solution.findMinArrowShots_452(points));
-    int findMinArrowShots_452(vector<vector<int>>& points) {
+    int findMinArrowShots_452(vector<vector<int>>& points)
+    {
         std::sort(begin(points), end(points), [](const auto& v1, const auto& v2) {
             return v1[0] < v2[0];
             });
@@ -601,14 +628,16 @@ public:
     }
 
     //--------------------------#453--------------------------------------------//
-    int minMoves_453(vector<int>& nums) {
+    int minMoves_453(vector<int>& nums)
+    {
         int min = *std::min_element(begin(nums), end(nums));
         int sum = std::accumulate(begin(nums), end(nums), 0);
         return sum - nums.size() * min;
     }
 
     //--------------------------#455--------------------------------------------//
-    int findContentChildren_455(vector<int>& g, vector<int>& s) {
+    int findContentChildren_455(vector<int>& g, vector<int>& s)
+    {
         int pg(0), ps(0);
         sort(begin(g), end(g));
         sort(begin(s), end(s));
@@ -625,7 +654,8 @@ public:
     //--------------------------#456--------------------------------------------//
     // vector<int> nums{3,5,0,3,4};
     // sh::Print(solution.find132pattern(nums));
-    bool find132pattern_456(vector<int>& nums) {
+    bool find132pattern_456(vector<int>& nums)
+    {
         vector<int> arr(begin(nums), end(nums));
         for (size_t i(1); i < nums.size(); i++) {
             arr[i] = min(nums[i - 1], arr[i - 1]);
@@ -645,14 +675,15 @@ public:
     }
 
     //--------------------------#457--------------------------------------------//
-    bool circularArrayLoop_457(vector<int>& nums) {
+    bool circularArrayLoop_457(vector<int>& nums)
+    {
         int n = nums.size();
         for (int i = 0;i < n;i++) {
             int slow = i;
             int fast = next(nums, i);
             while (nums[slow] * nums[fast] > 0 && nums[slow] * nums[next(nums, fast)] > 0) {
                 if (slow == fast) {
-                    if (slow != next(nums, slow)) 
+                    if (slow != next(nums, slow))
                         return true;
                     break;
                 }
@@ -662,19 +693,22 @@ public:
         }
         return false;
     }
-    int next(vector<int>& nums, int i) {
+    int next(vector<int>& nums, int i)
+    {
         int n = nums.size();
         return (((i + nums[i]) % n) + n) % n;
     }
 
     //--------------------------#459--------------------------------------------//
-    bool repeatedSubstringPattern(string s) {
+    bool repeatedSubstringPattern(string s)
+    {
         string concatenated = s + s;
         return concatenated.substr(1, concatenated.length() - 2).find(s) != string::npos;
     }
 
     //--------------------------#461--------------------------------------------//
-    int hammingDistance(int x, int y) {
+    int hammingDistance(int x, int y)
+    {
         // int res(0);
         // for(size_t i(0); i < 32; i++) {
         //     if(((x >> i) & 1) == ((y >> i) & 1))
@@ -689,22 +723,81 @@ public:
     //--------------------------#462--------------------------------------------//
     // vector<int> nums{1,2,3};
     // sh::Print(solution.minMoves2(nums));
-    int minMoves2(vector<int>& nums) {
+    int minMoves2(vector<int>& nums)
+    {
         int n = nums.size(), steps = 0;
-        nth_element(nums.begin(), nums.begin()+(n/2), nums.end()); //Fixing ths median element
-        int median = nums[n/2];
-        for(int i=0; i<n; i++){
+        nth_element(nums.begin(), nums.begin() + (n / 2), nums.end()); //Fixing ths median element
+        int median = nums[n / 2];
+        for (int i = 0; i < n; i++) {
             steps += abs(nums[i] - median);
         }
         return steps;
     }
+
+    //--------------------------#402--------------------------------------------//
+    string removeKdigits(string num, int k)
+    {
+        std::stack<char> st;
+        for (auto& digit : num)
+        {
+            while (!st.empty() and k > 0 and st.top() > digit)
+            {
+                st.pop();
+                k--;
+            }
+            st.push(digit);
+        }
+        while (k > 0 && !st.empty()) {
+            st.pop();
+            k--;
+        }
+        string res;
+        res.reserve(num.size() - k);
+        while (!st.empty()) {
+            res += (st.top());
+            st.pop();
+        }
+    std:;reverse(res.begin(), res.end());
+        size_t pos = res.find_first_not_of('0');
+        res = (pos == std::string::npos) ? "0" : res.substr(pos);
+        return res;
+    }
+
+    //--------------------------#405--------------------------------------------//
+    string toHex(int num)
+    { 
+        if(num==0){
+            return "0";
+        }
+        string s="";
+        int n;
+        char c;
+        for(int i=0; i<8; i++){
+            n=(num&15);
+            if(n<10){
+                c=char(n+48);
+            }
+            else{
+                c=char(n+87);
+            }
+            s=c+s;
+            num=num>>4;
+        }
+        while(s[0]=='0'){
+            s.erase(s.begin());
+        }
+        return s;
+        
+    }
+
+    
 };
 
-int main() {
+int main()
+{
     Solution solution;
     TimeGuard timer("LeetCode_500.cpp");
 
-    
-
+    sh::Print(solution.toHex(-1));
 
 }

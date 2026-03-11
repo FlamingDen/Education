@@ -1945,6 +1945,24 @@ public:
 
         return max_ones > max_zeros ? true : false;
     }
+
+    //--------------------------#1009-------------------------------------------//
+    static
+    int getMSBplace(int x)
+    {
+        for (size_t i(31); i + 1 > 0; i--) {
+            if ((x & (1 << i))) {
+                return i;
+            }
+        }
+        return 0;
+    }
+    int bitwiseComplement(int n)
+    {
+        int msb_ind = getMSBplace(n);
+        int shift = 31 - msb_ind;
+        return abs(~n << shift >> shift);
+    }
 };
 
 
