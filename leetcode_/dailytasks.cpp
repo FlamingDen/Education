@@ -1963,6 +1963,76 @@ public:
         int shift = 31 - msb_ind;
         return abs(~n << shift >> shift);
     }
+
+    //--------------------------#3653-------------------------------------------//
+    int xorAfterQueries(vector<int>& nums, vector<vector<int>>& queries) {
+        constexpr int MOD = 1000000007;
+        for(size_t i(0); i < queries.size(); ++i) {
+            int l = queries[i][0];
+            int r = queries[i][1];
+            int k = queries[i][2];
+            int v = queries[i][3] % MOD;
+            for(size_t j(l); j <= r ; j += k) {
+                long long tmp = nums[j];
+                nums[j] = (tmp * v) % MOD;
+            }
+        }
+        int res(0);
+        for(size_t i(0); i < nums.size(); ++i) {
+            res ^= nums[i];
+        }
+        return res;
+    }
+    
+    //--------------------------#3740-------------------------------------------//
+    int minimumDistance(vector<int>& nums) {
+        size_t n = nums.size();
+
+        std::unordered_map<int, vector<int>> pl;
+        pl.reserve(n);
+
+        for(size_t i(0); i < n; ++i) {
+            pl[nums[i]].push_back(i);
+        }
+        
+        int res{std::numeric_limits<int>::max()};
+        for(auto it = pl.begin(), it_end = pl.end(); it != it_end; ++it) {
+            if (it->second.size() < 3)
+                continue;
+
+            auto& arr = it->second;
+            for(size_t i{0}, k{2}; k < arr.size();) {
+                res = min(res, arr[k++] - arr[i++]);
+            }
+        }
+        return res == std::numeric_limits<int>::max() ? -1 : res * 2;
+    }
+
+    //--------------------------#3660-------------------------------------------//
+    vector<int> maxValue(vector<int>& nums) {
+        int n = nums.size();
+        vector<int> pre(n), suf(n), res(n);
+        pre[0] = nums[0];
+        for (int i = 1; i < n; i++) {
+            pre[i] = max(pre[i - 1], nums[i]);
+        }
+
+        suf[n - 1] = nums[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            suf[i] = min(suf[i + 1], nums[i]);
+        }
+
+        res[n - 1] = pre[n - 1];
+        for (int i = n - 2; i >= 0; i--) {
+            if (pre[i] > suf[i + 1]) {
+                res[i] = res[i + 1];
+            } else {
+                res[i] = pre[i];
+            }
+        }
+        return res;
+    }
+
 };
 
 
@@ -1971,7 +2041,14 @@ int main() {
     TimeGuard timer("DailyTasksLeetcode.cpp");
     //system("cls");
     
-    sh::Print(solution.checkZeroOnes("111000"));
+    std::vector<int> vec{30,21,5,35,24}; // 
+    // 35, 35, 
+    // смотрю куда могу прыгнуть вправо 
+    //      могу -> смотрю куда прыгнул это и есть ответ(см. уже в ответах)
+    //      не могу -> 
+    sh::ShowContainer(solution.maxValue(vec));
+
+    
 }
 
 

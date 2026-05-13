@@ -27,8 +27,6 @@ set(This Education)
 #==================================================
 add_executable(Main 
     main.cpp
-    common/point.cpp
-    common/point.h
     utils/TimeGuard.cpp
     utils/TimeGuard.hpp
     utils/show.h
@@ -45,7 +43,6 @@ add_executable(Main
 target_include_directories(Main PRIVATE
     utils
     algo
-    common
 )
 
 #==================================================
