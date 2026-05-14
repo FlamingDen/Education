@@ -4,6 +4,7 @@
 #include <cstdlib>
 #include "Sorting.hpp"
 #include "DSU.hpp"
+#include <fmt/ranges.h> 
 
 using namespace std;
 
@@ -2033,6 +2034,17 @@ public:
         return res;
     }
 
+    //--------------------------#2784-------------------------------------------//
+    bool isGood(vector<int>& nums) {
+        const int n = nums.size() - 1;
+        std::sort(nums.begin(), nums.end());
+        for(size_t i(0); i < nums.size() - 1; i++) {
+            if (nums[i] - 1 != i)
+                return false;
+        }
+        return nums.back() == n ? true : false;
+    }
+
 };
 
 
@@ -2041,12 +2053,8 @@ int main() {
     TimeGuard timer("DailyTasksLeetcode.cpp");
     //system("cls");
     
-    std::vector<int> vec{30,21,5,35,24}; // 
-    // 35, 35, 
-    // смотрю куда могу прыгнуть вправо 
-    //      могу -> смотрю куда прыгнул это и есть ответ(см. уже в ответах)
-    //      не могу -> 
-    sh::ShowContainer(solution.maxValue(vec));
+    std::vector v{1,2,3,4};
+    fmt::print("{}\n", solution.isGood(v));
 
     
 }

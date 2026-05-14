@@ -1,6 +1,7 @@
 ﻿#include "ForLeetcode.h"
 #include "show.h"
 #include "TimeGuard.hpp"
+#include "fmt/ranges.h"
 
     //--------------------------#211--------------------------------------------//
     // WordDictionary* wordDictionary = new WordDictionary();
@@ -826,6 +827,25 @@ public:
         }
         return res;
     }
+
+    //--------------------------#274--------------------------------------------//
+    // [3,0,6,1,5] 
+    // [0,1,3,5,6] h == 0 size 5
+    // [0,1,3,5,6] h == 1 size 4
+    // [0,1,3,5,6] h == 3 size 3
+    // [0,1,3,5,6] h == 5 size 2
+    int hIndex(std::vector<int>& citations) {
+        std::sort(citations.begin(), citations.end());
+        auto n = citations.size();
+        if(citations[0] >= n)
+            return n;
+
+        int ans(0);
+        for(size_t i(0); i < n; i++) {
+            ans = std::max(ans, std::min(citations[i], static_cast<int>(n - i)));
+        }
+        return ans;
+    }
 };
 
 
@@ -833,7 +853,8 @@ int main(){
     Solution solution;   
     TimeGuard timer("LeetCode_300.cpp");
 
-    
+    std::vector v{3,0,6,1,5};
+    fmt::print("{}", solution.hIndex(v));
 
 
 }

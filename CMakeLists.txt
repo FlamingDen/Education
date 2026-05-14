@@ -1,8 +1,12 @@
 cmake_minimum_required(VERSION 3.25)
+project(Education LANGUAGES CXX)
 
 set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+find_package(fmt CONFIG REQUIRED)
+
+# Общие файлы
 set(LeetCodeCommonHeaders
     utils/ForLeetcode.h
     utils/show.h
@@ -18,108 +22,28 @@ set(LeetCodeCommonSources
     utils/TimeGuard.cpp
 )
 
-project(Education  
-    LANGUAGES CXX
+# Функция для создания цели с fmt
+function(add_leetcode_target TARGET_NAME SOURCE_FILE)
+    add_executable(${TARGET_NAME}
+        ${SOURCE_FILE}
+        ${LeetCodeCommonHeaders}
+        ${LeetCodeCommonSources}
+        ${ARGN}  # Дополнительные файлы, все остальные аргументы (3-й, 4-й, 5-й и т.д.)
+    )
+    target_include_directories(${TARGET_NAME} PRIVATE utils leetcode_ algo)
+    target_link_libraries(${TARGET_NAME} PRIVATE fmt::fmt)
+endfunction()
+
+# Создаем цели
+add_leetcode_target(Main main.cpp 
+    algo/DSU.cpp algo/DSU.hpp algo/Trie.hpp algo/Trie.cpp 
+    algo/Sorting.hpp algo/Sorting.cpp
 )
 
-set(This Education)
-
-#==================================================
-add_executable(Main 
-    main.cpp
-    utils/TimeGuard.cpp
-    utils/TimeGuard.hpp
-    utils/show.h
-    utils/ListNode.h
-    utils/ListNode.cpp
-    algo/DSU.hpp
-    algo/DSU.cpp
-    algo/Trie.hpp
-    algo/Trie.cpp
-    algo/Sorting.hpp
-    algo/Sorting.cpp
-)
-
-target_include_directories(Main PRIVATE
-    utils
-    algo
-)
-
-#==================================================
-add_executable(LeetCode_100
-    leetcode_/leetcode_100.cpp
-    ${LeetCodeCommonHeaders}
-    ${LeetCodeCommonSources}
-)
-
-target_include_directories(LeetCode_100 PRIVATE
-    utils
-    leetcode_
-)
-
-#==================================================
-add_executable(LeetCode_200
-    leetcode_/leetcode_200.cpp
-    ${LeetCodeCommonHeaders}
-    ${LeetCodeCommonSources}
-)
-
-target_include_directories(LeetCode_200 PRIVATE
-    utils
-    leetcode_
-)
-
-#==================================================
-add_executable(LeetCode_300
-    leetcode_/leetcode_300.cpp
-    ${LeetCodeCommonHeaders}
-    ${LeetCodeCommonSources}
-)
-
-target_include_directories(LeetCode_300 PRIVATE
-    utils
-    leetcode_
-)
-
-#==================================================
-add_executable(LeetCode_400
-    leetcode_/leetcode_400.cpp
-    ${LeetCodeCommonHeaders}
-    ${LeetCodeCommonSources}
-)
-
-
-target_include_directories(LeetCode_400 PRIVATE
-    utils
-    leetcode_
-)
-
-#==================================================
-add_executable(DailyTasksLeetcode
-    leetcode_/dailytasks.cpp
-    ${LeetCodeCommonHeaders}
-    ${LeetCodeCommonSources}
-    algo/DSU.cpp
-    algo/DSU.hpp
-
-)
-
-target_include_directories(DailyTasksLeetcode PRIVATE
-    utils
-    leetcode_
-    algo
-)
-
-#==================================================
-add_executable(LeetCode_500
-    leetcode_/leetcode_500.cpp
-    ${LeetCodeCommonHeaders}
-    ${LeetCodeCommonSources}
-)
-
-target_include_directories(LeetCode_500 PRIVATE
-    utils
-    leetcode_
-)
-#==================================================
-add_subdirectory(leetcode_/500-700)
+add_leetcode_target(LeetCode_100 leetcode_/leetcode_100.cpp)
+add_leetcode_target(LeetCode_200 leetcode_/leetcode_200.cpp)
+add_leetcode_target(LeetCode_300 leetcode_/leetcode_300.cpp)
+add_leetcode_target(LeetCode_400 leetcode_/leetcode_400.cpp)
+add_leetcode_target(LeetCode_500 leetcode_/leetcode_500.cpp)
+add_leetcode_target(LeetCode_700 leetcode_/leetcode_700.cpp)
+add_leetcode_target(DailyTasksLeetcode leetcode_/dailytasks.cpp algo/DSU.cpp algo/DSU.hpp)
