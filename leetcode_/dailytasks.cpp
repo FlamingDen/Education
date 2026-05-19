@@ -2045,6 +2045,51 @@ public:
         return nums.back() == n ? true : false;
     }
 
+    //--------------------------#1002-------------------------------------------//
+    vector<string> commonChars(vector<string>& words) {
+        std::unordered_map<char, int> freq;
+        freq.reserve(words.size());
+
+        const auto& first = words[0];
+        for(size_t i(0); i < first.size(); i++) {
+            ++freq[first[i]];
+        }
+
+        
+        for(size_t i(1); i < words.size(); i++) {
+            const auto& curr_word = words[i];
+            std::unordered_map<char, int> tmp;
+            tmp.reserve(curr_word.size());
+            for(size_t j(0); j < curr_word.size(); j++) {
+               tmp[curr_word[j]]++;
+            }
+
+            for(auto it = std::begin(freq); it != std::end(freq);) {
+                if(tmp.contains(it->first)){
+                    it->second = std::min(it->second, tmp[it->first]);
+                    ++it;
+                    continue;
+                }else{
+                    it = freq.erase(it);
+                }
+            }
+        }
+
+
+        std::vector<string> ans;
+        ans.reserve(freq.size());
+        for(auto it = std::begin(freq); it != std::end(freq); it++) {
+            string s;
+            s += it->first;
+            auto count = it->second;
+            while (count--)
+            {
+                ans.push_back(s);
+            }
+        }
+        return ans;
+    }
+
 };
 
 
@@ -2053,8 +2098,7 @@ int main() {
     TimeGuard timer("DailyTasksLeetcode.cpp");
     //system("cls");
     
-    std::vector v{1,2,3,4};
-    fmt::print("{}\n", solution.isGood(v));
+    
 
     
 }
